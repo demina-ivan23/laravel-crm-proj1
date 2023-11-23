@@ -1,0 +1,32 @@
+<div class="card mt-3 prospect-card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-sm-3">
+@if ($prospect->profile_image)
+    <img src="{{ Storage::url($prospect->profile_image) }}" alt="">
+@endif      
+            </div>
+            <div class="col-sm-6">
+                <h5>{{ $prospect->name }}</h5>
+                 <ul>
+                    <strong>Email: </strong> {{ $prospect->email }}
+                   <li>
+                    <strong>Date Of Creation: </strong> {{ $prospect->dateForHumans }}
+                   </li>
+                </ul>
+            </div>
+            <div class="col-sm-3">
+                <div class="dropdown">
+                    <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                      Actions 
+                    </button>
+                    <ul class="dropdown-menu">
+                      <li><a class="dropdown-item" href="{{ route('admin.prospects.show', ['prospect' => $prospect->id])}}">View "{{$prospect->name}}"</a></li>
+                      <li><a class="dropdown-item" href="{{ route('admin.prospects.edit', ['prospect' => $prospect->id])}}">Edit</a></li>
+                      <li><a class="dropdown-item" href="#">Delete</a></li>
+                    </ul>
+                  </div>
+            </div>
+        </div>
+    </div>
+</div>
