@@ -34,11 +34,12 @@ class ProspectsController extends Controller
        $prospect = Prospect::create($request->only('name', 'email'));
 
        if($request->hasFile('profile_image')) {
-         $path = $request->profile_image->store('public/prospects/profiles/images');      
+        $path = $request->profile_image->store('public/prospects/profiles/images'); 
+
          $prospect->update(['profile_image' => $path]);
        }
 
-        return redirect()->route('admin.prospects.dashboard')->with('success', 'Prospect created successfully');
+        return redirect()->route('admin.prospects.contacts.create', ['prospect' => $prospect])->with('success', 'Prospect created successfully');
     }
 
     /**

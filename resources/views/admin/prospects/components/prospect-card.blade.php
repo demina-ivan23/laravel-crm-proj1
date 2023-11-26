@@ -3,8 +3,13 @@
         <div class="row">
             <div class="col-sm-3">
 @if ($prospect->profile_image)
-    <img src="{{ Storage::url($prospect->profile_image) }}" alt="">
-@endif      
+
+
+    <img src="{{Storage::url($prospect->profile_image)}}" alt="" width="100" height="100"> 
+@else
+<img src="/prospects/profiles/images/user.png" width="105"  alt="">
+@endif
+      
             </div>
             <div class="col-sm-6">
                 <h5>{{ $prospect->name }}</h5>
