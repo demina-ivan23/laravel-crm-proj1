@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prospects', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('email')->nullable();
-            $table->text('profile_image')->nullable();
-            $table->unsignedBigInteger('state_id')->nullable();
-          
+        Schema::table('prospects', function (Blueprint $table) {
+                
+    $table->index('state_id');
+
+    $table->foreign('state_id')
+        ->references('id')->on('customer_states')
+        ->onDelete('SET NULL');
         });
     }
 
@@ -26,6 +26,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('prospects');
+        Schema::table('prospects', function (Blueprint $table) {
+            //
+        });
     }
 };

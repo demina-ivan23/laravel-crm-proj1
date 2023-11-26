@@ -1,7 +1,7 @@
 <div class="card mt-3 prospect-card">
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-3">
+            <div class="col-sm-3 d-flex justify-content-center">
 @if ($prospect->profile_image)
 
 
