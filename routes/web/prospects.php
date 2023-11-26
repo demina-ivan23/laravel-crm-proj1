@@ -9,14 +9,14 @@ use App\Http\Controllers\Admin\Prospects\ProspectsContactController;
 
 Route::get('/prospects', [ProspectsController::class, 'index'])->name('dashboard');
 Route::get('create', [ProspectsController::class, 'create'])->name('create');
-Route::get('{prospect}/edit', [ProspectsController::class, 'edit'])->name('edit');
+Route::get('{prospect}/edit', [ProspectsController::class, 'edit'])->name('edit')->where('prospect', '[0-9]+');
 Route::get('{prospect}', [ProspectsController::class, 'show'])->name('show')->where('prospect', '[0-9]+');
-
 
 Route::post('/store', [ProspectsController::class, 'store'])->name('store');
 
-Route::put('{prospect}/update', [ProspectsController::class, 'update'])->name('update')->where('prospect', '[0-9]+');
+Route::put('/{prospect}', [ProspectsController::class, 'update'])->name('update')->where('prospect', '[0-9]+');
 
+Route::delete('/{prospect}', [ProspectsController::class, 'destroy'])->name('destroy')->where('prospect', '[0-9]+');
 
 
 // Contacts addition and managment routes

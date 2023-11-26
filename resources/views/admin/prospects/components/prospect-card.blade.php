@@ -28,7 +28,12 @@
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="{{ route('admin.prospects.show', ['prospect' => $prospect->id])}}">View "{{$prospect->name}}"</a></li>
                       <li><a class="dropdown-item" href="{{ route('admin.prospects.edit', ['prospect' => $prospect->id])}}">Edit</a></li>
-                      <li><a class="dropdown-item" href="#">Delete</a></li>
+                    <li>  <form action="{{ route('admin.prospects.destroy', ['prospect' => $prospect->id]) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this prospect?')">Delete</button>
+                    </form>
+                    </li>
                     </ul>
                   </div>
             </div>

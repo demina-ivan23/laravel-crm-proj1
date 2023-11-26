@@ -4,7 +4,7 @@ namespace App\Http\Requests\Prospects;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProspectRequest extends FormRequest
+class UpdateProspectRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,9 +21,11 @@ class StoreProspectRequest extends FormRequest
      */
     public function rules(): array
     {
+        $emailRule = 'required|unique:prospects,email,' . $this->route('prospect');
+
         return [
             'name' => 'required',
-            'email' => 'required|unique:prospects',
+            'email' => $emailRule,
             'profile_image' => 'nullable|mimes:img,jpg,jpeg,png|max:2000'
         ];
     }

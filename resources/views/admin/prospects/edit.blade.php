@@ -35,7 +35,8 @@
             </div>
             @endif
             
-            <form action="{{ route('admin.prospects.update', ['prospect' => $prospect->id]) }}" method="PUT" enctype="multipart/form-data">
+            <form action="{{ route('admin.prospects.update', ['prospect' => $prospect->id]) }}" method="POST" enctype="multipart/form-data">
+                @method('PUT')
                 @csrf
 
 <div class="p-3">
