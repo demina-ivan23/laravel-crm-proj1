@@ -12,11 +12,9 @@ class ProspectService
     return $prospects;
   }
   static function getProspectById($id){
-    $prospect = Prospect::find($id);
-
-    return $prospect;
+    return Prospect::find($id);
   }
-  static function createProspect($request){
+  static function storeProspect($request){
     $prospect = Prospect::create($request->only('name', 'email'));
 
     if($request->hasFile('profile_image')) {
@@ -24,6 +22,7 @@ class ProspectService
 
          $prospect->update(['profile_image' => $path]);
        }
+       $prospect->update(['state_id' => 1]);
        return $prospect;
   }
   static function deleteProspect($prospect){
@@ -45,6 +44,24 @@ class ProspectService
 
     $prospect->update($data);
 
+    return $prospect;
+  }
+
+  static function setStateToLead($id){
+    $prospect = static::getProspectById($id);
+    $state_id = 2;
+    if($prospect->state_id === null || $prospect->state_id === 1 ){
+      $prospect->update(['state_id' => $state_id]);
+    }
+    return $prospect;
+  }
+
+  static function setStateToCustomer($id){
+    $prospect = static::getProspectById($id);
+    $state_id = 3;
+    if($prospect->state_id === null || $prospect->state_id === 1 || $prospect->state_id === 2 ){
+      $prospect->update(['state_id' => $state_id]);
+    }
     return $prospect;
   }
 }

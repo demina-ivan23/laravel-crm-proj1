@@ -33,8 +33,9 @@ class ProspectsController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreProspectRequest $request)
-    {
-        $prospect = ProspectService::createProspect($request);
+    { 
+                  
+        $prospect = ProspectService::storeProspect($request);
         return redirect()->route('admin.prospects.contacts.create', ['prospect' => $prospect])->with('success', 'Prospect created successfully');
     }
 
