@@ -15,4 +15,22 @@ class Prospect extends Model
     {
       return date('F d, Y', strtotime($this->created_at)); 
     }
+
+    public function getProspectStateAttribute()
+    {
+      switch ($this->state_id) {
+        case 1:
+          return 'prospect';
+          break;
+        case 2:
+          return 'lead';
+          break;
+        case 3:
+          return 'customer';
+          break;
+        default:
+          return 'undefined';
+          break;
+      }
+    }
 }

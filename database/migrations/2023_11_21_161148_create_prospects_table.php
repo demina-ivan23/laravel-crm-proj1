@@ -16,6 +16,11 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->nullable();
             $table->text('profile_image')->nullable();
+            $table->string('phone_number')->nullable();
+            $table->string('facebook_account')->nullable();
+            $table->string('instagram_account')->nullable();
+            $table->string('address')->nullable();
+            $table->string('personal_info')->nullable();
             $table->unsignedBigInteger('state_id')->nullable();
             $table->timestamps();
         });

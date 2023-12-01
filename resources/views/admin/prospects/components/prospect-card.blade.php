@@ -18,6 +18,9 @@
                    <li>
                     <strong>Date Of Creation: </strong> {{ $prospect->dateForHumans }}
                    </li>
+                   <li>
+                    <strong>State: </strong> {{ $prospect->prospectState }}
+                   </li>
                 </ul>
             </div>
             <div class="col-sm-3">
@@ -27,8 +30,15 @@
                     </button>
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="{{ route('admin.prospects.show', ['prospect' => $prospect->id])}}">View "{{$prospect->name}}"</a></li>
+                      @if ($prospect->state_id === 1)
+                          <li><a class="dropdown-item" href="{{route('admin.prospects.contacts.create', ['prospect' => $prospect->id])}}">Create Contacts For "{{$prospect->name}}"</a></li>
+                      @endif
+                      @if ($prospect->state_id === 1)
                       <li><a class="dropdown-item" href="{{ route('admin.prospects.edit', ['prospect' => $prospect->id])}}">Edit</a></li>
-                    <li>  <form action="{{ route('admin.prospects.destroy', ['prospect' => $prospect->id]) }}" method="POST">
+                      @else
+                      <li><a class="dropdown-item" href="{{ route('admin.prospects.contacts.edit', ['prospect' => $prospect->id])}}">Edit</a></li>
+                      @endif
+                      <li><form action="{{ route('admin.prospects.destroy', ['prospect' => $prospect->id]) }}" method="POST">
                         @csrf
                         @method('DELETE')
                         <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this prospect?')">Delete</button>

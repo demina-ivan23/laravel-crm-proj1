@@ -4,7 +4,9 @@ namespace App\Http\Controllers\Admin\Prospects;
 
 use App\Models\Prospect;
 use Illuminate\Http\Request;
+use App\Services\ProspectService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Prospects\StoreProspectContactRequest;
 
 class ProspectsContactController extends Controller
 {
@@ -28,9 +30,10 @@ class ProspectsContactController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreProspectContactRequest $request, $id)
     {
-        //
+        ProspectService::storeProspectContact($id, $request);
+        return redirect('/prospects/prospects');
     }
 
     /**
@@ -46,7 +49,8 @@ class ProspectsContactController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $prospect = ProspectService::getProspectById($id);
+        return view('admin.prospects.contacts.edit', ['prospect' => $prospect]);
     }
 
     /**

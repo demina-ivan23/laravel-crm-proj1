@@ -64,4 +64,12 @@ class ProspectService
     }
     return $prospect;
   }
+
+  static function storeProspectContact($id, $request){
+    $prospect = static::getProspectById($id);
+    $data = $request->all();
+    $prospect->update($data);
+    static::setStateToLead($prospect->id);
+    return $prospect;
+  }
 }
