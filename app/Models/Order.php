@@ -2,8 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Product;
+use App\Models\Prospect;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Order extends Model
 {
@@ -13,4 +15,10 @@ class Order extends Model
     protected $casts = [
         'products_id' => 'array'
     ];
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
+    }
+  
 }

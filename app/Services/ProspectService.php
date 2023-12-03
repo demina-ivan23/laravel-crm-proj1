@@ -72,4 +72,5 @@ class ProspectService
     static::setStateToLead($prospect->id);
     return $prospect;
   }
+
 }

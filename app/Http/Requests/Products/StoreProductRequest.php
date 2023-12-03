@@ -24,7 +24,7 @@ class StoreProductRequest extends FormRequest
         return [
             'title' => 'required',
             'description' => 'nullable',
-            'price' => 'required|numeric|min:0|max:14',
+            'price' => 'required|numeric|min:0|max:1000000',
             'product_image' => 'nullable|mimes:img,jpg,jpeg,png|max:2000',
         ];
     }

@@ -34,8 +34,8 @@ class OrdersController extends Controller
     public function store($id, StoreOrderRequest $request)
     {
         $prospect = ProspectService::getProspectById($id);
-        OrderService::storeOrder($prospect, $request);
-        ProspectService::setStateToCustomer($id);
+       $order = OrderService::storeOrder($prospect, $request);
+       ProspectService::setStateToCustomer($id);
         return redirect('/prospects/prospects');
     }
 
