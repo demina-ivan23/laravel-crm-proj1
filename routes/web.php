@@ -25,5 +25,5 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::prefix('prospects')->middleware('auth')->name('admin.prospects.')->group(base_path('routes/web/prospects.php'));
 
 Route::prefix('products')->middleware('auth')->name('admin.products.')->group(base_path('routes/web/products.php'));
-// Route::prefix('leads')->middleware('auth')->group(base_path('routes/web/leads.php'));
-// Route::prefix('customers')->middleware('auth')->group(base_path('routes/web/customers.php'));
+
+Route::prefix('orders')->middleware('auth')->name('admin.orders.')->group(base_path('routes/web/orders.php'));;

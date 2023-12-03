@@ -38,6 +38,7 @@
                       @else
                       <li><a class="dropdown-item" href="{{ route('admin.prospects.contacts.edit', ['prospect' => $prospect->id])}}">Edit</a></li>
                       @endif
+                      <li><a class="dropdown-item" href="{{route('admin.orders.create', ['prospect' => $prospect->id])}}">Make An Order For "{{$prospect->name}}"</a></li>
                       <li><form action="{{ route('admin.prospects.destroy', ['prospect' => $prospect->id]) }}" method="POST">
                         @csrf
                         @method('DELETE')
