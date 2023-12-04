@@ -21,6 +21,11 @@
                    <li>
                     <strong>State: </strong> {{ $prospect->prospectState }}
                    </li>
+                   @if ($prospect->phone_number !== null)    
+                   <li>
+                    <strong>Phone Number: </strong> {{ $prospect->phone_number }}
+                   </li>
+                   @endif
                 </ul>
             </div>
             <div class="col-sm-3">
@@ -30,7 +35,7 @@
                     </button>
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="{{ route('admin.prospects.show', ['prospect' => $prospect->id])}}">View "{{$prospect->name}}"</a></li>
-                      @if ($prospect->state_id === 1)
+                      @if ($prospect->phone_number === null)
                           <li><a class="dropdown-item" href="{{route('admin.prospects.contacts.create', ['prospect' => $prospect->id])}}">Create Contacts For "{{$prospect->name}}"</a></li>
                       @endif
                       @if ($prospect->state_id === 1)

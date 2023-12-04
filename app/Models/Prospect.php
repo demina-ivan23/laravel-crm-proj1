@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\CustomerState;
+use App\Services\ProspectService;
+use PhpParser\Builder\FunctionLike;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Prospect extends Model
 {
@@ -18,21 +21,28 @@ class Prospect extends Model
 
     public function getProspectStateAttribute()
     {
-      switch ($this->state_id) {
-        case 1:
-          return 'prospect';
-          break;
-        case 2:
-          return 'lead';
-          break;
-        case 3:
-          return 'customer';
-          break;
-        default:
-          return 'undefined';
-          break;
-      }
+      $state = ProspectService::getCustomStateTitle($this->state_id);
+      return $state;
     }
 
+    public function state()
+    {
+      return $this->belongsTo(CustomerState::class);
+    }
+
+    public function scopeFilter($query)
+    { 
+      if(request('search')){
+        
+        $query 
+        ->where('name', 'like', '%' . request('search') . '%')
+        ->orWhere('email', 'like', '%' . request('search') . '%')
+        ->orWhere('state_id', 'like', '%' . request('search') . '%')
+        ->orWhere('phone_number', 'like', '%' . request('search') . '%')
+        ->orWhere('facebook_account', 'like', '%' . request('search') . '%')
+        ->orWhere('instagram_account', 'like', '%' . request('search') . '%')
+        ->orWhere('address', 'like', '%' . request('search') . '%');
+      }
+    }
  
 }

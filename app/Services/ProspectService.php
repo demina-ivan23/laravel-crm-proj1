@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
+use App\Models\CustomerState;
 use App\Models\Prospect;
 
 class ProspectService
 {
   static function getAllProspects()
   {
-    $prospects = Prospect::latest('updated_at')->paginate(10);
+    $prospects = Prospect::latest()->filter()->get();
     return $prospects;
   }
   static function getProspectById($id){
@@ -23,6 +24,7 @@ class ProspectService
          $prospect->update(['profile_image' => $path]);
        }
        $prospect->update(['state_id' => 1]);
+
        return $prospect;
   }
   static function deleteProspect($prospect){
@@ -40,6 +42,17 @@ class ProspectService
     if($request->hasFile('profile_image')){
         $path = $request->profile_image->store('public/prospects/profiles/images');
         $data['profile_image'] = $path;
+    }
+    if($data['custom_state']){
+      
+      $state_id = static::getCustomStateId($data['custom_state']);
+      unset($data['custom_state']);
+     
+      $data['state_id'] = $state_id;
+    }
+    else{
+      unset($data['custom_state']);
+      
     }
 
     $prospect->update($data);
@@ -65,9 +78,35 @@ class ProspectService
     return $prospect;
   }
 
-  static function storeProspectContact($id, $request){
+  static function getCustomStateId($state){
+    $custom_state =  CustomerState::create(['title' => $state]);
+    return $custom_state->id;
+  }
+
+  static function getCustomStateTitle($id){
+    $state = CustomerState::find($id);
+    if($state){
+      return $state->title;
+    }
+    else{
+      return 'undefined';
+    }
+  }
+
+  static function storeProspectContact($id, $request)
+  {
     $prospect = static::getProspectById($id);
     $data = $request->all();
+    $data = $request->all();
+       if($data['custom_state']){
+        $state_id = static::getCustomStateId($data['custom_state']);
+        unset($data['custom_state']);
+        $prospect->update(['state_id' => $state_id]);
+       }
+       else{
+        unset($data['custom_state']);
+        $prospect->update(['state_id' => 2]);
+       }
     $prospect->update($data);
     static::setStateToLead($prospect->id);
     return $prospect;

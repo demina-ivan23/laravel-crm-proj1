@@ -17,7 +17,7 @@ return new class extends Migration
 
     $table->foreign('state_id')
         ->references('id')->on('customer_states')
-        ->onDelete('SET NULL');
+        ->onDelete('SET NULL')->nullable();
         });
     }
 

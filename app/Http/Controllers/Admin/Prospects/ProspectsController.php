@@ -17,8 +17,9 @@ class ProspectsController extends Controller
      */
     public function index()
     {
+       
         $prospects = ProspectService::getAllProspects();
-        return view('admin.prospects.index', compact('prospects'));
+        return view('admin.prospects.index', ['prospects' => $prospects]);
     }
 
     /**

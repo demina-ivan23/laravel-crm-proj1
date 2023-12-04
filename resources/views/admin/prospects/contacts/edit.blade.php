@@ -83,6 +83,10 @@
         <label for="personal_info" class="form-label">Personal info</label>
         <input class="form-control" type="text" name="personal_info" id="personal_info" placeholder="Some additional info..." value="{{$prospect->personal_info}}">
     </div>
+    <div class="mb-3">
+        <label for="custom_state" class="form-label">Custom state</label>
+        <input class="form-control" type="text" name="custom_state" id="custom_state" placeholder="Create a custom state...">
+    </div>
         <button class="btn btn-primary float-end mb-2" type="submit">
             Edit
         </button>
