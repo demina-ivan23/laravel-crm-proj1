@@ -20,5 +20,7 @@ class Order extends Model
     {
         return $this->belongsToMany(Product::class);
     }
-  
+    public function getGetCustomerAttribute(){
+        return Prospect::find($this->customer_id);
+    }
 }

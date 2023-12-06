@@ -2,6 +2,7 @@
 
 @section('content')
 <div class="container">
+  <a href="{{route('admin.prospects.dashboard')}}" class="btn btn-light">Go Back To Prospects</a>
 
   @if (session('success'))
       <div class="alert alert-success">

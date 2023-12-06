@@ -7,10 +7,18 @@ use App\Models\Prospect;
 
 class ProspectService
 {
-  static function getAllProspects()
+  static function getAllProspects(){
+    $prospects = Prospect::latest()->get();
+    return $prospects;
+  }
+  static function getAllFilteredProspects()
   {
     $prospects = Prospect::latest()->filter()->get();
     return $prospects;
+  }
+  static function getAllStates(){
+    $states = CustomerState::all();
+    return $states;
   }
   static function getProspectById($id){
     return Prospect::find($id);
@@ -45,7 +53,7 @@ class ProspectService
     }
     if($data['custom_state']){
       
-      $state_id = static::getCustomStateId($data['custom_state']);
+      $state_id = static::getOrCreateCustomStateId($data['custom_state']);
       unset($data['custom_state']);
      
       $data['state_id'] = $state_id;
@@ -78,9 +86,16 @@ class ProspectService
     return $prospect;
   }
 
-  static function getCustomStateId($state){
-    $custom_state =  CustomerState::create(['title' => $state]);
+  static function getOrCreateCustomStateId($state){
+    $custom_state = CustomerState::where('title', $state)->first();
+
+    if (!$custom_state) {
+        $custom_state = CustomerState::create(['title' => $state]);
+        return $custom_state->id;
+    }
+    
     return $custom_state->id;
+    
   }
 
   static function getCustomStateTitle($id){
@@ -99,7 +114,7 @@ class ProspectService
     $data = $request->all();
     $data = $request->all();
        if($data['custom_state']){
-        $state_id = static::getCustomStateId($data['custom_state']);
+        $state_id = static::getOrCreateCustomStateId($data['custom_state']);
         unset($data['custom_state']);
         $prospect->update(['state_id' => $state_id]);
        }

@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        <a href="{{route('admin.products.dashboard')}}" class="btn btn-light">Go Back To Products</a>
         <div class="card mt-4">
             <div class="card-body">
                 <div class="d-flex">
@@ -51,14 +52,17 @@
         <input class="form-control" type="text" name="description" id="description" placeholder="No description yet...">
     </div>
     <div class="mb-3">
-        <label for="name" class="form-label">Price</label>
+        <label for="price" class="form-label">Price</label>
         <input class="form-control" type="text" name="price" id="price" placeholder="Product's price...">
     </div>
     <div class="mb-3">
         <label for="profileImage" class="form-label">Product Image</label>
         <input  class="form-control" type="file" name="product_image" id="product_image">
     </div>
-    
+    <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <input class="form-control" type="text" name="category" id="category" placeholder="Product's category...">
+    </div>
 
         <button class="btn btn-primary float-end mb-2" type="submit">
             Create

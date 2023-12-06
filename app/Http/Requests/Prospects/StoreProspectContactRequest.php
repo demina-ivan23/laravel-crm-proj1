@@ -26,7 +26,8 @@ class StoreProspectContactRequest extends FormRequest
             'facebook_account' => 'nullable|max:225',
             'instagram_account' => 'nullable|max:225',
             'address' => 'nullable|max:225',
-            'personal_info' => 'nullable'
+            'personal_info' => 'nullable',
+            'category' => 'unique:customer_states,title'
         ];
     }
 }

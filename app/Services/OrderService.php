@@ -36,4 +36,10 @@ class OrderService{
       return $order;
 
     }
+
+    static function getAllOrders()
+    {
+$orders = Order::all();
+return $orders;
+    }
 }

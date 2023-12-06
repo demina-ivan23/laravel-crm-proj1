@@ -22,6 +22,9 @@ class Prospect extends Model
     public function getProspectStateAttribute()
     {
       $state = ProspectService::getCustomStateTitle($this->state_id);
+      if(!$state){
+        return 'undefined';
+      }
       return $state;
     }
 
@@ -43,6 +46,16 @@ class Prospect extends Model
         ->orWhere('instagram_account', 'like', '%' . request('search') . '%')
         ->orWhere('address', 'like', '%' . request('search') . '%');
       }
+      if(request('filter_state')){
+        if(request('filter_state') === 'all'){ 
+        $query 
+        ->where('name', 'like', '%' . '' . '%'); 
+      } 
+      else {
+        $query
+        ->where('state_id', 'like', request('filter_state'));
+      }
+    }
     }
  
 }

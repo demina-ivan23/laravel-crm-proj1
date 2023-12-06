@@ -2,6 +2,7 @@
 
 @section('content')
     <div class="container">
+        <a href="{{route('admin.prospects.dashboard')}}" class="btn btn-light">Go Back To Prospects</a>
         <div class="card mt-4">
             <div class="card-body">
                 <div class="d-flex">

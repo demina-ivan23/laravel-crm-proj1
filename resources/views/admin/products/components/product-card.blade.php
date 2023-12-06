@@ -10,15 +10,18 @@
       <p class="card-text">{{$product->description}}</p>
     </div>
     <ul class="list-group list-group-flush" id="card-items-container">
-      <li class="list-group-item" id="card-item-1">{{$product->price}}</li>
+      <li class="list-group-item" id="card-item-1">${{$product->price}}</li>
+    </ul>
+    <ul class="list-group list-group-flush" id="card-items-container">
+      <li class="list-group-item" id="card-item-1">Category: {{$product->category}}</li>
     </ul>
     <div class="card-body">
       <ul>
         <li>
-          <a href="#" class="card-link">View</a>
+          <a href="#" class="dropdown-item">View</a>
         </li>
         <li>
-          <a href="{{ route('admin.products.edit', ['product' => $product->id]) }}" class="card-link">Edit </a>
+          <a href="{{ route('admin.products.edit', ['product' => $product->id]) }}" class="dropdown-item">Edit </a>
         </li>
         <li>  <form action="{{ route('admin.products.destroy', ['product' => $product->id]) }}" method="POST">
           @csrf

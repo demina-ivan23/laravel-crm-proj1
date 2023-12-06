@@ -22,14 +22,17 @@
     <div class="ml-auto" style="margin-left: auto">
     <div class="dropdown">
       <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
-       Filter
+       Filter By State
       </button>
       <ul class="dropdown-menu">
-        @foreach ($prospects as $prospect)              
-        <form action="" method="GET">
-          <li><button class="dropdown-item" name="search" id="search" type="submit" value="{{$prospect->state_id}} ">{{$prospect->prospectState}}</button>
-          </form>
-        @endforeach
+        @foreach ($states as $state)
+            <form action="#" method="GET">
+              <li><button class="dropdown-item" name="filter_state" id="filter_state" type="submit" value="{{$state->id}}">{{$state->title}}</button>
+              </form>
+              @endforeach
+        <form action="#" method="GET">
+          <li><button class="dropdown-item" name="filter_state" id="filter_state" type="submit" value="all">All</button>
+          </form>  
       </ul>
     </div>
     </div>

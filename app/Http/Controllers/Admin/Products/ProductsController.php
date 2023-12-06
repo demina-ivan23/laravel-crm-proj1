@@ -13,8 +13,12 @@ class ProductsController extends Controller
  
     public function index()
     {
+        $categories = ProductService::getAllCategories();
         $products = ProductService::getAllProducts();
-        return view('admin.products.index', ['products' => $products]);
+        return view('admin.products.index', [
+            'products' => $products,
+            'categories' => $categories
+        ]);
     }
 
 

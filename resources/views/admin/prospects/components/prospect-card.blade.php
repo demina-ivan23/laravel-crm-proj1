@@ -26,6 +26,22 @@
                     <strong>Phone Number: </strong> {{ $prospect->phone_number }}
                    </li>
                    @endif
+                   @if ($prospect->address !== null)  
+                   <li>
+                    <strong>Address: </strong> {{ $prospect->address }}
+                   </li>
+                   @endif
+                   @if ($prospect->facebook_account !== null)  
+                   <li>
+                    <strong>Facebook Account: </strong> {{ $prospect->facebook_account }}
+                   </li>
+                   @endif
+                   @if ($prospect->instagram_account !== null)  
+                   <li>
+                    <strong>Instagram Account: </strong> {{ $prospect->instagram_account }}
+                   </li>
+                   @endif
+
                 </ul>
             </div>
             <div class="col-sm-3">
