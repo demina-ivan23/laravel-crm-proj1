@@ -64,3 +64,9 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## About The Project And Additional Info
+Now the description of my project (if we can call it so). So, this is one of my first serious pet-projects, I spent somwhere around 2 weeks on creation of the basis of it (and honestly, I'm proud of it because I'm not even a Laravel Junior Dev (yet)), and it can be extended, of course, but currently I'm not going to do this and I'm going to focus on the next one, also made with Laravel (Creators of Laravel, Thanks A Lot For Such Wonderful Framework(!)), probably something like Fex.net, also a site, where you can exchange files with others.
+ Now, about the usage. If You want to check how's the project working, just clone it from this repo, install all the dependencies needed (run composer install and then npm install), start the back-end and front-end servers (php artisan serve for back-end and npm run dev for front-end (login and register pages)) and go to the link register, located at the right top of the tab and register (You can register even as test@test.com, it's not checking you, so no need to use real email), and then go to Home -> Prospects (or Products) -> Manage to manage it(them) if you aren't already on the prospects/prospects dashboard pages. What about viewing products or products, the thing i can say about it is that we all know how to do that, and, as the view page gives us nothing but the ability to review the prospect/product, i didn't care much to style or create those pages.   
+
+So thanks for reading, hope you hire me (think this is unlikely, though), and have a nice day! 
