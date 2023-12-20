@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GraphController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,4 +27,11 @@ Route::prefix('prospects')->middleware('auth')->name('admin.prospects.')->group(
 
 Route::prefix('products')->middleware('auth')->name('admin.products.')->group(base_path('routes/web/products.php'));
 
-Route::prefix('orders')->middleware('auth')->name('admin.orders.')->group(base_path('routes/web/orders.php'));;
+Route::prefix('orders')->middleware('auth')->name('admin.orders.')->group(base_path('routes/web/orders.php'));
+
+
+
+
+//Graph route is for a page that determines prospects creation, 
+// product creation and order creation speed via testing
+Route::get('/graphs', [GraphController::class, 'index'])->name('graphs.index');

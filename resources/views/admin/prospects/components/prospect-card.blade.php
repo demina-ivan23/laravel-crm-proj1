@@ -1,13 +1,13 @@
 <div class="card mt-3 prospect-card">
     <div class="card-body">
         <div class="row">
-            <div class="col-sm-3 d-flex justify-content-center">
+            <div class="col-sm-3 d-flex justify-content-center align-items-center">
 @if ($prospect->profile_image)
 
 
     <img src="{{Storage::url($prospect->profile_image)}}" alt="" width="100" height="100"> 
 @else
-<img src="/prospects/profiles/images/user.png" width="105"  alt="">
+<img src="/prospects/profiles/images/user.png" width="105" height="105"  alt="">
 @endif
       
             </div>
