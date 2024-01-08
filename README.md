@@ -7,6 +7,62 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
+## About The Project And Additional Info
+Now the description of my project (if we can call it so). So, this is one of my first serious pet-projects, I spent somwhere around 2 weeks on creation of the basis of it (and honestly, I'm proud of it because I'm not even a Laravel Junior Dev (yet)), and it can be extended, of course, but currently I'm not going to do this and I'm going to focus on the next one, also made with Laravel (Creators of Laravel, Thanks A Lot For Such Wonderful Framework(!)), probably something like Fex.net, a site, where you can exchange files with others.
+
+Now some steps to check how my app is working:
+
+Open your terminal.
+Use the git clone command to clone the project repository:
+git clone https://github.com/demina-ivan23/laravel-crm-proj1.git
+
+Navigate into the project directory (replace the 'the-project's-path' with the real path):
+cd [the-project's-path]
+
+Install Dependencies:
+
+  Run Composer to install PHP dependencies:
+  composer install
+  
+  Install Node.js dependencies using npm:
+  npm install
+  
+Generate App Key and Configure Environment:
+
+  Generate an application key using Artisan:
+  php artisan key:generate
+  
+  Modify the .env file in the project directory.
+  Change the APP_URL to http://localhost:8000.
+  
+Start Back-End and Front-End Servers:
+
+  Start the Laravel back-end server:
+  php artisan serve
+  
+  Start the front-end server for login and register pages:
+  npm run dev
+
+Start Apache (or Nginx) and MySQL Servers:
+Ensure your web server (Apache or Nginx) and database server (MySQL or any other DB connection) are running.
+
+Access the Project in Your Browser:
+Open your web browser and enter localhost:8000 in the address field.
+
+Register a Test User:
+Navigate to the registration page by clicking on the "register" link located at the top right of the tab.
+Register with any desired information, even using a test email like test@test.com.
+
+Explore and Manage:
+After registering, go to the following pages:
+Home ->
+Prospects (or Products) ->
+Manage (Prospects or Products) to manage the respective sections.
+
+P.S.: The thing i can say about viewing products or products is that we all know how to do that, and, as the view page gives us nothing but the ability to review the prospect or product, i didn't care much to style or even create those pages.   
+
+P.S.S.: So thanks for reading, hope you hire me, and have a nice day! 
+
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
@@ -65,58 +121,4 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 
 The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
 
-## About The Project And Additional Info
-Now the description of my project (if we can call it so). So, this is one of my first serious pet-projects, I spent somwhere around 2 weeks on creation of the basis of it (and honestly, I'm proud of it because I'm not even a Laravel Junior Dev (yet)), and it can be extended, of course, but currently I'm not going to do this and I'm going to focus on the next one, also made with Laravel (Creators of Laravel, Thanks A Lot For Such Wonderful Framework(!)), probably something like Fex.net, a site, where you can exchange files with others.
 
-Now some steps to check how my app is working:
-
-Open your terminal.
-Use the git clone command to clone the project repository:
-git clone https://github.com/demina-ivan23/laravel-crm-proj1.git
-
-Navigate into the project directory (replace the 'the-project's-path' with the real path):
-cd [the-project's-path]
-
-Install Dependencies:
-
-  Run Composer to install PHP dependencies:
-  composer install
-  
-  Install Node.js dependencies using npm:
-  npm install
-  
-Generate App Key and Configure Environment:
-
-  Generate an application key using Artisan:
-  php artisan key:generate
-  
-  Modify the .env file in the project directory.
-  Change the APP_URL to http://localhost:8000.
-  
-Start Back-End and Front-End Servers:
-
-  Start the Laravel back-end server:
-  php artisan serve
-  
-  Start the front-end server for login and register pages:
-  npm run dev
-
-Start Apache (or Nginx) and MySQL Servers:
-Ensure your web server (Apache or Nginx) and database server (MySQL or any other DB connection) are running.
-
-Access the Project in Your Browser:
-Open your web browser and enter localhost:8000 in the address field.
-
-Register a Test User:
-Navigate to the registration page by clicking on the "register" link located at the top right of the tab.
-Register with any desired information, even using a test email like test@test.com.
-
-Explore and Manage:
-After registering, go to the following pages:
-Home ->
-Prospects (or Products) ->
-Manage (Prospects or Products) to manage the respective sections.
-
-P.S.: The thing i can say about viewing products or products is that we all know how to do that, and, as the view page gives us nothing but the ability to review the prospect or product, i didn't care much to style or even create those pages.   
-
-P.S.S.: So thanks for reading, hope you hire me, and have a nice day! 
