@@ -60,6 +60,7 @@
               @endforeach
             </div>
           </div>
+    {{$products->appends(request()->except('page'))->links()}}
   @endif
 </div>
 @endsection

@@ -3,13 +3,6 @@
 @section('content')
 <div class="container">
 
-  <form method="GET" action="{{route('admin.orders.dashboard')}}">
-    <div class="input-group mb-3">
-      <input type="text" class="form-control" name="search">
-      <button class="input-group-text" type="submit">Search</button>
-    </div>
-    </form>
-
   @if (session('success'))
       <div class="alert alert-success">
         {{ session('success') }}
@@ -19,7 +12,7 @@
   <div class="card mt-4">
 <div class="card-body">
   <div class="d-flex">
-    <h2>Orders <small class="text-muted">Showing All Orders</small></h2>
+    <h2>Orders <small class="text-muted">Showing Orders Related To "{{$prospect->name}}"</small></h2>
     <div class="ml-auto" style="margin-left: auto">
     
     </div>

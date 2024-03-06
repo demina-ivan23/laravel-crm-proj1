@@ -55,6 +55,7 @@
       @foreach ($prospects as $prospect)
           @include('admin.prospects.components.prospect-card', ['prospect' => $prospect])
       @endforeach
+      {{$prospects->appends(request()->except('page'))->links()}}
   @endif
 
 

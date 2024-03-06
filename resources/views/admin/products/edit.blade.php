@@ -61,7 +61,7 @@
     </div>
     <div class="mb-3">
         <label for="category" class="form-label">Category</label>
-        <input class="form-control" type="text" name="category" id="category" placeholder="Product's category...">
+        <input class="form-control" type="text" name="category" id="category" placeholder="Product's category..." value="{{$product->category}}">
     </div>
 
         <button class="btn btn-primary float-end mb-2" type="submit">

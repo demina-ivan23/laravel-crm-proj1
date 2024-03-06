@@ -7,7 +7,7 @@ use App\Models\ProductCategory;
 
 class ProductService{
     static function getAllProducts(){
-        $products = Product::latest('updated_at')->filter()->get();
+        $products = Product::latest('updated_at')->filter()->paginate(10);
         return $products;
     }
     
@@ -79,5 +79,13 @@ return $categories;
 
             return $categoryObj->id;
         
+      }
+      static function findProduct($id)
+      {
+        $product = Product::find($id);
+        if(!$product){
+            abort(404);
+        }
+        return $product;
       }
 }

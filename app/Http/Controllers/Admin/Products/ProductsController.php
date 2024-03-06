@@ -39,7 +39,8 @@ class ProductsController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $product = ProductService::findProduct($id);
+        return view('admin.products.show', ['product' => $product]);
     }
 
     /**

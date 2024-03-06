@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers\Admin\Orders;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Services\OrderService;
 use App\Services\ProductService;
 use App\Services\ProspectService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Orders\StoreOrderRequest;
+use App\Models\Prospect;
 
 class OrdersController extends Controller
 {
@@ -45,7 +47,9 @@ class OrdersController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $prospect = ProspectService::findProspect($id);
+        $orders = Order::where('customer_id', $id)->latest()->paginate(5);
+        return view('admin.orders.show', ['orders' => $orders, 'prospect' => $prospect]);
     }
 
     /**

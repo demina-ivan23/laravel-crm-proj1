@@ -12,15 +12,30 @@ class Order extends Model
     use HasFactory;
 
     protected $guarded = [];
-    protected $casts = [
-        'products_id' => 'array'
-    ];
+
 
     public function products()
     {
         return $this->belongsToMany(Product::class);
     }
-    public function getGetCustomerAttribute(){
-        return Prospect::find($this->customer_id);
+    public function customer()
+    {
+        return $this->belongsTo(Prospect::class);
+    }
+    public function scopeFilter($query)
+    {
+        if (request('search')) {
+            $search = request('search');
+            $query->where('id', 'like', '%' . $search . '%')
+                ->orWhereHas('customer', function ($subQuery) use ($search) {
+                    $subQuery->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%');
+                })
+                ->orWhereHas('products', function ($subQuery) use ($search) {
+                    $subQuery->where('title', 'like', '%' . $search . '%');
+                })
+                ->orWhere('customer_id', 'like', '%' . $search . '%');
+        }
+        return $query;
     }
 }

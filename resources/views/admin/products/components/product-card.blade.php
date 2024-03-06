@@ -18,7 +18,7 @@
     <div class="card-body">
       <ul>
         <li>
-          <a href="#" class="dropdown-item">View</a>
+          <a href="{{ route('admin.products.show', ['product' => $product->id])}}" class="dropdown-item">View</a>
         </li>
         <li>
           <a href="{{ route('admin.products.edit', ['product' => $product->id]) }}" class="dropdown-item">Edit </a>

@@ -13,7 +13,7 @@ class ProspectService
   }
   static function getAllFilteredProspects()
   {
-    $prospects = Prospect::latest()->filter()->get();
+    $prospects = Prospect::latest()->filter()->paginate(10);
     return $prospects;
   }
   static function getAllStates(){
@@ -124,6 +124,14 @@ class ProspectService
        }
     $prospect->update($data);
     static::setStateToLead($prospect->id);
+    return $prospect;
+  }
+  static function findProspect($id)
+  {
+    $prospect = Prospect::find($id);
+    if(!$prospect){
+      abort(404);
+    }
     return $prospect;
   }
 
