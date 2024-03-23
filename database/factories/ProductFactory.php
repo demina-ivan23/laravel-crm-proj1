@@ -20,7 +20,7 @@ class ProductFactory extends Factory
         return [
             'title' => $this->faker->word,
             'description' => $this->faker->paragraph(2),
-            'price' => $this->faker->randomFloat(2, 5, 10000),
+            'price' => $this->faker->randomFloat(2, 4, 1000),
             'product_image' => null,
             'category_id' => $this->faker->numberBetween(ProductCategory::min('id'), ProductCategory::max('id'))
         ];
