@@ -1,4 +1,4 @@
-<div class="card mb-5" style="width: 18rem;">
+<div class="card" style="width: 15rem; margin:5px">
     @if ($product->product_image)
         
     <img src="{{Storage::url($product->product_image)}}" alt="" >     
