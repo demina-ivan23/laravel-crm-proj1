@@ -23,13 +23,13 @@ class ProspectService
   static function getProspectById($id){
     return Prospect::find($id);
   }
-  static function storeProspect($request){
-    $prospect = Prospect::create($request->only('name', 'email'));
-
-    if($request->hasFile('profile_image')) {
-        $path = $request->profile_image->store('public/prospects/profiles/images'); 
-
-         $prospect->update(['profile_image' => $path]);
+  static function storeProspect($prospectDTO){
+    $prospect = Prospect::create([
+      'name' => $prospectDTO->name,
+      'email' => $prospectDTO->email
+    ]);
+    if($prospectDTO->profile_image != null) {
+        //
        }
        $prospect->update(['state_id' => 1]);
 

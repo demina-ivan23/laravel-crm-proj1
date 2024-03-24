@@ -37,8 +37,8 @@ class ProspectsController extends Controller
      */
     public function store(StoreProspectRequest $request)
     { 
-                  
-        $prospect = ProspectService::storeProspect($request);
+        
+        $prospect = ProspectService::storeProspect($prospectDTO);
         return redirect()->route('admin.prospects.contacts.create', ['prospect' => $prospect])->with('success', 'Prospect created successfully');
     }
 

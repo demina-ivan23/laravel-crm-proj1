@@ -43,7 +43,7 @@
 
     <div class="mb-3">
         <label for="name" class="form-label">Name</label>
-        <input class="form-control" type="text" name="name" id="name" placeholder="Prospect's name...">
+        <input class="form-control" type="text" name="name" id="name" placeholder="Prospect's name..." required>
     </div>
     
     <div class="mb-3">
@@ -54,13 +54,47 @@
     
     <div class="mb-3">
         <label for="profileImage" class="form-label">Profile Image</label>
-        <input  class="form-control" type="file" name="profile_image" id="profileImage">
+        <input  class="form-control" type="file" name="profile_image" id="profile_image">
     </div>
-    
+    <div class="mb-3">
+        <button class="btn btn-primary" type="button" name="toggle_lead_addition" id="toggle_lead_addition" @click="showLeadAddition = !showLeadAddition">@{{ showLeadAddition ? 'Minimize' : 'Add More Info'}}</button>
+    </div>
 
-        <button class="btn btn-primary float-end mb-2" type="submit">
-            Create
-        </button>
+    <div v-if='showLeadAddition'>
+
+        <div class="mb-3">
+            <label for="phone_number" class="form-label">Phone number</label>
+            <input class="form-control" type="text" name="phone_number" id="phone_number" placeholder="Prospect's phone number...">
+        </div>
+        
+        <div class="mb-3">
+            <label for="facebook_account" class="form-label">Facebook account</label>
+            <input class="form-control" type="text" name="facebook_account" id="facebook_account" placeholder="Prospect's Facebook account...">
+        </div>
+        
+        <div class="mb-3">
+            <label for="instagram_account" class="form-label">Instagram account</label>
+            <input class="form-control" type="text" name="instagram_account" id="instagram_account" placeholder="Prospect's Instagram account...">
+        </div>
+        
+        <div class="mb-3">
+            <label for="address" class="form-label">Address</label>
+            <input class="form-control" type="text" name="address" id="address" placeholder="Prospect's address...">
+        </div>
+        
+        <div class="mb-3">
+            <label for="personal_info" class="form-label">Personal info</label>
+            <input class="form-control" type="text" name="personal_info" id="personal_info" placeholder="Some additional info...">
+        </div>
+    <div class="mb-3">
+        <label for="custom_state" class="form-label">Custom state</label>
+        <input class="form-control" type="text" name="custom_state" id="custom_state" placeholder="Create a custom state...">
+    </div>
+</div>
+    
+    <button class="btn btn-primary float-end mb-2" type="submit">
+        Create
+    </button>
 
     </div>
 </div>

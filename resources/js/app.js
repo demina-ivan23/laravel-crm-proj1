@@ -13,7 +13,16 @@ import { createApp } from 'vue';
  * to use in your application's views. An example is included for you.
  */
 
-const app = createApp({});
+const app = createApp({
+    data() {
+        return {
+            showLeadAddition: false,
+        };
+    }, 
+    methods: {
+
+    },
+});
 
 import ExampleComponent from './components/ExampleComponent.vue';
 app.component('example-component', ExampleComponent);

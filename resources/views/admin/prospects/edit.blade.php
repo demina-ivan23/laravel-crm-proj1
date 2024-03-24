@@ -16,7 +16,7 @@
                             </button>
                             <ul class="dropdown-menu">
                                 <li><a class="dropdown-item" href="{{ route('admin.prospects.dashboard')}}">Dashboard</a></li>
-                                <li><a class="dropdown-item" href="{{ route('admin.prospects.show', ['prospect' => $prospect->id ])}}">View "{{$prospect->name}}"</a></li>
+                                <li><a class="dropdown-item" href="{{ route('admin.prospects.show', ['prospect' => $prospect])}}">View "{{$prospect->name}}"</a></li>
                             </ul>
                         </div>
                     </div>
@@ -58,6 +58,35 @@
         <input  class="form-control" type="file" name="profile_image" id="profileImage">
     </div>
     
+    
+    <div class="mb-3">
+        <label for="phone_number" class="form-label">Phone number</label>
+        <input class="form-control" type="text" name="phone_number" id="phone_number" placeholder="Prospect's phone number..." value="{{$prospect->phone_number}}">
+    </div>
+    
+    <div class="mb-3">
+        <label for="facebook_account" class="form-label">Facebook account</label>
+        <input class="form-control" type="text" name="facebook_account" id="facebook_account" placeholder="Prospect's Facebook account..." value="{{$prospect->facebook_account}}">
+    </div>
+    
+    <div class="mb-3">
+        <label for="instagram_account" class="form-label">Instagram account</label>
+        <input class="form-control" type="text" name="instagram_account" id="instagram_account" placeholder="Prospect's Instagram account..." value="{{$prospect->instagram_account}}">
+    </div>
+    
+    <div class="mb-3">
+        <label for="address" class="form-label">Address</label>
+        <input class="form-control" type="text" name="address" id="address" placeholder="Prospect's address..." value="{{$prospect->address}}">
+    </div>
+
+    <div class="mb-3">
+        <label for="personal_info" class="form-label">Personal info</label>
+        <input class="form-control" type="text" name="personal_info" id="personal_info" placeholder="Some additional info..." value="{{$prospect->personal_info}}">
+    </div>
+    <div class="mb-3">
+        <label for="custom_state" class="form-label">Custom state</label>
+        <input class="form-control" type="text" name="custom_state" id="custom_state" placeholder="Create a custom state...">
+    </div>
 
         <button class="btn btn-primary float-end mb-2" type="submit">
             Edit

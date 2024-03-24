@@ -18,12 +18,12 @@
     <div class="card-body">
       <ul>
         <li>
-          <a href="{{ route('admin.products.show', ['product' => $product->id])}}" class="dropdown-item">View</a>
+          <a href="{{ route('admin.products.show', ['product' => $product])}}" class="dropdown-item">View</a>
         </li>
         <li>
-          <a href="{{ route('admin.products.edit', ['product' => $product->id]) }}" class="dropdown-item">Edit </a>
+          <a href="{{ route('admin.products.edit', ['product' => $product]) }}" class="dropdown-item">Edit </a>
         </li>
-        <li>  <form action="{{ route('admin.products.destroy', ['product' => $product->id]) }}" method="POST">
+        <li>  <form action="{{ route('admin.products.destroy', ['product' => $product]) }}" method="POST">
           @csrf
           @method('DELETE')
           <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
