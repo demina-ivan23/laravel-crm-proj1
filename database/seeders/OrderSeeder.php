@@ -22,6 +22,8 @@ class OrderSeeder extends Seeder
             $products->each(function ($product) use ($order) {
                 $order->products()->attach($product);
             });
+            $order->customer()->associate($order->customer_id);
+            $order->save();
         });
     }
 }

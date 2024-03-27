@@ -9,10 +9,8 @@ use ReflectionParameter;
 
 class DTOMapper
 {
-    public static function mapRequestToDTO(Request $request, string $dtoClassName)
+    public static function mapRequestToDTO($requestData, string $dtoClassName)
     {
-        // Get request data
-        $requestData = $request->all();
 
         // Create a new instance of the DTO class
         $reflection = new ReflectionClass($dtoClassName);

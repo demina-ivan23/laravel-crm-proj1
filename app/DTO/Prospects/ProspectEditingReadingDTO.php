@@ -3,7 +3,7 @@ namespace App\DTO\Prospects;
 
 // use App\DTO\Prospects\ProspectsCreationDTO;
 
-class ProspectEditingReadingDTO extends ProspectsСreationDTO
+class ProspectEditingReadingDTO extends ProspectСreationDTO
 {
     public int $id;
     public function __construct( 
@@ -15,7 +15,7 @@ class ProspectEditingReadingDTO extends ProspectsСreationDTO
     ?string $instagram_account = null,
     ?string $address = null,
     ?string $personal_info = null,
-    ?int $state_id,) 
+    ?int $state_id = null,) 
     {
         parent::__construct(
          $name,

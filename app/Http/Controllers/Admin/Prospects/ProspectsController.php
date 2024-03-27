@@ -26,9 +26,13 @@ class ProspectsController extends Controller
     {
         $states = ProspectService::getAllStates();
         $prospects = ProspectService::getAllFilteredProspects();
-        return view('admin.prospects.index', 
-        [  'prospects' => $prospects,
-           'states' => $states]);
+        return view(
+            'admin.prospects.index',
+            [
+                'prospects' => $prospects,
+                'states' => $states
+            ]
+        );
     }
 
     /**
@@ -43,10 +47,12 @@ class ProspectsController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(StoreProspectRequest $request)
-    { 
-        $dtoClassName = "\App\DTO\Prospects\ProspectsСreationDTO";
-        $prospectDto = $this->dtoMapper->mapRequestToDTO($request, $dtoClassName);
-        $prospect = ProspectService::storeProspect($prospectDto);
+    {
+        $dtoClassName = "\App\DTO\Prospects\ProspectСreationDTO";
+        $requestData = $request->all();
+        $prospectDto = $this->dtoMapper->mapRequestToDTO($requestData, $dtoClassName);
+        $custom_state = $requestData['custom_state'] != '' ? $requestData['custom_state'] : null; 
+        $prospect = ProspectService::storeProspect($prospectDto, $custom_state);
         return redirect()->route('admin.prospects.dashboard', ['prospect' => $prospect])->with('success', 'Prospect created successfully');
     }
 
@@ -56,14 +62,14 @@ class ProspectsController extends Controller
     public function show($id)
     {
         $prospect = ProspectService::getProspectById($id);
-       return view('admin.prospects.show', ['prospect' => $prospect]);
+        return view('admin.prospects.show', ['prospect' => $prospect]);
     }
 
     /**
      * Show the form for editing the specified resource.
      */
     public function edit($id)
-    { 
+    {
         $prospect = ProspectService::getProspectById($id);
         return view('admin.prospects.edit', ['prospect' => $prospect]);
     }
@@ -73,9 +79,14 @@ class ProspectsController extends Controller
      */
     public function update(UpdateProspectRequest $request, string $id)
     {
-        $prospect = ProspectService::updateProspect($request, $id);
-        if($prospect){
-
+        $dtoClassName = '\App\DTO\Prospects\ProspectEditingReadingDTO';
+        $requestData = $request->all();
+        $requestData['id'] = $id;
+        $prospectDto = $this->dtoMapper->mapRequestToDTO($requestData, $dtoClassName);
+        // dd($prospectDto);
+        $custom_state = array_key_exists('custom_state', $requestData) ? $requestData['custom_state'] : null; 
+        $prospect = ProspectService::updateProspect($prospectDto, $custom_state);
+        if ($prospect) {
             return redirect('/prospects/prospects')->with('success', 'Prospect "' . $prospect->name . '" updated successfully');
         }
     }
@@ -87,7 +98,7 @@ class ProspectsController extends Controller
     {
         $prospect = ProspectService::getProspectById($id);
 
-        if(!$prospect){
+        if (!$prospect) {
             return response()->json(['message' => 'Prospect not found'], 404);
         }
 

@@ -28,6 +28,10 @@ class Prospect extends Model
       return $state;
     }
 
+    public function orders(){
+      return $this->hasMany(Order::class, 'customer_id');
+    }
+
     public function state()
     {
       return $this->belongsTo(CustomerState::class);

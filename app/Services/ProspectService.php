@@ -26,7 +26,7 @@ class ProspectService
   {
     return Prospect::find($id);
   }
-  static function storeProspect($prospectDto)
+  static function storeProspect($prospectDto, $custom_state = null)
   {
     $prospectData = [
       'name' => $prospectDto->name,
@@ -37,47 +37,58 @@ class ProspectService
       'address' => $prospectDto->address,
       'personal_info' => $prospectDto->personal_info,
       'state_id' => $prospectDto->state_id,
-  ];
-  $prospect = Prospect::create($prospectData);
-  unset($prospectData['name'], $prospectData['email']);
-  $additionalInfoIsNull = empty(array_filter($prospectData, function ($value) {
+    ];
+    $prospect = Prospect::create($prospectData);
+    unset($prospectData['name'], $prospectData['email']);
+    $additionalInfoIsNull = empty(array_filter($prospectData, function ($value) {
       return $value !== null;
-  }));
-
-  $state_id= $additionalInfoIsNull ? 1 : 2;
-  $prospect->update(['state_id' => $state_id]);
+    }));
+    if ($prospectDto->state_id == null) {
+      if ($custom_state) {
+        $state_id = static::getOrCreateCustomStateId($custom_state);
+      } else {
+        $state_id = $additionalInfoIsNull ? 1 : 2;
+      }
+      $prospect->update(['state_id' => $state_id]);
+    }
     return $prospect;
   }
   static function deleteProspect($prospect)
   {
     $prospect->delete();
   }
-  static function updateProspect($request, $id)
+  static function updateProspect($prospectDto, $custom_state = null)
   {
-    $data = $request->all();
-
-    $prospect = static::getProspectById($id);
+    $prospect = static::getProspectById($prospectDto->id);
 
     if (!$prospect) {
       return null;
     }
-
-    if ($request->hasFile('profile_image')) {
-      $path = $request->profile_image->store('public/prospects/profiles/images');
-      $data['profile_image'] = $path;
+    $prospectData = [
+      'name' => $prospectDto->name,
+      'email' => $prospectDto->email,
+      'phone_number' => $prospectDto->phone_number,
+      'facebook_account' => $prospectDto->facebook_account,
+      'instagram_account' => $prospectDto->instagram_account,
+      'address' => $prospectDto->address,
+      'personal_info' => $prospectDto->personal_info,
+    ];
+    $prospect->update($prospectData);
+    unset($prospectData['name'], $prospectData['email']);
+    $additionalInfoIsNull = empty(array_filter($prospectData, function ($value) {
+      return $value !== null;
+    }));
+    if($prospectDto->state_id == null){
+      if ($custom_state !== null) {
+        $state_id = static::getOrCreateCustomStateId($custom_state);
+        $prospect->update(['state_id' => $state_id]);
+      } elseif ($prospect->state_id === 1 && !$additionalInfoIsNull) {
+        $prospect->update(['state_id' => 2]);
+      } elseif ($prospect->orders->count()) {
+        $prospect->update(['state_id' => 3]);
+      }
+      $prospect->update(['state_id' => 1]);
     }
-    if ($data['custom_state']) {
-
-      $state_id = static::getOrCreateCustomStateId($data['custom_state']);
-      unset($data['custom_state']);
-
-      $data['state_id'] = $state_id;
-    } else {
-      unset($data['custom_state']);
-    }
-
-    $prospect->update($data);
-
     return $prospect;
   }
 

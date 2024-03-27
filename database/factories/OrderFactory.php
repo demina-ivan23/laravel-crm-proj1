@@ -21,8 +21,8 @@ class OrderFactory extends Factory
         $customer = Prospect::find($customerId);
         return [
             'customer_id' => $customerId,
-            'customer_name' => $customer->name ?? $this->faker->name,
-            'customer_email' => $customer->email ?? $this->faker->email,
+            'customer_name' => $customer->name,
+            'customer_email' => $customer->email,
         ];
     }
 }

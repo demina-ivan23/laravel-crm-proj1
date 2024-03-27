@@ -1,7 +1,7 @@
 <?php
 namespace App\DTO\Prospects;
 
-class ProspectsСreationDTO
+class ProspectСreationDTO
 {
     public string $name;
     public string $email;
