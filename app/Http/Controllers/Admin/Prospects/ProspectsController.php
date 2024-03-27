@@ -79,7 +79,7 @@ class ProspectsController extends Controller
      */
     public function update(UpdateProspectRequest $request, string $id)
     {
-        $dtoClassName = '\App\DTO\Prospects\ProspectEditingReadingDTO';
+        $dtoClassName = '\App\DTO\Prospects\ProspectEditingDTO';
         $requestData = $request->all();
         $requestData['id'] = $id;
         $prospectDto = $this->dtoMapper->mapRequestToDTO($requestData, $dtoClassName);

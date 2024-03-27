@@ -3,7 +3,7 @@ namespace App\DTO\Prospects;
 
 // use App\DTO\Prospects\ProspectsCreationDTO;
 
-class ProspectEditingReadingDTO extends ProspectСreationDTO
+class ProspectEditingDTO extends ProspectСreationDTO
 {
     public int $id;
     public function __construct( 
