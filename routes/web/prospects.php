@@ -22,15 +22,6 @@ Route::put('/{prospect}/update', [ProspectsController::class, 'update'])->name('
 Route::delete('/{prospect}/delete', [ProspectsController::class, 'destroy'])->name('destroy')->where('prospect', '[0-9]+');
 
 
-// Contacts addition and managment routes
-
-Route::get('/{prospect}/contacts/create', [ProspectsContactController::class, 'create'])->name('contacts.create')->where('prospect', '[0-9]+');
-Route::get('/{prospect}/contacts/edit', [ProspectsContactController::class, 'edit'])->name('contacts.edit')->where('prospect', '[0-9]+');
-
-
-Route::post('/{prospect}/contacts/store', [ProspectsContactController::class, 'store'])->name('contacts.store');
-
- 
 
 
 

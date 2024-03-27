@@ -29,6 +29,12 @@
             </div>
           </div>
           {{$orders->appends(request()->except('page'))->links()}}
+  @else
+  <div class="row">
+    <div class="pt-4 d-flex flex-wrap justify-content-evenly">
+      <h4>This Prospect Has No Orders Yet</h4>
+    </div>
+  </div>
   @endif
 </div>
 @endsection

@@ -47,15 +47,8 @@
                     </button>
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="{{ route('admin.prospects.show', ['prospect' => $prospect])}}">View "{{$prospect->name}}"</a></li>
-                      @if ($prospect->phone_number === null)
-                          <li><a class="dropdown-item" href="{{route('admin.prospects.contacts.create', ['prospect' => $prospect])}}">Create Contacts For "{{$prospect->name}}"</a></li>
-                      @endif
-                      @if ($prospect->state_id === 1)
                       <li><a class="dropdown-item" href="{{ route('admin.prospects.edit', ['prospect' => $prospect])}}">Edit</a></li>
-                      @else
-                      <li><a class="dropdown-item" href="{{ route('admin.prospects.contacts.edit', ['prospect' => $prospect])}}">Edit</a></li>
-                      @endif
-                      <li><a class="dropdown-item" href="{{route('admin.orders.create', ['prospect' => $prospect])}}">Make An Order For "{{$prospect->name}}"</a></li>                      
+                      <li><a class="dropdown-item" href="{{route('admin.orders.create', ['prospect' => $prospect])}}">Make An Order For "{{$prospect->name}}"</a></li>
                       <li><a class="dropdown-item" href="{{route('admin.prospects.show-orders', ['prospect' => $prospect])}}">View Orders Of "{{$prospect->name}}"</a></li>
                       <li><form action="{{ route('admin.prospects.destroy', ['prospect' => $prospect]) }}" method="POST">
                         @csrf
