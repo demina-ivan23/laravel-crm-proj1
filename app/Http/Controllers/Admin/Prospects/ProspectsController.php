@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin\Prospects;
 
 use App\Models\Prospect;
+use App\Mappers\DTOMapper;
 use Illuminate\Http\Request;
 use App\Services\ProspectService;
 use App\Http\Controllers\Controller;
@@ -12,6 +13,12 @@ use App\Http\Requests\Prospects\UpdateProspectRequest;
 class ProspectsController extends Controller
 
 {
+    private $dtoMapper;
+
+    public function __construct()
+    {
+        $this->dtoMapper = new DTOMapper();
+    }
     /**
      * Display a listing of the resource.
      */
@@ -37,9 +44,10 @@ class ProspectsController extends Controller
      */
     public function store(StoreProspectRequest $request)
     { 
-        
-        $prospect = ProspectService::storeProspect($prospectDTO);
-        return redirect()->route('admin.prospects.contacts.create', ['prospect' => $prospect])->with('success', 'Prospect created successfully');
+        $dtoClassName = "\App\DTO\Prospects\ProspectsСreationDTO";
+        $prospectDto = $this->dtoMapper->mapRequestToDTO($request, $dtoClassName);
+        $prospect = ProspectService::storeProspect($prospectDto);
+        return redirect()->route('admin.prospects.dashboard', ['prospect' => $prospect])->with('success', 'Prospect created successfully');
     }
 
     /**

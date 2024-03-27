@@ -53,10 +53,6 @@
     </div>
     
     <div class="mb-3">
-        <label for="profileImage" class="form-label">Profile Image</label>
-        <input  class="form-control" type="file" name="profile_image" id="profile_image">
-    </div>
-    <div class="mb-3">
         <button class="btn btn-primary" type="button" name="toggle_lead_addition" id="toggle_lead_addition" @click="showLeadAddition = !showLeadAddition">@{{ showLeadAddition ? 'Minimize' : 'Add More Info'}}</button>
     </div>
 

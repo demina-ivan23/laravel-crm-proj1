@@ -22,7 +22,6 @@ class ProspectFactory extends Factory
             return [
             'name' => $this->faker->word,
             'email' => $this->faker->email,
-            'profile_image' => null,
             'state_id' => 1,
             ];
         }
@@ -31,7 +30,6 @@ class ProspectFactory extends Factory
             return [
                 'name' => $this->faker->word,
                 'email' => $this->faker->email,
-                'profile_image' => null,
                 'state_id' => 2,
                 'phone_number' => $this->faker->phoneNumber,
                 'facebook_account' => $this->faker->userName,
@@ -46,14 +44,12 @@ class ProspectFactory extends Factory
                 return [
                     'name' => $this->faker->word,
                     'email' => $this->faker->email,
-                    'profile_image' => null,
                     'state_id' => 3,
                 ];
             } else {
                 return [
                     'name' => $this->faker->word,
                     'email' => $this->faker->email,
-                    'profile_image' => null,
                     'state_id' => 3,
                     'phone_number' => $this->faker->phoneNumber,
                     'facebook_account' => $this->faker->userName,
