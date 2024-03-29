@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Prospects;
+namespace App\Http\Requests\Products;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreProspectContactRequest extends FormRequest
+class UpdateProductRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,12 +22,10 @@ class StoreProspectContactRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'phone_number' => 'required|max:225',
-            'facebook_account' => 'nullable|max:225',
-            'instagram_account' => 'nullable|max:225',
-            'address' => 'nullable|max:225',
-            'personal_info' => 'nullable',
-            'category' => 'unique:customer_states,title'
+            'title' => 'nullable',
+            'description' => 'nullable',
+            'price' => 'nullable|numeric|min:0|max:1000000',
+            'product_image' => 'nullable|mimes:img,jpg,jpeg,png|max:2000',
         ];
     }
 }

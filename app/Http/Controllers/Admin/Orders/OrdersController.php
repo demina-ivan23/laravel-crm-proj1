@@ -36,9 +36,8 @@ class OrdersController extends Controller
      */
     public function store($id, StoreOrderRequest $request)
     {
-        $prospect = ProspectService::getProspectById($id);
-       $order = OrderService::storeOrder($prospect, $request);
-       ProspectService::setStateToCustomer($id);
+        $prospect = ProspectService::findProspect($id);
+        $order = OrderService::storeOrder($prospect, $request->all());
         return redirect('/prospects/prospects');
     }
 
@@ -53,26 +52,14 @@ class OrdersController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
-    }
+    // public function destroy(string $id)
+    // {
+    //     $order = Order::find($id);
+    //     if($order){
+    //         $order->delete();
+    //     }
+    //     return redirect()->back()->with('success', 'Order trashed successfully');
+    // }
 }

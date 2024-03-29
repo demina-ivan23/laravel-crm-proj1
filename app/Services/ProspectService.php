@@ -9,12 +9,7 @@ class ProspectService
 {
   static function getAllProspects()
   {
-    $prospects = Prospect::latest()->get();
-    return $prospects;
-  }
-  static function getAllFilteredProspects()
-  {
-    $prospects = Prospect::latest()->filter()->paginate(10);
+    $prospects = Prospect::latest()->filter()->paginate(15);
     return $prospects;
   }
   static function getAllStates()
@@ -22,79 +17,73 @@ class ProspectService
     $states = CustomerState::all();
     return $states;
   }
-  static function getProspectById($id)
-  {
-    return Prospect::find($id);
-  }
-  static function storeProspect($prospectDto, $custom_state = null)
+  static function storeProspect($data)
   {
     $prospectData = [
-      'name' => $prospectDto->name,
-      'email' => $prospectDto->email,
-      'phone_number' => $prospectDto->phone_number,
-      'facebook_account' => $prospectDto->facebook_account,
-      'instagram_account' => $prospectDto->instagram_account,
-      'address' => $prospectDto->address,
-      'personal_info' => $prospectDto->personal_info,
-      'state_id' => $prospectDto->state_id,
+      'name' => $data['name'],
+      'email' => $data['email'],
+      'phone_number' => $data['phone_number'] ?? null ,
+      'facebook_account' => $data['facebook_account'] ?? null,
+      'instagram_account' => $data['instagram_account'] ?? null,
+      'address' => $data['adress'] ?? null,
+      'personal_info' => $data['personal_info'] ?? null,
     ];
     $prospect = Prospect::create($prospectData);
     unset($prospectData['name'], $prospectData['email']);
     $additionalInfoIsNull = empty(array_filter($prospectData, function ($value) {
       return $value !== null;
     }));
-    if ($prospectDto->state_id == null) {
+    $custom_state = $data['custom_state'] ?? null;
       if ($custom_state) {
         $state_id = static::getOrCreateCustomStateId($custom_state);
       } else {
         $state_id = $additionalInfoIsNull ? 1 : 2;
       }
       $prospect->update(['state_id' => $state_id]);
-    }
     return $prospect;
   }
   static function deleteProspect($prospect)
   {
     $prospect->delete();
   }
-  static function updateProspect($prospectDto, $custom_state = null)
+  static function updateProspect($data)
   {
-    $prospect = static::getProspectById($prospectDto->id);
-
+    $prospect = static::findProspect($data['prospect_id']);
     if (!$prospect) {
       return null;
     }
     $prospectData = [
-      'name' => $prospectDto->name,
-      'email' => $prospectDto->email,
-      'phone_number' => $prospectDto->phone_number,
-      'facebook_account' => $prospectDto->facebook_account,
-      'instagram_account' => $prospectDto->instagram_account,
-      'address' => $prospectDto->address,
-      'personal_info' => $prospectDto->personal_info,
+      'name' => $data['name'] ?? null,
+      'email' => $data['email'] ?? null,
+      'phone_number' => $data['phone_number'] ?? null ,
+      'facebook_account' => $data['facebook_account'] ?? null,
+      'instagram_account' => $data['instagram_account'] ?? null,
+      'address' => $data['adress'] ?? null,
+      'personal_info' => $data['personal_info'] ?? null,
     ];
-    $prospect->update($prospectData);
-    unset($prospectData['name'], $prospectData['email']);
-    $additionalInfoIsNull = empty(array_filter($prospectData, function ($value) {
+    $arrayForUpdate = array_filter($prospectData, function ($value) {
       return $value !== null;
-    }));
-    if($prospectDto->state_id == null){
+    });
+    $prospect->update($arrayForUpdate);
+    unset($arrayForUpdate['name'], $arrayForUpdate['email']);
+    $additionalInfoIsNull = empty($arrayForUpdate);
+    $custom_state = $data['custom_state'] ?? null;
+    $state_id = 1;
       if ($custom_state !== null) {
         $state_id = static::getOrCreateCustomStateId($custom_state);
-        $prospect->update(['state_id' => $state_id]);
       } elseif ($prospect->state_id === 1 && !$additionalInfoIsNull) {
-        $prospect->update(['state_id' => 2]);
+        $state_id = 2;
       } elseif ($prospect->orders->count()) {
-        $prospect->update(['state_id' => 3]);
+        $state_id = 3;
       }
-      $prospect->update(['state_id' => 1]);
-    }
+      $prospect->update(['state_id' => $state_id]);
+    
     return $prospect;
   }
 
   static function setStateToLead($id)
   {
-    $prospect = static::getProspectById($id);
+    $prospect = static::findProspect($id);
     $state_id = 2;
     if ($prospect->state_id === null || $prospect->state_id === 1) {
       $prospect->update(['state_id' => $state_id]);
@@ -104,7 +93,7 @@ class ProspectService
 
   static function setStateToCustomer($id)
   {
-    $prospect = static::getProspectById($id);
+    $prospect = static::findProspect($id);
     $state_id = 3;
     if ($prospect->state_id === null || $prospect->state_id === 1 || $prospect->state_id === 2) {
       $prospect->update(['state_id' => $state_id]);
@@ -134,11 +123,11 @@ class ProspectService
     }
   }
 
-  static function storeProspectContact($id, $request)
+  static function storeProspectContact($id, $data)
   {
-    $prospect = static::getProspectById($id);
-    $data = $request->all();
-    $data = $request->all();
+    $prospect = static::findProspect($id);
+    $data = $data->all();
+    $data = $data->all();
     if ($data['custom_state']) {
       $state_id = static::getOrCreateCustomStateId($data['custom_state']);
       unset($data['custom_state']);

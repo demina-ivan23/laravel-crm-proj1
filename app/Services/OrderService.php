@@ -10,18 +10,15 @@ use App\Services\ProspectService;
 
 class OrderService
 {
-  static function storeOrder($prospect, $request)
+  static function storeOrder($prospect, $data)
   {
-
-    $customerName = $prospect->name;
-    $customerEmail = $prospect->email;
     $order = Order::create([
       'customer_id' => $prospect->id,
-      'customer_name' => $customerName,
-      'customer_email' => $customerEmail
+      'customer_name' =>  $prospect->email,
+      'customer_email' => $prospect->email
     ]);
 
-    $selectedProducts = $request['selected_products'];
+    $selectedProducts = $data['selected_products'];
 
     foreach ($selectedProducts as $product) {
       $product_obj = ProductService::getProductById($product);
@@ -31,12 +28,23 @@ class OrderService
         throw new Exception('not_exist ' . $product);
       }
     }
+    $prospect->update(['state_id' => 3]);
     return $order;
+
   }
 
   static function getAllOrders()
   {
     $orders = Order::latest()->filter()->paginate(10);
     return $orders;
+  }
+  static function findOrder($id)
+  {
+    $order = Order::find($id);
+    if(!$order)
+    {
+      abort(404);
+    }
+    return $order;
   }
 }

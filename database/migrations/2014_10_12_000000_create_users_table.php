@@ -18,7 +18,7 @@ return new class extends Migration
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('api_key')->unique();
-            $table->boolean('access_granted')->default(false);
+            $table->enum('api_access_level', ['NO_ACCESS','READ_ONLY', 'READ_WRITE', 'FULL_ACCESS'])->default('NO_ACCESS');
             $table->rememberToken();
             $table->timestamps();
         });

@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers\Admin\Products;
 
-use Illuminate\Http\Request;
+
 use App\Services\ProductService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Products\StoreProductRequest;
+use App\Http\Requests\Products\UpdateProductRequest;
 
 
 class ProductsController extends Controller
@@ -30,7 +31,7 @@ class ProductsController extends Controller
   
     public function store(StoreProductRequest $request)
     {
-        $product = ProductService::storeProduct($request);
+        $product = ProductService::storeProduct($request->all());
         return redirect('/products/products')->with('success', 'Product created successfully');
     }
 
@@ -56,27 +57,30 @@ class ProductsController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(UpdateProductRequest $request, string $id)
     {
-        $product = ProductService::updateProduct($request, $id);
+        $data = $request->all();
+        $data['product_id'] = $id;
+        $product = ProductService::updateProduct($data);
         if($product){
-
             return redirect('/products/products')->with('success', 'Product updated successfully');
+        } else {
+            return redirect('/products/products')->with('erorr', 'Something went wrong'); 
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $product = ProductService::getProductById($id);
+    // public function destroy(string $id)
+    // {
+    //     $product = ProductService::getProductById($id);
 
-        if(!$product){
-            return response()->json(['message' => 'Product not found'], 404);
-        }
+    //     if(!$product){
+    //         abort(404);
+    //     }
 
-        ProductService::deleteProduct($product);
-        return redirect('/products/products');
-    }
+    //     ProductService::deleteProduct($product);
+    //     return redirect('/products/products');
+    // }
 }

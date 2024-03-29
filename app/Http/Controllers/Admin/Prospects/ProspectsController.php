@@ -13,19 +13,14 @@ use App\Http\Requests\Prospects\UpdateProspectRequest;
 class ProspectsController extends Controller
 
 {
-    private $dtoMapper;
-
-    public function __construct()
-    {
-        $this->dtoMapper = new DTOMapper();
-    }
+  
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
         $states = ProspectService::getAllStates();
-        $prospects = ProspectService::getAllFilteredProspects();
+        $prospects = ProspectService::getAllProspects();
         return view(
             'admin.prospects.index',
             [
@@ -48,11 +43,7 @@ class ProspectsController extends Controller
      */
     public function store(StoreProspectRequest $request)
     {
-        $dtoClassName = "\App\DTO\Prospects\ProspectСreationDTO";
-        $requestData = $request->all();
-        $prospectDto = $this->dtoMapper->mapRequestToDTO($requestData, $dtoClassName);
-        $custom_state = $requestData['custom_state'] != '' ? $requestData['custom_state'] : null; 
-        $prospect = ProspectService::storeProspect($prospectDto, $custom_state);
+        $prospect = ProspectService::storeProspect($request->all());
         return redirect()->route('admin.prospects.dashboard', ['prospect' => $prospect])->with('success', 'Prospect created successfully');
     }
 
@@ -61,7 +52,7 @@ class ProspectsController extends Controller
      */
     public function show($id)
     {
-        $prospect = ProspectService::getProspectById($id);
+        $prospect = ProspectService::findProspect($id);
         return view('admin.prospects.show', ['prospect' => $prospect]);
     }
 
@@ -70,7 +61,7 @@ class ProspectsController extends Controller
      */
     public function edit($id)
     {
-        $prospect = ProspectService::getProspectById($id);
+        $prospect = ProspectService::findProspect($id);
         return view('admin.prospects.edit', ['prospect' => $prospect]);
     }
 
@@ -79,30 +70,29 @@ class ProspectsController extends Controller
      */
     public function update(UpdateProspectRequest $request, string $id)
     {
-        $dtoClassName = '\App\DTO\Prospects\ProspectEditingDTO';
-        $requestData = $request->all();
-        $requestData['id'] = $id;
-        $prospectDto = $this->dtoMapper->mapRequestToDTO($requestData, $dtoClassName);
-        // dd($prospectDto);
-        $custom_state = array_key_exists('custom_state', $requestData) ? $requestData['custom_state'] : null; 
-        $prospect = ProspectService::updateProspect($prospectDto, $custom_state);
+        $data = $request->all();
+        $data['prospect_id'] = $id;
+        $prospect = ProspectService::updateProspect($data);
         if ($prospect) {
             return redirect('/prospects/prospects')->with('success', 'Prospect "' . $prospect->name . '" updated successfully');
+        } else {
+            return redirect('/prospects/prospects')->with('error', 'Sorry, something went wrong');
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        $prospect = ProspectService::getProspectById($id);
+    // public function destroy(string $id)
+    // {
+    //     $prospect = ProspectService::getProspectById($id);
 
-        if (!$prospect) {
-            return response()->json(['message' => 'Prospect not found'], 404);
-        }
+    //     if (!$prospect) {
+    //         return response()->json(['message' => 'Prospect not found'], 404);
+    //     }
 
-        ProspectService::deleteProspect($prospect);
-        return redirect('/prospects/prospects');
-    }
+    //     ProspectService::deleteProspect($prospect);
+    //     return redirect('/prospects/prospects');
+    // }
+    // No prospect deletions are available because prospects are stored in the CRM forever (usually).
 }
