@@ -3,7 +3,9 @@
 namespace App\Services;
 
 use App\Models\Product;
+use Illuminate\Support\Str;
 use App\Models\ProductCategory;
+use Illuminate\Support\Facades\Storage;
 
 class ProductService
 {
@@ -28,7 +30,21 @@ class ProductService
         ]);
         $product_image = $data['product_image'] ?? null;
         if ($product_image) {
-            //
+            $filename = Str::random(20);
+            if(gettype($product_image) === "string"){
+            $product_image = file_get_contents($product_image);
+             } 
+            //  dd($product_image);
+             if(gettype($product_image) === "object"){
+                // dd($product_image);
+            $product_image = file_get_contents($product_image->path());   
+             }
+            $pathname = str_replace(['\\', '/'], DIRECTORY_SEPARATOR, 'public/products/images/' . $filename);
+            $success = Storage::disk('local')->put($pathname, $product_image);
+            if(!$success){
+                abort(500);
+               }
+            $product->update(['product_image' => $pathname]);
         }
         $category = $data['category'] ?? null;
         if ($category) {
