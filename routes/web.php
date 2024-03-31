@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GraphController;
+use App\Http\Controllers\Superadmin\SuperadminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +24,17 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
+//Superadmin routes (superadmins manage CRM users and their data)
+Route::prefix('superadmin')->group(function () {
+    Route::middleware('superadmin')->group(function () {
+        Route::resource('users', UserController::class)->except('show');
+        Route::resource('superadmin', SuperadminController::class)->except(['create', 'store', 'destroy']);     
+    });
+    Route::get('users/show/{id}', [UserController::class, 'show'])->middleware('auth')->name('users.show');
+});
+
+
+//Admin routes (anyone who can access the CRM is considered an admin) 
 Route::prefix('prospects')->middleware('auth')->name('admin.prospects.')->group(base_path('routes/web/prospects.php'));
 
 Route::prefix('products')->middleware('auth')->name('admin.products.')->group(base_path('routes/web/products.php'));
