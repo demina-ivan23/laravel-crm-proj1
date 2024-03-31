@@ -25,12 +25,12 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 //Superadmin routes (superadmins manage CRM users and their data)
-Route::prefix('superadmin')->group(function () {
+Route::prefix('superadmin')->middleware('auth')->group(function () {
     Route::middleware('superadmin')->group(function () {
         Route::resource('users', UserController::class)->except('show');
         Route::resource('superadmin', SuperadminController::class)->except(['create', 'store', 'destroy']);     
     });
-    Route::get('users/show/{id}', [UserController::class, 'show'])->middleware('auth')->name('users.show');
+    Route::get('users/show/{id}', [UserController::class, 'show'])->name('users.show');
 });
 
 
