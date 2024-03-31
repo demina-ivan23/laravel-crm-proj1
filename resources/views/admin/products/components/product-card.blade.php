@@ -1,8 +1,7 @@
 <div class="card" style="width: 15rem; margin:5px">
     @if ($product->product_image)
-    <img src="/public\storage\products\images\a4H4Eez8GQRXRoPNzm1q" alt="" >     
 
-    <img src="{{ asset(''. str_replace('public', 'public/storage', str_replace(DIRECTORY_SEPARATOR, '/' , $product->product_image)))}}" alt="" >     
+    <img src="{{ asset('storage/'. $product->product_image)}}" alt="" >     
     @else
     <img src="/products/icons/box.png" alt="">
     @endif

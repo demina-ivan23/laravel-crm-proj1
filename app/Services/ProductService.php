@@ -44,7 +44,7 @@ class ProductService
             if(!$success){
                 abort(500);
                }
-            $product->update(['product_image' => $pathname]);
+            $product->update(['product_image' => 'products/images/' . $filename]);
         }
         $category = $data['category'] ?? null;
         if ($category) {
