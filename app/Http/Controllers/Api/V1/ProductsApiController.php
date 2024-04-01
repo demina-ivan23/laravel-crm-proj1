@@ -52,7 +52,7 @@ class ProductsApiController extends Controller
         $data['product_id'] = $id;
         $product = ProductService::updateProduct($data);
         if($product){
-            return response()->json(['result' => 'Product created successfully', 'product' => $product]);
+            return response()->json(['result' => 'Product updated successfully', 'product' => $product]);
         } else {
             return response()->json(['result' => 'Something went wrong']);
         }

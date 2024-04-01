@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Exception;
 use App\Models\Product;
 use Illuminate\Support\Str;
 use App\Models\ProductCategory;
@@ -29,23 +30,8 @@ class ProductService
             'price' => $data['price']
         ]);
         $product_image = $data['product_image'] ?? null;
-        if ($product_image) {
-            $filename = Str::random(20);
-            if(gettype($product_image) === "string"){
-            $product_image = file_get_contents($product_image);
-             } 
-            //  dd($product_image);
-             if(gettype($product_image) === "object"){
-                // dd($product_image);
-            $product_image = file_get_contents($product_image->path());   
-             }
-            $pathname = str_replace(['\\', '/'], DIRECTORY_SEPARATOR, 'public/products/images/' . $filename);
-            $success = Storage::disk('local')->put($pathname, $product_image);
-            if(!$success){
-                abort(500);
-               }
-            $product->update(['product_image' => 'products/images/' . $filename]);
-        }
+        $success = static::setProductImage($product_image, $product);
+        $success ? '' : abort(500); 
         $category = $data['category'] ?? null;
         if ($category) {
             $category_id = static::getOrCreateCategoryId($data['category']);
@@ -68,11 +54,6 @@ class ProductService
         if (!$product) {
             return null;
         }
-        $product_image = $data['product_image'] ?? null;
-        if ($product_image) {
-            // $path = $request->product_image->store('public/products/images');
-            // $data['product_image'] = $path;
-        }
         $category = $data['category'] ?? null;
         if ($category) {
             $category_id = static::getOrCreateCategoryId($data['category']);
@@ -81,7 +62,9 @@ class ProductService
         }
         unset($data['product_id']);
         $product->update($data);
-
+        $product_image = $data['product_image'] ?? null;
+        $success = static::setProductImage($product_image, $product);
+        $success ? true : abort(500); 
         return $product;
     }
 
@@ -102,6 +85,31 @@ class ProductService
 
 
         return $categoryObj->id;
+    }
+    static function setProductImage($product_image, Product $product)
+    {
+        try {
+            if ($product_image) {
+                $filename = Str::random(20);
+            if(gettype($product_image) === "string"){
+                $product_image = file_get_contents($product_image);
+            } 
+            //  dd($product_image);
+            if(gettype($product_image) === "object"){
+                // dd($product_image);
+                $product_image = file_get_contents($product_image->path());   
+            }
+            $pathname = str_replace(['\\', '/'], DIRECTORY_SEPARATOR, 'public/products/images/' . $filename);
+            $success = Storage::disk('local')->put($pathname, $product_image);
+            if(!$success){
+                abort(500);
+            }
+            $product->update(['product_image' => 'products/images/' . $filename]);
+        }
+        return true;
+       } catch(Exception $e) {
+        return false;
+       }
     }
     static function findProduct($id)
     {
