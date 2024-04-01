@@ -33,10 +33,7 @@ class ProductService
         $success = static::setProductImage($product_image, $product);
         $success ? '' : abort(500); 
         $category = $data['category'] ?? null;
-        if ($category) {
-            $category_id = static::getOrCreateCategoryId($data['category']);
-            $product->update(['category_id' => $category_id]);
-        }
+        static::setCategory($category, $data['custom_category'] ?? null, $product);
         return $product;
     }
 
@@ -55,12 +52,11 @@ class ProductService
             return null;
         }
         $category = $data['category'] ?? null;
-        if ($category) {
-            $category_id = static::getOrCreateCategoryId($data['category']);
-            unset($data['category']);
-            $product->update(['category_id' => $category_id]);
+        static::setCategory($category, $data['custom_category'] ?? null, $product);
+        unset($data['category'], $data['product_id']);
+        if(array_key_exists('custom_category', $data)){
+            unset($data['custom_category']);
         }
-        unset($data['product_id']);
         $product->update($data);
         $product_image = $data['product_image'] ?? null;
         $success = static::setProductImage($product_image, $product);
@@ -110,6 +106,22 @@ class ProductService
        } catch(Exception $e) {
         return false;
        }
+    }
+    static function setCategory(?string $category, ?string $custom_category, Product $product)
+    {
+        if($category)
+        {
+            if($category == 'custom')
+            {
+                $category = null;
+                $category_id = $custom_category ? static::getOrCreateCategoryId($custom_category) : null;
+            } else {
+                $category_id = static::getOrCreateCategoryId($category);
+            }
+            $product->update(['category_id' => $category_id]);
+            return true;
+        }
+        $product->update(['category_id' => null ]);
     }
     static function findProduct($id)
     {

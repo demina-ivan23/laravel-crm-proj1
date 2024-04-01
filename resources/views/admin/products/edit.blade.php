@@ -61,7 +61,34 @@
     </div>
     <div class="mb-3">
         <label for="category" class="form-label">Category</label>
-        <input class="form-control" type="text" name="category" id="category" placeholder="Product's category..." value="{{$product->category}}">
+        @php
+            $categories = App\Models\ProductCategory::all();
+            if($product->category){
+                unset($categories[$product->category]);
+            }
+        @endphp
+        <div class="dropdown">
+            <select class="form-control" name="category" id="category_select" @change="handleCategoryChange()">
+                @if ($product->category && $product->category != 'none')
+                <option value="{{$product->category}}">{{$product->category}}</option>
+                <option value="{{null}}">none</option>
+                @else
+                <option value="{{null}}">none</option>
+                @endif
+
+                @if ($categories->count())
+                @foreach ($categories as $category)
+                <option value="{{$category->title}}">{{$category->title}}</option>
+                @endforeach
+                @endif
+                <option value="custom">Custom Category</option>
+            </select>
+        </div>
+    </div>
+    <div class="mb-3">
+        <div v-if="showCustomCategoryInput">
+            <input type="text" class="form-control" id="custom_category" name="custom_category" placeholder="Enter custom category">
+        </div>
     </div>
 
         <button class="btn btn-primary float-end mb-2" type="submit">

@@ -17,10 +17,19 @@ const app = createApp({
     data() {
         return {
             showLeadAddition: false,
+            showCustomCategoryInput: false,
         };
     }, 
     methods: {
-
+       async handleCategoryChange() {
+        let val = document.getElementById('category_select').value;
+            console.log(val);
+            if (val === 'custom') {
+                this.showCustomCategoryInput = true;
+            } else {
+                this.showCustomCategoryInput = false;
+            }
+        },
     },
 });
 
