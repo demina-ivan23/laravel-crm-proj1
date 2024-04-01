@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\CustomerState;
+use App\Models\ProspectState;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
@@ -13,13 +13,13 @@ class StateSeeder extends Seeder
      */
     public function run(): void
     {
-        CustomerState::create([
+        ProspectState::create([
             'id' => 1, 'title' => 'prospect'
         ]);
-        CustomerState::create([
+        ProspectState::create([
             'id' => 2, 'title' => 'lead'
         ]);
-        CustomerState::create([
+        ProspectState::create([
             'id' => 3, 'title' => 'customer'
         ]);
     }

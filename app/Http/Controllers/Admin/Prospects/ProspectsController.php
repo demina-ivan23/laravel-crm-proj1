@@ -83,16 +83,10 @@ class ProspectsController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    // public function destroy(string $id)
-    // {
-    //     $prospect = ProspectService::getProspectById($id);
-
-    //     if (!$prospect) {
-    //         return response()->json(['message' => 'Prospect not found'], 404);
-    //     }
-
-    //     ProspectService::deleteProspect($prospect);
-    //     return redirect('/prospects/prospects');
-    // }
-    // No prospect deletions are available because prospects are stored in the CRM forever (usually).
+    public function destroy(string $id)
+    {
+        $prospect = ProspectService::findProspect($id);
+        ProspectService::deleteProspect($prospect);
+        return redirect('/prospects/prospects')->with('success', 'Prospect Deleted Successfully');
+    }
 }

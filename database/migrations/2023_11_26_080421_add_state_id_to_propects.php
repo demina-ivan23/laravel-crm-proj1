@@ -16,7 +16,7 @@ return new class extends Migration
     $table->index('state_id');
 
     $table->foreign('state_id')
-        ->references('id')->on('customer_states')
+        ->references('id')->on('prospect_states')
         ->onDelete('SET NULL')->nullable();
         });
     }

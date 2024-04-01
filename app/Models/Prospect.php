@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Models\CustomerState;
+use App\Models\ProspectState;
 use App\Services\ProspectService;
 use PhpParser\Builder\FunctionLike;
 use Illuminate\Database\Eloquent\Model;
@@ -34,7 +34,7 @@ class Prospect extends Model
 
     public function state()
     {
-      return $this->belongsTo(CustomerState::class);
+      return $this->belongsTo(ProspectState::class);
     }
 
     public function scopeFilter($query)

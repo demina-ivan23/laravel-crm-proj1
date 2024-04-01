@@ -64,7 +64,7 @@
         @php
             $categories = App\Models\ProductCategory::all();
             if($product->category){
-                unset($categories[$product->category]);
+                $categories = App\Models\ProductCategory::where('title', '!=', $product->category)->get();
             }
         @endphp
         <div class="dropdown">

@@ -18,18 +18,26 @@ const app = createApp({
         return {
             showLeadAddition: false,
             showCustomCategoryInput: false,
+            showCustomProspectStateInput: false
         };
     }, 
     methods: {
        async handleCategoryChange() {
         let val = document.getElementById('category_select').value;
-            console.log(val);
             if (val === 'custom') {
                 this.showCustomCategoryInput = true;
             } else {
                 this.showCustomCategoryInput = false;
             }
         },
+        async handleProspectStateChange() {
+            let val = document.getElementById('prospect_state_select').value;
+                if (val === 'custom') {
+                    this.showCustomProspectStateInput = true;
+                } else {
+                    this.showCustomProspectStateInput = false;
+                }
+            },
     },
 });
 

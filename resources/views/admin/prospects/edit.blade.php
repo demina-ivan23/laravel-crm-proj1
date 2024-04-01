@@ -84,8 +84,27 @@
         <input class="form-control" type="text" name="personal_info" id="personal_info" placeholder="Some additional info..." value="{{$prospect->personal_info}}">
     </div>
     <div class="mb-3">
-        <label for="custom_state" class="form-label">Custom state</label>
-        <input class="form-control" type="text" name="custom_state" id="custom_state" placeholder="Create a custom state...">
+        <label for="custom_state" class="form-label">Prospect state</label>
+        @php
+            $prospect_states = App\Models\ProspectState::where('title', '!=', $prospect->state->title)->get();
+        @endphp
+        <div class="dropdown">
+            <select class="form-control" name="prospect_state" id="prospect_state_select" @change="handleProspectStateChange()">
+                <option value="{{$prospect->state->title}}">{{$prospect->state->title}}</option>
+                <option value="{{null}}">auto</option>
+                @if ($prospect_states->count())
+                @foreach ($prospect_states as $state)
+                <option value="{{$state->title}}">{{$state->title}}</option>
+                @endforeach
+                @endif
+                <option value="custom">Custom state</option>
+            </select>
+        </div>
+    </div>
+    <div class="mb-3">
+        <div v-if="showCustomProspectStateInput">
+            <input type="text" class="form-control" id="custom_prospect_state" name="custom_prospect_state" placeholder="Enter custom prospect state">
+        </div>
     </div>
 
         <button class="btn btn-primary float-end mb-2" type="submit">
@@ -93,9 +112,6 @@
         </button>
 
     </div>
-</div>
-
-</div>
 </form>
 
 
