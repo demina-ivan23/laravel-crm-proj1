@@ -13,17 +13,17 @@ import { createApp } from 'vue';
  * to use in your application's views. An example is included for you.
  */
 
-const app = createApp({
+ const app = createApp({
     data() {
         return {
             showLeadAddition: false,
             showCustomCategoryInput: false,
             showCustomProspectStateInput: false
         };
-    }, 
+    },
     methods: {
-       async handleCategoryChange() {
-        let val = document.getElementById('category_select').value;
+        async handleCategoryChange() {
+            let val = document.getElementById('category_select').value;
             if (val === 'custom') {
                 this.showCustomCategoryInput = true;
             } else {
@@ -32,13 +32,63 @@ const app = createApp({
         },
         async handleProspectStateChange() {
             let val = document.getElementById('prospect_state_select').value;
-                if (val === 'custom') {
-                    this.showCustomProspectStateInput = true;
-                } else {
-                    this.showCustomProspectStateInput = false;
+            if (val === 'custom') {
+                this.showCustomProspectStateInput = true;
+            } else {
+                this.showCustomProspectStateInput = false;
+            }
+        },
+        async applyFilters() {
+            var selectedFilters = {};
+            var checkboxes = document.querySelectorAll('.filter-checkbox:checked');
+            checkboxes.forEach(function (checkbox) {
+                var filterName = checkbox.getAttribute('name');
+                var filterValue = checkbox.value;
+                if (!selectedFilters.hasOwnProperty(filterName)) {
+                    selectedFilters[filterName] = [];
                 }
-            },
+                selectedFilters[filterName].push(filterValue);
+            });
+
+            var currentUrl = window.location.href.split('?')[0];
+            var queryParams = [];
+            for (var key in selectedFilters) {
+                queryParams.push(key + '=' + selectedFilters[key].join(',')); 
+            }
+            var newUrl = currentUrl + '?' + queryParams.join('&');
+
+            window.location.href = newUrl;
+
+            localStorage.clear();
+            checkboxes.forEach(function (checkbox) {
+                    if (checkbox.checked) {
+                        localStorage.setItem(checkbox.value, true);
+                    } else {
+                        localStorage.removeItem(checkbox.value); // Remove state from localStorage if unchecked
+                    }
+            });
+        },
+        async addListenersToFilterCheckboxes() {
+            var checkboxes = document.querySelectorAll('.filter-checkbox');
+
+            checkboxes.forEach(function (checkbox) {
+                var isChecked = localStorage.getItem(checkbox.value);
+                if (isChecked === 'true') {
+                    console.log(checkbox);
+                    checkbox.checked = true;
+                } else {
+                    checkbox.checked = false;
+                }
+            });
+
+            checkboxes.forEach((checkbox) => {
+                checkbox.addEventListener('change', this.applyFilters);
+            });
+        }
     },
+    mounted() {
+        this.addListenersToFilterCheckboxes();
+    }
 });
 
 import ExampleComponent from './components/ExampleComponent.vue';
