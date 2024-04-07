@@ -13,7 +13,8 @@ class SuperadminController extends Controller
     //superadmins can view and edit ther profile, can access dashboard
     public function index()
     {
-        return view('superadmin.index');
+        $data = SuperadminService::getDashboardData(request()->query());
+        return view('superadmin.index', ['data' => $data]);
     }
 
     public function show(string $id)

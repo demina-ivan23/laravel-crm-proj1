@@ -8,4 +8,8 @@ class SuperadminService {
     {
         
     }
+    static function getDashboardData($data)
+    {
+        
+    }
 }

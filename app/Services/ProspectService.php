@@ -2,8 +2,9 @@
 
 namespace App\Services;
 
-use App\Models\ProspectState;
 use App\Models\Prospect;
+use App\Models\ProspectState;
+use App\Models\ProspectStateTransitionTracking;
 
 class ProspectService
 {
@@ -38,6 +39,7 @@ class ProspectService
     $custom_state = $data['custom_prospect_state'] ?? null;
     $state = $data['prospect_state'] ?? null;
     static::setCustomProspectState($state, $custom_state, $prospect);
+    static::createStateTransitionObject($prospect);
     return $prospect;
   }
   static function deleteProspect($prospect)
@@ -77,6 +79,7 @@ class ProspectService
     $custom_state = $data['custom_prospect_state'] ?? null;
     $state = $data['prospect_state'] ?? null;
     static::setCustomProspectState($state, $custom_state, $prospect);
+    static::createStateTransitionObject($prospect);
     return $prospect;
   }
   
@@ -140,5 +143,12 @@ class ProspectService
       abort(404);
     }
     return $prospect;
+  }
+  static function createStateTransitionObject($prospect)
+ {
+    $prospect_state_transition = ProspectStateTransitionTracking::create([
+      'prospect_id' => $prospect->id,
+      'state_id' => $prospect->state_id
+    ]);
   }
 }

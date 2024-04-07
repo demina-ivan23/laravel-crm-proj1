@@ -36,7 +36,10 @@ class Prospect extends Model
     {
       return $this->belongsTo(ProspectState::class);
     }
-
+    public function state_transition()
+    {
+      return $this->hasMany(ProspectTransitionTracking::class, 'prospect_id');
+    }
     public function scopeFilter($query)
     { 
       if(request('search')){
