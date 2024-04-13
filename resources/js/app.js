@@ -6,6 +6,8 @@
 
 import './bootstrap';
 import { createApp } from 'vue';
+import {Chart} from "chart.js/auto";
+
 
 /**
  * Next, we will create a fresh Vue application instance. You may then begin
@@ -84,10 +86,98 @@ import { createApp } from 'vue';
             checkboxes.forEach((checkbox) => {
                 checkbox.addEventListener('change', this.applyFilters);
             });
+        },
+        getDaysBetweenDates(startDateString, endDateString)
+        {
+                const days = [];
+                let currentDate = new Date(startDateString);
+                let endDate = new Date(endDateString);
+                while (currentDate <= endDate) {
+                    days.push(new Date(currentDate).getDate());
+                    currentDate.setDate(currentDate.getDate() + 1);
+                }
+            
+                return days;
+        },
+        drawSuperadminOrderCharts()
+        {
+            const queryVars = this.getQueryVars();
+            let orderProductDays = [];
+            console.log(queryVars['order_product_chart_from'], queryVars['order_product_chart_to']);
+            if(queryVars['order_product_chart_to'] != null && queryVars['order_product_chart_from'] != null){
+                orderProductDays = this.getDaysBetweenDates(queryVars['order_product_chart_from'], queryVars['order_product_chart_to']);
+                this.drawSuperadminProductOrderChart(orderProductDays, document.getElementById('order_product_data').value ?? []);
+            }
+            
+
+        },
+        getQueryVars()
+        {
+            const queryString = window.location.search.substring(1);
+            const params = new URLSearchParams(queryString);
+            const queryVars = {};
+        
+            for (const [key, value] of params.entries()) {
+                queryVars[key] = value;
+            }
+        
+            return queryVars;
+        },
+        rand(min, max) {
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        },
+         drawSuperadminProductOrderChart(days, jsonedProducts){
+            console.log(jsonedProducts);
+            const productsArray = JSON.parse(jsonedProducts);
+            const daysCount = days.length;
+            console.log(daysCount);
+            if(daysCount == 0){
+                return;
+            }
+            const labels = days;
+            const datasets = [];
+            for (let productArray of productsArray) {
+                datasets.push({
+                    label: productArray['category'],
+                    data: productArray['products'],
+                    backgroundColor: `rgba(${this.rand(10, 100)}, ${this.rand(20, 200)}, ${this.rand(20, 200)}, 0.6)`,
+                });
+            }
+            const data = {
+                labels: labels,
+                datasets: datasets
+            };
+                const config = {
+                    type: 'bar',
+                    data: data,
+                    options: {
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: 'Product-related Chart'
+                            },
+                        },
+                        responsive: true,
+                        scales: {
+                            x: {
+                                stacked: true,
+                            },
+                            y: {
+                                stacked: true
+                            }
+                        }
+                    }
+                };
+            
+                
+            
+                const productOrderCanvas = document.getElementById('productOrderChartCanvas');
+                const productOrderChart = new Chart(productOrderCanvas, config);
         }
     },
     mounted() {
         this.addListenersToFilterCheckboxes();
+        this.drawSuperadminOrderCharts();
     }
 });
 
