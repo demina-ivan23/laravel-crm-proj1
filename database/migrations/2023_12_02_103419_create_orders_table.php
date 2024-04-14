@@ -24,6 +24,10 @@ return new class extends Migration
             $table->foreign('customer_id')
                 ->references('id')->on('prospects')
                 ->onDelete('CASCADE');
+            $table->index('order_status');
+            $table->foreign('order_status')
+                ->references('id')->on('order_status')
+                ->onDelete('CASCADE');
         });
     }
 
