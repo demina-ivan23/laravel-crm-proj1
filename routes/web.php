@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GraphController;
+use App\Http\Controllers\Superadmin\UserController;
 use App\Http\Controllers\Superadmin\SuperadminController;
 
 /*
@@ -28,7 +29,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::prefix('superadmin')->middleware('auth')->group(function () {
     Route::middleware('superadmin')->group(function () {
         Route::resource('users', UserController::class)->except('show');
-        Route::resource('superadmin', SuperadminController::class)->except(['create', 'store', 'destroy']);     
+        Route::get('/superadmin/order_product_chart', [SuperadminController::class, 'index'])->name('superadmin.order_product_chart');     
+        Route::resource('superadmin', SuperadminController::class)->except(['create', 'store', 'destroy']);
     });
     Route::get('users/show/{id}', [UserController::class, 'show'])->name('users.show');
 });

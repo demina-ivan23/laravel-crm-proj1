@@ -103,10 +103,13 @@ import {Chart} from "chart.js/auto";
         {
             const queryVars = this.getQueryVars();
             let orderProductDays = [];
-            console.log(queryVars['order_product_chart_from'], queryVars['order_product_chart_to']);
             if(queryVars['order_product_chart_to'] != null && queryVars['order_product_chart_from'] != null){
                 orderProductDays = this.getDaysBetweenDates(queryVars['order_product_chart_from'], queryVars['order_product_chart_to']);
                 this.drawSuperadminProductOrderChart(orderProductDays, document.getElementById('order_product_data').value ?? []);
+                document.getElementById('order_product_chart_from').value = queryVars['order_product_chart_from'];
+                document.getElementById('order_product_chart_to').value = queryVars['order_product_chart_to'];
+                document.getElementById('product_category').value = queryVars['product_category'];
+                
             }
             
 
@@ -127,8 +130,8 @@ import {Chart} from "chart.js/auto";
             return Math.floor(Math.random() * (max - min + 1)) + min;
         },
          drawSuperadminProductOrderChart(days, jsonedProducts){
-            console.log(jsonedProducts);
-            const productsArray = JSON.parse(jsonedProducts);
+             const productsArray = JSON.parse(jsonedProducts);
+             console.log(productsArray);
             const daysCount = days.length;
             console.log(daysCount);
             if(daysCount == 0){

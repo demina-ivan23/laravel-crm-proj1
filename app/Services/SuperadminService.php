@@ -49,10 +49,20 @@ class SuperadminService {
                     $query->where('category_id', null);
                      })->whereDate('created_at', $daysArray[$k])->count();
                     }
-            } else {
-                $array[0]['category'] = $query['product_category'];
-                $array[0]['product'] = [];
+            } elseif($query['product_category'] != null)  {
+                $category = ProductCategory::find($query['product_category']);
+                if(!$category){
+                    return null;
+                }
+                $array[0]['category'] = $category->title;
+                for($k = 0; $k <= $daysCount; $k++){
+                    $array[0]['products'][$k] = Order::whereHas('products', function ($query) use ($category) {
+                        $query->where('category_id', $category->id);
+                    })->whereDate('created_at', $daysArray[$k])->count();
+                }
+                
             }
+            // dd($array);
             return $array;
         }
         return null;

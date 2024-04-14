@@ -14,7 +14,11 @@ class SuperadminController extends Controller
     public function index()
     {
         $data = SuperadminService::getDashboardData(request()->query());
-        return view('superadmin.index', ['data' => $data]);
+        if(request()->route()->getName() == 'superadmin.index'){
+            return view('superadmin.index', ['data' => $data]);
+        } elseif(request()->route()->getName() == 'superadmin.order_product_chart') {
+            return view('superadmin.charts.order_product_chart', ['data' => $data]);
+        }
     }
 
     public function show(string $id)
