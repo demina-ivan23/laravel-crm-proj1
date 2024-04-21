@@ -14,13 +14,13 @@ class SuperadminService {
     static function getDashboardData($query)
     {
         $data = [
-            static::getProductOrderChartInfo($query) ?? [],
-            static::getProspectOrderChartInfo($query) ?? [],
+            static::getOrderProductChartInfo($query) ?? [],
+            static::getOrderProspectChartInfo($query) ?? [],
             //
         ];
         return $data;
     }
-    static function getProductOrderChartInfo($query){
+    static function getOrderProductChartInfo($query){
         if($query['order_product_chart_from'] ?? null && $query['order_product_chart_to'] ?? null){
             $array = [];
             $fromDate = new DateTime($query['order_product_chart_from']);
@@ -67,7 +67,8 @@ class SuperadminService {
         }
         return null;
     }
-    static function getProspectOrderChartInfo($query){
+    static function getOrderProspectChartInfo($query){
+        
         return null;
     }
 }

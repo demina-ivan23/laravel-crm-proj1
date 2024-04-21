@@ -10,8 +10,10 @@ class OrderStatus extends Model
     use HasFactory;
     protected $guarded = ['id'];
 
-    public function status_transition()
+    public function orders()
     {
-     return $this->belonsToMany(OrderStatus::class, '');
+        return $this->belongsToMany(Order::class, 'order_status_transition', 'order_status_id', 'order_id')
+            ->withPivot('explanation')
+            ->withTimestamps();
     }
 }

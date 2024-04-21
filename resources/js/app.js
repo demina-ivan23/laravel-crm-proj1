@@ -6,7 +6,7 @@
 
 import './bootstrap';
 import { createApp } from 'vue';
-import {Chart} from "chart.js/auto";
+import { Chart } from "chart.js/auto";
 
 
 /**
@@ -15,7 +15,7 @@ import {Chart} from "chart.js/auto";
  * to use in your application's views. An example is included for you.
  */
 
- const app = createApp({
+const app = createApp({
     data() {
         return {
             showLeadAddition: false,
@@ -55,7 +55,7 @@ import {Chart} from "chart.js/auto";
             var currentUrl = window.location.href.split('?')[0];
             var queryParams = [];
             for (var key in selectedFilters) {
-                queryParams.push(key + '=' + selectedFilters[key].join(',')); 
+                queryParams.push(key + '=' + selectedFilters[key].join(','));
             }
             var newUrl = currentUrl + '?' + queryParams.join('&');
 
@@ -63,11 +63,11 @@ import {Chart} from "chart.js/auto";
 
             localStorage.clear();
             checkboxes.forEach(function (checkbox) {
-                    if (checkbox.checked) {
-                        localStorage.setItem(checkbox.value, true);
-                    } else {
-                        localStorage.removeItem(checkbox.value); // Remove state from localStorage if unchecked
-                    }
+                if (checkbox.checked) {
+                    localStorage.setItem(checkbox.value, true);
+                } else {
+                    localStorage.removeItem(checkbox.value); // Remove state from localStorage if unchecked
+                }
             });
         },
         async addListenersToFilterCheckboxes() {
@@ -87,62 +87,60 @@ import {Chart} from "chart.js/auto";
                 checkbox.addEventListener('change', this.applyFilters);
             });
         },
-        getDaysBetweenDates(startDateString, endDateString)
-        {
-                const days = [];
-                let currentDate = new Date(startDateString);
-                let endDate = new Date(endDateString);
-                while (currentDate <= endDate) {
-                    days.push(new Date(currentDate).getDate());
-                    currentDate.setDate(currentDate.getDate() + 1);
-                }
-            
-                return days;
+        getDaysBetweenDates(startDateString, endDateString) {
+            const days = [];
+            let currentDate = new Date(startDateString);
+            let endDate = new Date(endDateString);
+            while (currentDate <= endDate) {
+                days.push(new Date(currentDate).getDate());
+                currentDate.setDate(currentDate.getDate() + 1);
+            }
+
+            return days;
         },
-        drawSuperadminOrderCharts()
-        {
+        drawSuperadminOrderCharts() {
             const queryVars = this.getQueryVars();
             let orderProductDays = [];
-            if(queryVars['order_product_chart_to'] != null && queryVars['order_product_chart_from'] != null){
+            if (queryVars['order_product_chart_to'] != null && queryVars['order_product_chart_from'] != null) {
                 orderProductDays = this.getDaysBetweenDates(queryVars['order_product_chart_from'], queryVars['order_product_chart_to']);
                 this.drawSuperadminProductOrderChart(orderProductDays, document.getElementById('order_product_data').value ?? []);
                 document.getElementById('order_product_chart_from').value = queryVars['order_product_chart_from'];
                 document.getElementById('order_product_chart_to').value = queryVars['order_product_chart_to'];
                 document.getElementById('product_category').value = queryVars['product_category'];
-                
+
             }
-            
+
 
         },
-        getQueryVars()
-        {
+        getQueryVars() {
             const queryString = window.location.search.substring(1);
             const params = new URLSearchParams(queryString);
             const queryVars = {};
-        
+
             for (const [key, value] of params.entries()) {
                 queryVars[key] = value;
             }
-        
+
             return queryVars;
         },
         rand(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         },
-         drawSuperadminProductOrderChart(days, jsonedProducts){
-             const productsArray = JSON.parse(jsonedProducts);
-             console.log(productsArray);
+        drawSuperadminProductOrderChart(days, jsonedProducts) {
+            const orderProductsArray = JSON.parse(jsonedProducts);
+            console.log(Chart.version);
             const daysCount = days.length;
             console.log(daysCount);
-            if(daysCount == 0){
+            if (daysCount == 0) {
                 return;
             }
             const labels = days;
             const datasets = [];
-            for (let productArray of productsArray) {
+            for (let orderProductArray of orderProductsArray) {
                 datasets.push({
-                    label: productArray['category'],
-                    data: productArray['products'],
+                    label: orderProductArray['category'],
+                    data: orderProductArray['products'],
+                    footer: orderProductArray['order_status_info'],
                     backgroundColor: `rgba(${this.rand(10, 100)}, ${this.rand(20, 200)}, ${this.rand(20, 200)}, 0.6)`,
                 });
             }
@@ -150,32 +148,42 @@ import {Chart} from "chart.js/auto";
                 labels: labels,
                 datasets: datasets
             };
-                const config = {
-                    type: 'bar',
-                    data: data,
-                    options: {
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: 'Product-related Chart'
-                            },
+            const config = {
+                type: 'bar',
+                data: data,
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Product-related Chart'
                         },
-                        responsive: true,
-                        scales: {
-                            x: {
-                                stacked: true,
-                            },
-                            y: {
-                                stacked: true
+                        tooltip: {
+                            callbacks: {
+                                footer: function (tooltipItems) {
+                                    console.log(tooltipItems);
+                                    return 'Footer for ' + tooltipItems[0].dataset.footer;
+                                }
+
                             }
                         }
-                    }
-                };
-            
-                
-            
-                const productOrderCanvas = document.getElementById('productOrderChartCanvas');
-                const productOrderChart = new Chart(productOrderCanvas, config);
+                    },
+                    responsive: true,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    },
+
+                }
+            };
+
+
+
+            const productOrderCanvas = document.getElementById('productOrderChartCanvas');
+            const productOrderChart = new Chart(productOrderCanvas, config);
         }
     },
     mounted() {

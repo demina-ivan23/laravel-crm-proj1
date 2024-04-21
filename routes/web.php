@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\GraphController;
 use App\Http\Controllers\Superadmin\UserController;
 use App\Http\Controllers\Superadmin\SuperadminController;
+use App\Http\Controllers\Superadmin\OrderStatusController;
 
 /*
 |--------------------------------------------------------------------------
@@ -25,15 +26,27 @@ Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-//Superadmin routes (superadmins manage CRM users and their data)
-Route::prefix('superadmin')->middleware('auth')->group(function () {
-    Route::middleware('superadmin')->group(function () {
-        Route::resource('users', UserController::class)->except('show');
-        Route::get('/superadmin/order_product_chart', [SuperadminController::class, 'index'])->name('superadmin.order_product_chart');     
-        Route::resource('superadmin', SuperadminController::class)->except(['create', 'store', 'destroy']);
+//Superadmin routes
+Route::prefix('superadmin')->middleware(['auth', 'superadmin'])->group(function () {
+    // User routes that are listed under the 'superadmin' middleware are the routes created for 
+    // superadmins to manage CRM's users' data
+    Route::resource('users', UserController::class)->except('show');
+    
+    // Superadmin routes are the routes which allow superadmins to manage their data
+    Route::resource('superadmin', SuperadminController::class)->except(['create', 'store', 'destroy']);
+    
+    // All superadmin charts are drawn by the index method, thus the code is cleaner  
+    Route::get('/order_product_chart', [SuperadminController::class, 'index'])->name('superadmin.order_product_chart');  
+    Route::get('/order_prospect_chart', [SuperadminController::class, 'index'])->name('superadmin.order_prospect_chart');
+
+    // Order status is the almost the same thing as prospect state or product category, it's difference 
+    //from the upper mentioned two is that process of it's creation and modification requires admin access
+    Route::name('superadmin.')->group(function () {
+        Route::resource('order_statuses', OrderStatusController::class)->except(['show', 'destroy']);
     });
-    Route::get('users/show/{id}', [UserController::class, 'show'])->name('users.show');
 });
+
+Route::get('users/show/{id}', [UserController::class, 'show'])->middleware('auth')->name('users.show');
 
 
 //Admin routes (anyone who can access the CRM is considered an admin) 

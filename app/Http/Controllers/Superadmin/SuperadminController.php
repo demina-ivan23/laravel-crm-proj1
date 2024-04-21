@@ -16,8 +16,10 @@ class SuperadminController extends Controller
         $data = SuperadminService::getDashboardData(request()->query());
         if(request()->route()->getName() == 'superadmin.index'){
             return view('superadmin.index', ['data' => $data]);
-        } elseif(request()->route()->getName() == 'superadmin.order_product_chart') {
+        } elseif(request()->routeIs('superadmin.order_product_chart')) {
             return view('superadmin.charts.order_product_chart', ['data' => $data]);
+        } elseif(request()->routeIs('superadmin.order_prospect_chart')) {
+            return view('superadmin.charts.order_prospect_chart', ['data' => $data]);
         }
     }
 

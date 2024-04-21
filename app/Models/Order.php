@@ -22,6 +22,13 @@ class Order extends Model
     {
         return $this->belongsTo(Prospect::class);
     }
+    public function statuses()
+    {
+        return $this->belongsToMany(OrderStatus::class, 'order_status_transition', 'order_id', 'order_status_id')
+            ->withPivot('explanation')
+            ->withTimestamps();
+    }
+
     public function scopeFilter($query)
     {
         if (request('search')) {

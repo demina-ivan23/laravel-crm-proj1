@@ -1,13 +1,9 @@
-@extends('layouts.app')
+@extends('superadmin.layouts.superadmin')
 
-@section('content')
-    <div class="container">
-        <div class="card mt-4">
-            <div class="card-body">
+@section('superadmin-content')
 
-                <h4 class="mb-3 d-flex justify-content-center">Draw order charts based on your filters</h4>
                 <div class="row">
-                <h5 class="mb-3 d-flex justify-content-center">Product-related chart</h5>
+                <h4 class="mb-3 d-flex justify-content-center">Product-related chart</h4>
 
                     <div class="col-sm-3">
                         <form action="" method="GET">
@@ -52,7 +48,5 @@
                         </div>
                     </div>
                 </div>
-        </div>
-    </div>
    
 @endsection

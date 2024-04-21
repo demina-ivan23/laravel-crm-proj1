@@ -4,9 +4,10 @@ namespace App\Services;
 
 use Exception;
 use App\Models\Order;
+use App\Models\OrderStatus;
 use App\Services\ProductService;
 use App\Services\ProspectService;
-
+use Carbon\Carbon;
 
 class OrderService
 {
@@ -28,7 +29,9 @@ class OrderService
         throw new Exception('not_exist ' . $product);
       }
     }
+    $order_status = OrderStatus::find($data['order_status']);
     $prospect->update(['state_id' => 3]);
+    $order->statuses()->attach($order_status, ['explanation' => $data['order_status_explanation'], 'expires_at' => $data['expires_at'] ?? Carbon::now()->addDays(1)]);
     return $order;
 
   }
