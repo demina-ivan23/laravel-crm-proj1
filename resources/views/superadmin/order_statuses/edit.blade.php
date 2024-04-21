@@ -2,6 +2,9 @@
 
 @section('content')
     <div class="container">
+        @if (session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
         <a href="{{ route('superadmin.order_statuses.index') }}" class="btn btn-light">Go Back To Dashboard</a>
         <div class="card mt-4">
             <div class="card-body">
@@ -69,11 +72,11 @@
                             "No" value will not be available at the order creation, only at the order edition.</p>
                         <select class="form-control" name="first_step_status" id="first_step_status">
                             @if ($order_status->first_step_status)
-                                <option value="{{ true }}">Yes</option>
-                                <option value="{{ false }}">No</option>
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
                             @else
-                                <option value="{{ false }}">No</option>
-                                <option value="{{ true }}">Yes</option>
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
                             @endif
                         </select>
                     </div>

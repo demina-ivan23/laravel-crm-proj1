@@ -17,6 +17,13 @@ return new class extends Migration
             $table->foreignId('order_status_id')->constrained()->onDelete('cascade');
             $table->string('expalanation')->nullable();
             $table->timestamp('expires_at')->nullable();
+            $table->unsignedBigInteger('default_order_transition_id');
+            $table->index('default_order_transition_id');
+            $table->foreign('default_order_transition_id')
+            ->references('id')
+            ->on('order_statuses')
+            ->nullable()
+            ->default(null);
             $table->timestamps();
         });
     }

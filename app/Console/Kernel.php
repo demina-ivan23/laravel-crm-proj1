@@ -15,6 +15,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         $schedule->job(OrderCreationJob::class)->withoutOverlapping()->onOneServer();
+        
     }
     /**
      * Register the commands for the application.

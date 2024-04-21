@@ -15,8 +15,10 @@ class OrderStatusService
         $order_status = OrderStatus::create([
             'title' => $data['title'],
             'description' => $data['description'],
+            'first_step_status' => $data['first_step_status'],
             'can_transit_into' => $data['can_transit_into'] ?? ''
         ]);
+
         if(!$order_status){
             return 'Order status creation failed, something must have gone wrong';
         }
@@ -30,11 +32,15 @@ class OrderStatusService
         }
         return $order_status;
     } 
-    static function updateOrderStatus($id, $data)
+    static function updateOrderStatus($id, $request)
     {
         try{
             $order_status = static::findOrderStatus($id);
-            $order_status->update($data);
+            $order_status->update($request->only(['title', 'description', 'first_step_status']));
+            if($request['can_transit_into'] ?? null)
+            {
+                $order_status->update($request['can_transit_into']);
+            }
             return 'Order status updated successfully';
         } catch(Exception $e){
             return 'Something went wrong, Exception message: ' . $e->getMessage();

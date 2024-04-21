@@ -29,7 +29,7 @@ class UpdateOrderStatusRequest extends FormRequest
             'title' => 'string|min:3|max:225',
             'description' => 'string|min:3|max:225',
             'first_step_status' => 'boolean',
-            'can_transit_into' => 'string|min:3|max:1000',
+            'can_transit_into' => 'string|min:3|max:1000|nullable',
         ];
     }
 }

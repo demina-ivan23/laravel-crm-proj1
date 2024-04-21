@@ -24,7 +24,7 @@ const app = createApp({
         };
     },
     methods: {
-        async handleCategoryChange() {
+        handleCategoryChange() {
             let val = document.getElementById('category_select').value;
             if (val === 'custom') {
                 this.showCustomCategoryInput = true;
@@ -32,7 +32,7 @@ const app = createApp({
                 this.showCustomCategoryInput = false;
             }
         },
-        async handleProspectStateChange() {
+        handleProspectStateChange() {
             let val = document.getElementById('prospect_state_select').value;
             if (val === 'custom') {
                 this.showCustomProspectStateInput = true;
@@ -40,7 +40,7 @@ const app = createApp({
                 this.showCustomProspectStateInput = false;
             }
         },
-        async applyFilters() {
+        applyFilters() {
             var selectedFilters = {};
             var checkboxes = document.querySelectorAll('.filter-checkbox:checked');
             checkboxes.forEach(function (checkbox) {
@@ -70,7 +70,7 @@ const app = createApp({
                 }
             });
         },
-        async addListenersToFilterCheckboxes() {
+        addListenersToFilterCheckboxes() {
             var checkboxes = document.querySelectorAll('.filter-checkbox');
 
             checkboxes.forEach(function (checkbox) {
@@ -184,6 +184,10 @@ const app = createApp({
 
             const productOrderCanvas = document.getElementById('productOrderChartCanvas');
             const productOrderChart = new Chart(productOrderCanvas, config);
+        },
+        handleProductsArrayTransmission()
+        {
+            $products_array = [];
         }
     },
     mounted() {

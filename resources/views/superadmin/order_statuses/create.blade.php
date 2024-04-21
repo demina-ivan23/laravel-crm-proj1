@@ -69,9 +69,9 @@
                         <p> *First step status is a status that ryou can set as a first status for completely new order.
                             For example, for such statuses as "new", "pending", "potentially_fake" etc. Other statuses with
                             "No" value will not be available at the order creation, only at the order edition.</p>
-                        <select class="form-control" name="fist_step_status" id="first_step_status">
-                            <option value="{{ false }}">No</option>
-                            <option value="{{ true }}">Yes</option>
+                        <select class="form-control" name="first_step_status" id="first_step_status">
+                            <option value="0">No</option>
+                            <option value="1">Yes</option>
                         </select>
                     </div>
                     <button class="btn btn-primary float-end mb-2" type="submit">

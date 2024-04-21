@@ -15,7 +15,7 @@ class OrderService
   {
     $order = Order::create([
       'customer_id' => $prospect->id,
-      'customer_name' =>  $prospect->email,
+      'customer_name' =>  $prospect->name,
       'customer_email' => $prospect->email
     ]);
 
@@ -31,7 +31,7 @@ class OrderService
     }
     $order_status = OrderStatus::find($data['order_status']);
     $prospect->update(['state_id' => 3]);
-    $order->statuses()->attach($order_status, ['explanation' => $data['order_status_explanation'], 'expires_at' => $data['expires_at'] ?? Carbon::now()->addDays(1)]);
+    $order->statuses()->attach($order_status, ['explanation' => $data['order_status_explanation'], 'expires_at' => $data['expires_at'] ?? Carbon::now()->addDays(1), 'default_order_transition_id']);
     return $order;
 
   }

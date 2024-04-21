@@ -33,7 +33,7 @@ class OrderStatusController extends Controller
     }
     public function update(string $id, UpdateOrderStatusRequest $request)
     {
-        $result = OrderStatusService::updateOrderStatus($id, $request->all());
+        $result = OrderStatusService::updateOrderStatus($id, $request);
         if (str_contains($result, 'successfully')) {
             return redirect()->route('superadmin.order_statuses.index')->with('success', $result);
         } else {
