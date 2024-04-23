@@ -39,11 +39,15 @@ class OrderStatusService
             $order_status->update($request->only(['title', 'description', 'first_step_status']));
             if($request['can_transit_into'] ?? null)
             {
-                $order_status->update($request['can_transit_into']);
+                $order_status->update($request->only(['can_transit_into']));
             }
             return 'Order status updated successfully';
         } catch(Exception $e){
             return 'Something went wrong, Exception message: ' . $e->getMessage();
         }
+    }
+    static function getAllFSS()
+    {
+        return OrderStatus::all()->where('first_step_status', 1);
     }
 }

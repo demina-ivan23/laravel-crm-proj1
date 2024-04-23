@@ -48,7 +48,7 @@
                     <ul class="dropdown-menu">
                       <li><a class="dropdown-item" href="{{ route('admin.prospects.show', ['prospect' => $prospect])}}">View "{{$prospect->name}}"</a></li>
                       <li><a class="dropdown-item" href="{{ route('admin.prospects.edit', ['prospect' => $prospect])}}">Edit</a></li>
-                      <li><a class="dropdown-item" href="{{route('admin.orders.create', ['prospect' => $prospect])}}">Make An Order For "{{$prospect->name}}"</a></li>
+                      <li><a class="dropdown-item" href="{{route('admin.orders.create.select_products', ['prospect' => $prospect])}}">Make An Order For "{{$prospect->name}}"</a></li>
                       <li><a class="dropdown-item" href="{{route('admin.prospects.show-orders', ['prospect' => $prospect])}}">View Orders Of "{{$prospect->name}}"</a></li>
                       <li><form action="{{ route('admin.prospects.destroy', ['prospect' => $prospect]) }}" method="POST">
                         @csrf

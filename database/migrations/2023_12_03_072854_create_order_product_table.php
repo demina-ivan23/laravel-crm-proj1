@@ -13,20 +13,9 @@ return new class extends Migration
     {
         Schema::create('order_product', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('order_id');
-            $table->index('order_id');
-            $table->foreign('order_id')
-            ->references('id')
-            ->on('orders')
-            ->onDelete('CASCADE');
-
-            $table->unsignedBigInteger('product_id')->nullable();
-            $table->index('product_id');
-            $table->foreign('product_id')
-            ->references('id')
-            ->on('products')
-            ->onDelete('SET NULL');
-
+            $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->foreignId('product_id')->constrained();
+            $table->integer('quantity');
             $table->timestamps();
         });
     }

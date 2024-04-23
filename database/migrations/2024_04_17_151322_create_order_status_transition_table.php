@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
             $table->foreignId('order_status_id')->constrained()->onDelete('cascade');
-            $table->string('expalanation')->nullable();
+            $table->string('explanation')->nullable();
             $table->timestamp('expires_at')->nullable();
-            $table->unsignedBigInteger('default_order_transition_id');
-            $table->index('default_order_transition_id');
-            $table->foreign('default_order_transition_id')
+            $table->unsignedBigInteger('default_order_transition')->nullable();
+            $table->index('default_order_transition');
+            $table->foreign('default_order_transition')
             ->references('id')
             ->on('order_statuses')
             ->nullable()

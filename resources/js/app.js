@@ -61,12 +61,12 @@ const app = createApp({
 
             window.location.href = newUrl;
 
-            localStorage.clear();
+            sessionStorage.clear();
             checkboxes.forEach(function (checkbox) {
                 if (checkbox.checked) {
-                    localStorage.setItem(checkbox.value, true);
+                    sessionStorage.setItem(checkbox.value, true);
                 } else {
-                    localStorage.removeItem(checkbox.value); // Remove state from localStorage if unchecked
+                    sessionStorage.removeItem(checkbox.value);
                 }
             });
         },
@@ -74,7 +74,7 @@ const app = createApp({
             var checkboxes = document.querySelectorAll('.filter-checkbox');
 
             checkboxes.forEach(function (checkbox) {
-                var isChecked = localStorage.getItem(checkbox.value);
+                var isChecked = sessionStorage.getItem(checkbox.value);
                 if (isChecked === 'true') {
                     console.log(checkbox);
                     checkbox.checked = true;
@@ -185,18 +185,71 @@ const app = createApp({
             const productOrderCanvas = document.getElementById('productOrderChartCanvas');
             const productOrderChart = new Chart(productOrderCanvas, config);
         },
-        handleProductsArrayTransmission()
-        {
-            $products_array = [];
-        }
+        incrementDecrementProductCount(productId, action) {
+            console.log(sessionStorage.getItem('selected_products'));
+            let productCount = parseInt(document.getElementById('product_count_' + productId).value);
+            if (action == 'increment') {
+                productCount++;
+            } else if (action == 'decrement') {
+                productCount--;
+                if (productCount <= 0) {
+                    productCount = 0;
+                }
+            }
+            if (productCount > 0) {
+                let selectedProducts = JSON.parse(sessionStorage.getItem('selected_products')) || {};
+                selectedProducts[productId] = productCount;
+                sessionStorage.setItem('selected_products', JSON.stringify(selectedProducts));
+                document.getElementById('product_' + productId).classList.add('border-info');
+                document.getElementById('product_' + productId).classList.add('border-2');
+            } else {
+                let selectedProducts = JSON.parse(sessionStorage.getItem('selected_products')) || {};
+                delete selectedProducts[productId];
+                sessionStorage.setItem('selected_products', JSON.stringify(selectedProducts));
+                document.getElementById('product_' + productId).classList.remove('border-info');
+                document.getElementById('product_' + productId).classList.remove('border-2');
+            }
+            document.getElementById('product_count_' + productId).value = productCount;
+        },
+        handleSelectedProductsReload() {
+            let selectedProducts = JSON.parse(sessionStorage.getItem('selected_products')) || {};
+            Object.entries(selectedProducts).forEach(([productId, productCount]) => {
+                console.log(productId + '=>' + productCount);
+                if (document.getElementById('product_count_' + productId) ?? false) {
+                    document.getElementById('product_count_' + productId).value = productCount;
+                    document.getElementById('product_' + productId).classList.add('border-info');
+                    document.getElementById('product_' + productId).classList.add('border-2');
+                }
+
+            });
+        },
+        handleProductsArrayTransmission() {
+            let selectedProducts = JSON.parse(sessionStorage.getItem('selected_products')) || {};
+
+            // Check if selectedProducts is not empty
+            if (Object.keys(selectedProducts).length !== 0) {
+                let form = document.getElementById('select_products_form') || null;
+                if(form){
+                    document.getElementById('selected_products_json').value = sessionStorage.getItem('selected_products');
+                    sessionStorage.removeItem('selected_products');
+                    form.submit()
+                }
+            } else {
+                return alert('You haven\'t selected any products');
+            }
+
+        },
     },
-    mounted() {
-        this.addListenersToFilterCheckboxes();
-        this.drawSuperadminOrderCharts();
-    }
-});
+        mounted() {
+            this.addListenersToFilterCheckboxes();
+            this.drawSuperadminOrderCharts();
+            this.handleSelectedProductsReload();
+        }
+    });
 
 import ExampleComponent from './components/ExampleComponent.vue';
+import { EMPTY_OBJ } from '@vue/shared';
+import { formToJSON } from 'axios';
 app.component('example-component', ExampleComponent);
 
 /**

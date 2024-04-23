@@ -22,10 +22,10 @@
                     @method('PUT')
                     @if ($order_status->first_step_status)
                     <input type="hidden" name="first_step_status" id="first_step_status" value="0">
-                    <input type="submit" class="btn btn-primary" value="Disable FSS" title="FSS - first step status (for order creation). You can have multiple FSOOCs">
+                    <input type="submit" class="btn btn-primary" value="Disable FSS" title="FSS - first step status (for order creation). You can have multiple FSSs">
                     @else
                     <input type="hidden" name="first_step_status" id="first_step_status" value="1">
-                    <input type="submit" class="btn btn-primary" value="Enable FSS" title="FSS - first step status (for order creation). You can have multiple FSOOCs">
+                    <input type="submit" class="btn btn-primary" value="Enable FSS" title="FSS - first step status (for order creation). You can have multiple FSSs">
                     @endif
                 </form>
             </div>

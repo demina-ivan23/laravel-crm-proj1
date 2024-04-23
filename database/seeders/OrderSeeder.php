@@ -20,7 +20,7 @@ class OrderSeeder extends Seeder
         $orders->each(function ($order) {
             $products = Product::inRandomOrder()->limit(rand(1, 5))->get();
             $products->each(function ($product) use ($order) {
-                $order->products()->attach($product);
+                $order->products()->attach($product, ['quantity' => rand(1, 5)]);
             });
             $order->customer()->associate($order->customer_id);
             $order->save();

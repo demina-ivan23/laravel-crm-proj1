@@ -15,8 +15,6 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('customer_id');
-            $table->string('customer_name');
-            $table->string('customer_email');
             $table->timestamps();
             $table->index('customer_id');
             $table->foreign('customer_id')

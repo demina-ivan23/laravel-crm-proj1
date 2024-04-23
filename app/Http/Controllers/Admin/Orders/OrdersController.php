@@ -28,7 +28,14 @@ class OrdersController extends Controller
     public function create($id)
     {
         $products = ProductService::getAllProducts();
-        return view('admin.orders.create', ['products' => $products, 'prospect' => $id]);
+        $prospect = ProspectService::findProspect($id);
+        if(request()->routeIs('admin.orders.create.select_products')){
+            return view('admin.orders.select_products', ['products' => $products, 'prospect' => $prospect]);
+        }
+        if(request()->routeIs('admin.orders.create'))
+        {
+            return view('admin.orders.create', ['prospect' => $prospect]);
+        }
     }
 
     /**
@@ -38,7 +45,10 @@ class OrdersController extends Controller
     {
         $prospect = ProspectService::findProspect($id);
         $order = OrderService::storeOrder($prospect, $request->all());
-        return redirect('/prospects/prospects');
+        if(!$order){
+            return redirect('/prospects/prospects')->with('error', 'Something went wrong');
+        }
+        return redirect('/prospects/prospects')->with('success', 'Order Successful');
     }
 
     /**

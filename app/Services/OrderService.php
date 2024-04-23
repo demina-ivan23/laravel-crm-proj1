@@ -14,24 +14,21 @@ class OrderService
   static function storeOrder($prospect, $data)
   {
     $order = Order::create([
-      'customer_id' => $prospect->id,
-      'customer_name' =>  $prospect->name,
-      'customer_email' => $prospect->email
+      'customer_id' => $prospect->id
     ]);
+    $selectedProducts = json_decode($data['selected_products_json'], true);
 
-    $selectedProducts = $data['selected_products'];
-
-    foreach ($selectedProducts as $product) {
-      $product_obj = ProductService::getProductById($product);
-      if ($product_obj) {
-        $order->products()->attach($product);
+    foreach ($selectedProducts as $productId => $quantity) {
+      $product = ProductService::getProductById($productId);
+      if ($product) {
+        $order->products()->attach($productId, ['quantity' => $quantity]);
       } else {
-        throw new Exception('not_exist ' . $product);
+        throw new Exception('Product not found ' . $product);
       }
     }
     $order_status = OrderStatus::find($data['order_status']);
     $prospect->update(['state_id' => 3]);
-    $order->statuses()->attach($order_status, ['explanation' => $data['order_status_explanation'], 'expires_at' => $data['expires_at'] ?? Carbon::now()->addDays(1), 'default_order_transition_id']);
+    $order->statuses()->attach($order_status, ['explanation' => $data['order_status_explanation'], 'expires_at' => $data['expires_at'] ?? Carbon::now()->addDays(1), 'default_order_transition' => $data['default_order_transition']] ?? null);
     return $order;
 
   }
