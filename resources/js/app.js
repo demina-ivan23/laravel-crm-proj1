@@ -99,16 +99,23 @@ const app = createApp({
         },
         drawSuperadminOrderCharts() {
             const queryVars = this.getQueryVars();
-            let orderProductDays = [];
+            let days = [];
+            let el = '';
             if (queryVars['order_product_chart_to'] != null && queryVars['order_product_chart_from'] != null) {
-                orderProductDays = this.getDaysBetweenDates(queryVars['order_product_chart_from'], queryVars['order_product_chart_to']);
-                this.drawSuperadminProductOrderChart(orderProductDays, document.getElementById('order_product_data').value ?? []);
-                document.getElementById('order_product_chart_from').value = queryVars['order_product_chart_from'];
-                document.getElementById('order_product_chart_to').value = queryVars['order_product_chart_to'];
-                document.getElementById('product_category').value = queryVars['product_category'];
-
+                days = this.getDaysBetweenDates(queryVars['order_product_chart_from'], queryVars['order_product_chart_to']);
+                this.drawSuperadminProductOrderChart(days, document.getElementById('order_product_data').value ?? []);
+                document.getElementById('product_category').value = queryVars['product_category'] ?? 'all';
+                el = 'product';
+            } else if(queryVars['order_prospect_chart_to'] != null && queryVars['order_prospect_chart_from'] != null){
+                days = this.getDaysBetweenDates(queryVars['order_prospect_chart_from'], queryVars['order_prospect_chart_to']);
+                this.drawSuperadminProspectOrderChart(days, document.getElementById('order_prospect_data').value ?? [])
+                el = 'prospect';
+                document.getElementById('prospect_state').value = queryVars['prospect_state'] ?? 'all';
             }
-
+            
+            document.getElementById('order_'+el+'_chart_from').value = queryVars['order_'+el+'_chart_from'] ?? '';
+            document.getElementById('order_'+el+'_chart_to').value = queryVars['order_'+el+'_chart_to'] ?? '';
+            
 
         },
         getQueryVars() {
@@ -196,10 +203,82 @@ const app = createApp({
                 }
             };
 
-
-
             const productOrderCanvas = document.getElementById('productOrderChartCanvas');
             const productOrderChart = new Chart(productOrderCanvas, config);
+        },
+        drawSuperadminProspectOrderChart(days, jsonedProspects) {
+            const orderProspectsArray = JSON.parse(jsonedProspects);
+            const daysCount = days.length;
+            if (daysCount == 0) {
+                console.log('hi');
+                return;
+            }
+            const labels = days;
+            const datasets = [];
+            for (let orderProspectArray of orderProspectsArray) {
+                console.log(orderProspectArray);
+                let footerInfo = [];
+                for (let i = 0; i < orderProspectArray.customer.length; i++) {
+                    let orderStatuses = orderProspectArray.order_statuses[i];
+                    let statusInfo = {  };
+                    for (let status in orderStatuses) {
+                        statusInfo[status] = orderStatuses[status];
+                    }
+                    footerInfo.push(statusInfo);
+                }
+                console.log(footerInfo);
+                datasets.push({
+                    label: orderProspectArray.state,
+                    data: orderProspectArray.customer,
+                    footer: footerInfo,
+                    backgroundColor: `rgba(${this.rand(10, 100)}, ${this.rand(20, 200)}, ${this.rand(20, 200)}, 0.6)`,
+                });
+            }
+            const data = {
+                labels: labels,
+                datasets: datasets
+            };
+            const config = {
+                type: 'bar',
+                data: data,
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Prospect-related Chart'
+                        },
+                        tooltip: {
+                            callbacks: {
+                                footer: function (tooltipItems) {
+                                    const datasetIndex = tooltipItems[0].datasetIndex;
+                                    const day = tooltipItems[0].dataIndex; 
+                                    const footerObject = tooltipItems[0].chart.data.datasets[datasetIndex].footer[day];
+                                    let footerString = 'Order statuses: ';
+                                    for (let status in footerObject) {
+                                        footerString += `${status}: ${footerObject[status]}, `;
+                                    }
+                                    footerString = footerString.slice(0, -2);
+                                    return footerString;
+                                }
+                            }
+                        }  
+                        
+                    },
+                    responsive: true,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    },
+
+                }
+            };
+
+            const prospectOrderCanvas = document.getElementById('prospectOrderChartCanvas');
+            const prospectOrderChart = new Chart(prospectOrderCanvas, config);
         },
         incrementDecrementProductCount(productId, action) {
             let productCount = parseInt(document.getElementById('product_count_' + productId).value);

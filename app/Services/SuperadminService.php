@@ -5,6 +5,7 @@ namespace App\Services;
 use DateTime;
 use App\Models\Order;
 use App\Models\OrderStatus;
+use App\Models\ProspectState;
 use App\Models\ProductCategory;
 
 class SuperadminService
@@ -28,105 +29,91 @@ class SuperadminService
             $days = static::getDaysCount($query['order_product_chart_from'], $query['order_product_chart_to']);
             $daysCount = $days['days_count'];
             $daysArray = $days['days_array'];
+    
             if ($query['product_category'] == "all") {
                 $i = 0;
                 foreach (ProductCategory::all() as $category) {
-                    $array[$i]['category'] = $category->title;
-                    for ($k = 0; $k <= $daysCount; $k++) {
-                        $array[$i]['products'][$k] = Order::whereHas('products', function ($query) use ($category) {
-                            $query->where('category_id', $category->id);
-                        })
-                            ->whereDate('created_at', $daysArray[$k])
-                            ->count();
-                        foreach ($order_statuses as $order_status) {
-                            $array[$i]['order_statuses'][$k][$order_status->title] =
-                                Order::whereHas('statuses', function ($query) use ($order_status) {
-                                    $query->where('order_status_id', $order_status->id);
-                            })->whereHas('products', function ($query) use ($category) {
-                                $query->where('category_id', $category->id);
-                            })
-                                ->whereDate('created_at', $daysArray[$k])
-                                ->count();
-                        }
-                    }
+                    $array[$i] = static::processByFilter('category', 'products' , $category, $order_statuses, $daysCount, $daysArray);
                     $i++;
                 }
-                $array[$i]['category'] = 'without a category';
-                for ($k = 0; $k <= $daysCount; $k++) {
-                    $array[$i]['products'][$k] = Order::whereHas('products', function ($query) use ($category) {
-                        $query->where('category_id', null);
-                    })
-                    ->whereDate('created_at', $daysArray[$k])
-                    ->count();
-                    foreach ($order_statuses as $order_status) {
-                        $array[$i]['order_statuses'][$k][$order_status->title] =
-                            Order::whereHas('statuses', function ($query) use ($order_status) {
-                                $query->where('order_status_id', $order_status->id);
-                        })->whereHas('products', function ($query) use ($category) {
-                            $query->where('category_id', $category->id);
-                        })
-                            ->whereDate('created_at', $daysArray[$k])
-                            ->count();
-                    }
-                }
+                $array[$i] = static::processByFilter('category', 'products' , null , $order_statuses, $daysCount, $daysArray);
             } elseif ($query['product_category'] != null) {
                 $category = ProductCategory::find($query['product_category']);
                 if (!$category) {
                     return null;
                 }
-                $array[0]['category'] = $category->title;
-                for ($k = 0; $k <= $daysCount; $k++) {
-                    $array[0]['products'][$k] = Order::whereHas('products', function ($query) use ($category) {
-                        $query->where('category_id', $category->id);
-                    })
-                    ->whereDate('created_at', $daysArray[$k])
-                    ->count();
-                    foreach ($order_statuses as $order_status) {
-                        $array[0]['order_statuses'][$k][$order_status->title] =
-                            Order::whereHas('statuses', function ($query) use ($order_status) {
-                                $query->where('order_status_id', $order_status->id);
-                        })->whereHas('products', function ($query) use ($category) {
-                            $query->where('category_id', $category->id);
-                        })
-                            ->whereDate('created_at', $daysArray[$k])
-                            ->count();
-                    }
-                }
+                $array[0] = static::processByFilter('category', 'products' , $category, $order_statuses, $daysCount, $daysArray);
             } else {
-                $array[0]['category'] = 'without a category';
-                for ($k = 0; $k <= $daysCount; $k++) {
-                    $array[0]['products'][$k] = Order::whereHas('products', function ($query){
-                        $query->where('category_id', null);
-                    })
-                    ->whereDate('created_at', $daysArray[$k])
-                    ->count();
-                    foreach ($order_statuses as $order_status) {
-                        $array[0]['order_statuses'][$k][$order_status->title] =
-                            Order::whereHas('statuses', function ($query) use ($order_status) {
-                                $query->where('order_status_id', $order_status->id);
-                        })->whereHas('products', function ($query) {
-                            $query->where('category_id', null);
-                        })
-                            ->whereDate('created_at', $daysArray[$k])
-                            ->count();
-                    }
-                }
+                $array[0] = static::processByFilter('category', 'products' , null, $order_statuses, $daysCount, $daysArray);
             }
-            // dd($array);
             return $array;
         }
         return null;
     }
+    
+    static function processByFilter($filterName, $elementsName , ?object $filterObect, mixed $order_statuses, int $daysCount, array $daysArray)
+    {
+        $result[$filterName] = $filterObect ? $filterObect->title  : 'without a ' . $filterName;
+        for ($k = 0; $k <= $daysCount; $k++) {
+            $result[$elementsName][$k] = static::getElementCountByFilterAtDate($elementsName, $filterName . '_id' , $filterObect ? $filterObect->id : null, $daysArray[$k]);
+            foreach ($order_statuses as $order_status) {
+                $result['order_statuses'][$k][$order_status->title] = static::getOrderStatusCountAtDate($elementsName, $order_status->id, $filterName . '_id', $filterObect ? $filterObect->id : null, $daysArray[$k]);
+            }
+        }
+        return $result;
+    }
+    
+    static function getElementCountByFilterAtDate(string $element, string $filterName, ?string $filterId, string $date)
+    {
+
+            return Order::whereHas($element, function ($query) use ($filterName, $filterId) {
+                $query->where($filterName, $filterId);
+            })
+            ->whereDate('created_at', $date)
+            ->count();
+
+    }
+    
+    static function getOrderStatusCountAtDate($elementName, int $orderStatusId, string $filterName, ?string $filterId, string $date)
+    {
+            return Order::whereHas('statuses', function ($query) use ($orderStatusId) {
+                $query->where('order_status_id', $orderStatusId);
+            })
+            ->whereHas($elementName, function ($query) use ($filterName, $filterId) {
+                if ($filterId !== null) {
+                    $query->where($filterName, $filterId);
+                } else {
+                    $query->whereNull($filterName);
+                }
+            })
+            ->whereDate('created_at', $date)
+            ->count();
+    }
+    
     static function getOrderProspectChartInfo($query)
     {
         if ($query['order_prospect_chart_from'] ?? null && $query['order_prospect_chart_to'] ?? null) {
+            $order_statuses  = OrderStatus::all();
             $array = [];
             $days = static::getDaysCount($query['order_prospect_chart_from'], $query['order_prospect_chart_to']);
             $daysCount = $days['days_count'];
             $daysArray = $days['days_array'];
             if ($query['prospect_state'] === 'all') {
+                $i = 0;
+                foreach (ProspectState::all() as $state) {
+                    $array[$i] = static::processByFilter('state', 'customer' , $state, $order_statuses, $daysCount, $daysArray);
+                    $i++;
+                }
+                $array[$i] = static::processByFilter('state', 'customer' , null, $order_statuses, $daysCount, $daysArray);
             } elseif ($query['prospect_state'] != null) {
-            }
+                $state = ProspectState::find($query['prospect_state']);
+                if(!$state)
+                {
+                    return null;
+                }
+                $array[0] = static::processByFilter('state', 'customer' , $state , $order_statuses, $daysCount, $daysArray);
+            } 
+           return $array;
         }
         return null;
     }
