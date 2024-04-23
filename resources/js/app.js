@@ -76,7 +76,6 @@ const app = createApp({
             checkboxes.forEach(function (checkbox) {
                 var isChecked = sessionStorage.getItem(checkbox.value);
                 if (isChecked === 'true') {
-                    console.log(checkbox);
                     checkbox.checked = true;
                 } else {
                     checkbox.checked = false;
@@ -128,19 +127,28 @@ const app = createApp({
         },
         drawSuperadminProductOrderChart(days, jsonedProducts) {
             const orderProductsArray = JSON.parse(jsonedProducts);
-            console.log(Chart.version);
             const daysCount = days.length;
-            console.log(daysCount);
             if (daysCount == 0) {
                 return;
             }
             const labels = days;
             const datasets = [];
             for (let orderProductArray of orderProductsArray) {
+                console.log(orderProductArray);
+                let footerInfo = [];
+                for (let i = 0; i < orderProductArray.products.length; i++) {
+                    let orderStatuses = orderProductArray.order_statuses[i];
+                    let statusInfo = {  }; // Initialize status info object with the day
+                    for (let status in orderStatuses) {
+                        // Iterate over each status dynamically and add it to the status info object
+                        statusInfo[status] = orderStatuses[status];
+                    }
+                    footerInfo.push(statusInfo); // Push the status info object to footerInfo array
+                }
                 datasets.push({
-                    label: orderProductArray['category'],
-                    data: orderProductArray['products'],
-                    footer: orderProductArray['order_status_info'],
+                    label: orderProductArray.category,
+                    data: orderProductArray.products,
+                    footer: footerInfo,
                     backgroundColor: `rgba(${this.rand(10, 100)}, ${this.rand(20, 200)}, ${this.rand(20, 200)}, 0.6)`,
                 });
             }
@@ -160,12 +168,20 @@ const app = createApp({
                         tooltip: {
                             callbacks: {
                                 footer: function (tooltipItems) {
-                                    console.log(tooltipItems);
-                                    return 'Footer for ' + tooltipItems[0].dataset.footer;
+                                    const datasetIndex = tooltipItems[0].datasetIndex;
+                                    const day = tooltipItems[0].dataIndex; 
+                                    const footerObject = tooltipItems[0].chart.data.datasets[datasetIndex].footer[day];
+                                    let footerString = 'Order statuses: ';
+                                    for (let status in footerObject) {
+                                        footerString += `${status}: ${footerObject[status]}, `;
+                                    }
+                                    footerString = footerString.slice(0, -2);
+                                    return footerString;
                                 }
-
                             }
                         }
+                        
+                        
                     },
                     responsive: true,
                     scales: {
@@ -186,7 +202,6 @@ const app = createApp({
             const productOrderChart = new Chart(productOrderCanvas, config);
         },
         incrementDecrementProductCount(productId, action) {
-            console.log(sessionStorage.getItem('selected_products'));
             let productCount = parseInt(document.getElementById('product_count_' + productId).value);
             if (action == 'increment') {
                 productCount++;
@@ -214,7 +229,6 @@ const app = createApp({
         handleSelectedProductsReload() {
             let selectedProducts = JSON.parse(sessionStorage.getItem('selected_products')) || {};
             Object.entries(selectedProducts).forEach(([productId, productCount]) => {
-                console.log(productId + '=>' + productCount);
                 if (document.getElementById('product_count_' + productId) ?? false) {
                     document.getElementById('product_count_' + productId).value = productCount;
                     document.getElementById('product_' + productId).classList.add('border-info');

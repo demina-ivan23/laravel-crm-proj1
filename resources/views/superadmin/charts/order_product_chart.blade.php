@@ -28,6 +28,7 @@
                                     @foreach ($categories as $category)
                                         <option value="{{ $category->id }}">{{ $category->title }}</option>
                                     @endforeach
+                                    <option value="{{null}}">Without a category</option>
                                 </select>
                             </div>
                             <button class="btn btn-primary pt-0 pb-0" type="submit">Submit</button>
