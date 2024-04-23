@@ -5,9 +5,11 @@ namespace Database\Seeders;
 use App\Models\{
     Product, 
     Order,
+    OrderStatus,
 };
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use Carbon\Carbon;
 
 class OrderSeeder extends Seeder
 {
@@ -22,7 +24,7 @@ class OrderSeeder extends Seeder
             $products->each(function ($product) use ($order) {
                 $order->products()->attach($product, ['quantity' => rand(1, 5)]);
             });
-            $order->customer()->associate($order->customer_id);
+            $order->statuses()->attach(OrderStatus::inRandomOrder()->first()->id, ['explanation' => 'loremus ipsumus', 'expires_at' => Carbon::now()->addDays(rand(1,5)), 'default_order_transition' => null]);
             $order->save();
         });
     }

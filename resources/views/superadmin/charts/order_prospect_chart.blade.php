@@ -37,7 +37,7 @@
         <div class="col-sm-9">
             <div id="order_product_data_wrapper" hidden>
                 @php
-                    $jsonData = json_encode($data[1]);
+                    $jsonData = json_encode($data['order_prospect_chart_info']);
                 @endphp
                 <input type="hidden" id="order_product_data" value="{{$jsonData}}">
             </div>

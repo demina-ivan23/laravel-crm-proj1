@@ -14,9 +14,8 @@ class SuperadminService {
     static function getDashboardData($query)
     {
         $data = [
-            static::getOrderProductChartInfo($query) ?? [],
-            static::getOrderProspectChartInfo($query) ?? [],
-            //
+            'order_product_chart_info' => static::getOrderProductChartInfo($query) ?? [],
+            'order_prospect_chart_info' => static::getOrderProspectChartInfo($query) ?? [],
         ];
         return $data;
     }

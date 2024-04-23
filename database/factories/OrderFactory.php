@@ -20,9 +20,7 @@ class OrderFactory extends Factory
         $customerId = $this->faker->numberBetween(Prospect::min('id'), Prospect::max('id'));
         $customer = Prospect::find($customerId);
         return [
-            'customer_id' => $customerId,
-            'customer_name' => $customer->name,
-            'customer_email' => $customer->email,
+            'customer_id' => $customerId
         ];
     }
 }
