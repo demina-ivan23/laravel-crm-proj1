@@ -52,27 +52,16 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button"
-                                    data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
-                                <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-                                    @if (auth()->user()->is_superadmin)
-                                        <a href="{{ route('superadmin.index') }}" class="dropdown-item">
-                                            Dashboard
-                                        </a>
-                                    @endif
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                        onclick="event.preventDefault();
+                            <li class="nav-item">
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
                                                      document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
+                                    {{ __('Logout') }}
+                                </a>
 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
                             </li>
 
                         @endguest
@@ -107,28 +96,44 @@
                                     <ul class="navbar-nav">
                                         @if (auth()->user()->is_superadmin)
                                             <li class="ml-7">
-                                                <a href="{{route('superadmin.index')}}" class="dropdown-item" style="{{ request()->routeIs('superadmin.index') ? 'color:gray' : '' }}">Superadmin Dashboard</a>
+                                                <a href="{{ route('superadmin.index') }}" class="dropdown-item"
+                                                    style="{{ request()->routeIs('superadmin.index') ? 'color:gray' : '' }}">Superadmin
+                                                    Dashboard</a>
                                             </li>
                                             <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
                                                 <p>Chart Links</p>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{route('superadmin.order_chart')}}" class="dropdown-item" style="{{ request()->routeIs('superadmin.order_chart') ? 'color:gray' : '' }}">Order info page</a>
+                                                <a href="{{ route('superadmin.order_chart') }}" class="dropdown-item"
+                                                    style="{{ request()->routeIs('superadmin.order_chart') ? 'color:gray' : '' }}">Order
+                                                    info page</a>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{route('superadmin.order_product_chart')}}" class="dropdown-item" style="{{ request()->routeIs('superadmin.order_product_chart') ? 'color:gray' : '' }}">Order-Product info page</a>
+                                                <a href="{{ route('superadmin.order_product_chart') }}"
+                                                    class="dropdown-item"
+                                                    style="{{ request()->routeIs('superadmin.order_product_chart') ? 'color:gray' : '' }}">Order-Product
+                                                    info page</a>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{route('superadmin.order_prospect_chart')}}" class="dropdown-item" style="{{ request()->routeIs('superadmin.order_prospect_chart') ? 'color:gray' : '' }}">Order-Prospect info page</a>
+                                                <a href="{{ route('superadmin.order_prospect_chart') }}"
+                                                    class="dropdown-item"
+                                                    style="{{ request()->routeIs('superadmin.order_prospect_chart') ? 'color:gray' : '' }}">Order-Prospect
+                                                    info page</a>
                                             </li>
                                             <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
                                                 <p>Order Status Links</p>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{route('superadmin.order_statuses.index')}}" class="dropdown-item" style="{{ request()->routeIs('superadmin.order_statuses.index') ? 'color:gray' : '' }}">All Order Statuses</a>
+                                                <a href="{{ route('superadmin.order_statuses.index') }}"
+                                                    class="dropdown-item"
+                                                    style="{{ request()->routeIs('superadmin.order_statuses.index') ? 'color:gray' : '' }}">All
+                                                    Order Statuses</a>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{route('superadmin.order_statuses.create')}}" class="dropdown-item" style="{{ request()->routeIs('superadmin.order_statuses.create') ? 'color:gray' : '' }}">Create Order Status</a>
+                                                <a href="{{ route('superadmin.order_statuses.create') }}"
+                                                    class="dropdown-item"
+                                                    style="{{ request()->routeIs('superadmin.order_statuses.create') ? 'color:gray' : '' }}">Create
+                                                    Order Status</a>
                                             </li>
                                         @endif
                                         <li class="nav-item ml-5">

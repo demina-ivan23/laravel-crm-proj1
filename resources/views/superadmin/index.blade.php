@@ -1,11 +1,11 @@
-@extends('superadmin.layouts.superadmin')
+@extends('layouts.app')
 
-@section('superadmin-content')
+@section('content')
     <div class="container">
         <div class="card mt-4">
             <div class="card-body">
 
-                <h4 class="mb-3 d-flex justify-content-center">Draw order charts based on your filters</h4>
+                <h4 class="mb-3 d-flex justify-content-center">Here's the page which shows the performance of the CRM</h4>
                 <div class="row">
                    
                 </div>

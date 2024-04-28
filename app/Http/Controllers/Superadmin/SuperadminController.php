@@ -17,7 +17,10 @@ class SuperadminController extends Controller
         $str_array = explode('.', $routeName);
         $viewName = $str_array[count($str_array)-1];
         $data = SuperadminService::getDashboardData(request()->query());
-        return view('superadmin.charts.' . $viewName, ['data' => $data]);
+        if($viewName != 'index'){
+            return view('superadmin.charts.' . $viewName, ['data' => $data]);
+        }
+        return view('superadmin.index');
     }
 
     public function show(string $id)

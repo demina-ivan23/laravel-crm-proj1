@@ -106,23 +106,23 @@ const app = createApp({
                 this.drawSuperadminProductOrderChart(days, document.getElementById('order_product_data').value ?? []);
                 document.getElementById('product_category').value = queryVars['product_category'] || 'all';
                 el = 'product';
-            } else if(queryVars['order_prospect_chart_to'] != null && queryVars['order_prospect_chart_from'] != null){
+            } else if (queryVars['order_prospect_chart_to'] != null && queryVars['order_prospect_chart_from'] != null) {
                 days = this.getDaysBetweenDates(queryVars['order_prospect_chart_from'], queryVars['order_prospect_chart_to']);
                 this.drawSuperadminProspectOrderChart(days, document.getElementById('order_prospect_data').value ?? [])
                 el = 'prospect';
                 document.getElementById('prospect_state').value = queryVars['prospect_state'] || 'all';
-            } else if(queryVars['order_chart_to'] != null && queryVars['order_chart_from'] != null){
-                days = this.getDaysBetweenDates(queryVars['order_prospect_chart_from'], queryVars['order_prospect_chart_to']);
+            } else if (queryVars['order_chart_to'] != null && queryVars['order_chart_from'] != null) {
+                days = this.getDaysBetweenDates(queryVars['order_chart_from'], queryVars['order_chart_to']);
                 this.drawSuperadminOrderChart(days, document.getElementById('order_data').value ?? []);
             }
-            if(el != ''){
-                document.getElementById('order_'+el+'_chart_from').value = queryVars['order_'+el+'_chart_from'] || '';
-                document.getElementById('order_'+el+'_chart_to').value = queryVars['order_'+el+'_chart_to'] || '';
+            if (el != '') {
+                document.getElementById('order_' + el + '_chart_from').value = queryVars['order_' + el + '_chart_from'] || '';
+                document.getElementById('order_' + el + '_chart_to').value = queryVars['order_' + el + '_chart_to'] || '';
             } else {
                 document.getElementById('order_chart_from').value = queryVars['order_chart_from'] || '';
-                document.getElementById('order_chart_to').value = queryVars['order_chart_to'] || '';              
+                document.getElementById('order_chart_to').value = queryVars['order_chart_to'] || '';
             }
-            
+
 
         },
         getQueryVars() {
@@ -152,7 +152,7 @@ const app = createApp({
                 let footerInfo = [];
                 for (let i = 0; i < orderProductArray.products.length; i++) {
                     let orderStatuses = orderProductArray.order_statuses[i];
-                    let statusInfo = {  }; // Initialize status info object with the day
+                    let statusInfo = {}; // Initialize status info object with the day
                     for (let status in orderStatuses) {
                         // Iterate over each status dynamically and add it to the status info object
                         statusInfo[status] = orderStatuses[status];
@@ -183,7 +183,7 @@ const app = createApp({
                             callbacks: {
                                 footer: function (tooltipItems) {
                                     const datasetIndex = tooltipItems[0].datasetIndex;
-                                    const day = tooltipItems[0].dataIndex; 
+                                    const day = tooltipItems[0].dataIndex;
                                     const footerObject = tooltipItems[0].chart.data.datasets[datasetIndex].footer[day];
                                     let footerString = 'Order statuses: ';
                                     for (let status in footerObject) {
@@ -194,8 +194,8 @@ const app = createApp({
                                 }
                             }
                         }
-                        
-                        
+
+
                     },
                     responsive: true,
                     scales: {
@@ -227,7 +227,7 @@ const app = createApp({
                 let footerInfo = [];
                 for (let i = 0; i < orderProspectArray.customer.length; i++) {
                     let orderStatuses = orderProspectArray.order_statuses[i];
-                    let statusInfo = {  };
+                    let statusInfo = {};
                     for (let status in orderStatuses) {
                         statusInfo[status] = orderStatuses[status];
                     }
@@ -258,7 +258,7 @@ const app = createApp({
                             callbacks: {
                                 footer: function (tooltipItems) {
                                     const datasetIndex = tooltipItems[0].datasetIndex;
-                                    const day = tooltipItems[0].dataIndex; 
+                                    const day = tooltipItems[0].dataIndex;
                                     const footerObject = tooltipItems[0].chart.data.datasets[datasetIndex].footer[day];
                                     let footerString = 'Order statuses: ';
                                     for (let status in footerObject) {
@@ -268,8 +268,8 @@ const app = createApp({
                                     return footerString;
                                 }
                             }
-                        }  
-                        
+                        }
+
                     },
                     responsive: true,
                     scales: {
@@ -287,9 +287,52 @@ const app = createApp({
             const prospectOrderCanvas = document.getElementById('prospectOrderChartCanvas');
             const prospectOrderChart = new Chart(prospectOrderCanvas, config);
         },
-        drawSuperadminOrderChart()
-        {
+        drawSuperadminOrderChart(days, jsonedOrders) {
+            const ordersArray = JSON.parse(jsonedOrders);
+            const daysCount = days.length;
+            if (daysCount == 0) {
+                return;
+            }
+            const labels = days;
+            const datasets = [];
+            for (let orderArray of ordersArray) {
+                datasets.push({
+                    label: orderArray.status,
+                    data: orderArray.orders,
+                    backgroundColor: `rgba(${this.rand(10, 100)}, ${this.rand(20, 200)}, ${this.rand(20, 200)}, 0.6)`,
+                });
+            }
+            console.log(datasets);
+            const data = {
+                labels: labels,
+                datasets: datasets
+            };
+            const config = {
+                type: 'bar',
+                data: data,
+                options: {
+                    plugins: {
+                        title: {
+                            display: true,
+                            text: 'Order Chart'
+                        },
 
+                    },
+                    responsive: true,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true
+                        }
+                    },
+
+                }
+            };
+
+            const orderCanvas = document.getElementById('orderChartCanvas');
+            const orderChart = new Chart(orderCanvas, config);
         },
         incrementDecrementProductCount(productId, action) {
             let productCount = parseInt(document.getElementById('product_count_' + productId).value);
@@ -333,7 +376,7 @@ const app = createApp({
             // Check if selectedProducts is not empty
             if (Object.keys(selectedProducts).length !== 0) {
                 let form = document.getElementById('select_products_form') || null;
-                if(form){
+                if (form) {
                     document.getElementById('selected_products_json').value = sessionStorage.getItem('selected_products');
                     sessionStorage.removeItem('selected_products');
                     form.submit()
@@ -344,12 +387,12 @@ const app = createApp({
 
         },
     },
-        mounted() {
-            this.addListenersToFilterCheckboxes();
-            this.drawSuperadminCharts();
-            this.handleSelectedProductsReload();
-        }
-    });
+    mounted() {
+        this.addListenersToFilterCheckboxes();
+        this.drawSuperadminCharts();
+        this.handleSelectedProductsReload();
+    }
+});
 
 import ExampleComponent from './components/ExampleComponent.vue';
 import { EMPTY_OBJ } from '@vue/shared';

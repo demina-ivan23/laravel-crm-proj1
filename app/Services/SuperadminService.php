@@ -146,7 +146,8 @@ class SuperadminService
             {
                 $statuses = OrderStatus::all();
             } elseif($query['order_status'] != null) {
-                $statuses = OrderStatus::where('title', $query['order_status']);
+                $statuses = OrderStatus::where('id', $query['order_status'])->get();
+                // dd($statuses);
             }
             foreach($statuses as $status){
                 $array[$i] = static::processForOrder($status->title, $status->id, $daysCount, $daysArray); 

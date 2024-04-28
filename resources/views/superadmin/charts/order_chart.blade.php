@@ -43,7 +43,7 @@
                             @endphp
                             <input type="hidden" id="order_data" value="{{$jsonData}}">
                         </div>
-                        <div data-v-409fe714 class="chart-view">
+                        <div class="chart-view">
                             <canvas style="display: block; box-sizing: border-box; height: 228px; width: 456px;" id="orderChartCanvas">
 
                             </canvas>
