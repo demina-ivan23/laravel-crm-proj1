@@ -17,8 +17,8 @@ class OrderStatusService
         if (!$order_status) {
             return 'Order status creation failed, something must have gone wrong';
         }
-        if($data['can_transit_into'] ?? null){
-            foreach($data['can_transit_into'] as $id){
+        if ($data['can_transit_into'] ?? null) {
+            foreach ($data['can_transit_into'] as $id) {
                 $order_status->statuses()->attach($id);
             }
         }
@@ -37,6 +37,14 @@ class OrderStatusService
         try {
             $order_status = static::findOrderStatus($id);
             $order_status->update($data);
+            foreach (OrderStatus::all() as $other_order_status) {
+                $order_status->statuses->contains($other_order_status->id) ? $order_status->statuses()->detach($other_order_status->id) : '';
+            }
+            if ($data['can_transit_into'] ?? null) {
+                foreach ($data['can_transit_into'] as $id) {
+                    $order_status->statuses()->attach($id);
+                }
+            }
             return 'Order status updated successfully';
         } catch (Exception $e) {
             return 'Something went wrong, Exception message: ' . $e->getMessage();

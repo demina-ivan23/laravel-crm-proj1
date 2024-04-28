@@ -54,16 +54,18 @@
                         <input class="form-control" type="text" name="description" id="description"
                             value="{{ $order_status->description }}">
                     </div>
-                    <div class="mb-3">
+                    <div class="mb-3" v-if="!statusIsFinal">
                         <label class="form-label" for="description">Can transit into</label>
-                        <input class="form-control" type="text" name="can_transit_into" id="can_transit_into"
-                            value="{{ $order_status->can_transit_into }}">
-                        <p>Please, type in titles of all statuses that an order with this status can transit to
-                            <strong>
-                                using "," as a separator.
-                            </strong>
-                            Please include only titles of existing statuses.
-                        </p>
+                        @foreach (App\Models\OrderStatus::all()->except($order_status->id) as $other_order_status)
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{ $other_order_status->id }}"
+                                    name="can_transit_into[]"
+                                    {{ $order_status->statuses->contains($other_order_status->id) ? 'checked' : '' }}>
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    {{ $other_order_status->title }}
+                                </label>
+                            </div>
+                        @endforeach
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="first_step_status">First step status</label>
@@ -72,6 +74,19 @@
                             "No" value will not be available at the order creation, only at the order edition.</p>
                         <select class="form-control" name="first_step_status" id="first_step_status">
                             @if ($order_status->first_step_status)
+                                <option value="1">Yes</option>
+                                <option value="0">No</option>
+                            @else
+                                <option value="0">No</option>
+                                <option value="1">Yes</option>
+                            @endif
+                        </select>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="is_final">Is final</label>
+                        <p>**If a status defined as final order with this status cannot transit to another status</p>
+                        <select class="form-control" name="is_final" id="status_is_final" @input="changeStatusIsFinal">
+                            @if ($order_status->is_final)
                                 <option value="1">Yes</option>
                                 <option value="0">No</option>
                             @else

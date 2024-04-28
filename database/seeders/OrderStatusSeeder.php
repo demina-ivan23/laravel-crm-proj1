@@ -38,6 +38,7 @@ class OrderStatusSeeder extends Seeder
             'first_step_status' => true,
             'is_final' => false
         ]);
+        $new->statuses()->attach($pending);
         $new->statuses()->attach($successful);
         $new->statuses()->attach($canceled);
     }
