@@ -104,17 +104,18 @@ const app = createApp({
             if (queryVars['order_product_chart_to'] != null && queryVars['order_product_chart_from'] != null) {
                 days = this.getDaysBetweenDates(queryVars['order_product_chart_from'], queryVars['order_product_chart_to']);
                 this.drawSuperadminProductOrderChart(days, document.getElementById('order_product_data').value ?? []);
-                document.getElementById('product_category').value = queryVars['product_category'] ?? 'all';
+                document.getElementById('product_category').value = queryVars['product_category'] || 'all';
                 el = 'product';
             } else if(queryVars['order_prospect_chart_to'] != null && queryVars['order_prospect_chart_from'] != null){
                 days = this.getDaysBetweenDates(queryVars['order_prospect_chart_from'], queryVars['order_prospect_chart_to']);
                 this.drawSuperadminProspectOrderChart(days, document.getElementById('order_prospect_data').value ?? [])
                 el = 'prospect';
-                document.getElementById('prospect_state').value = queryVars['prospect_state'] ?? 'all';
+                document.getElementById('prospect_state').value = queryVars['prospect_state'] || 'all';
             }
-            
-            document.getElementById('order_'+el+'_chart_from').value = queryVars['order_'+el+'_chart_from'] ?? '';
-            document.getElementById('order_'+el+'_chart_to').value = queryVars['order_'+el+'_chart_to'] ?? '';
+            if(el != ''){
+                document.getElementById('order_'+el+'_chart_from').value = queryVars['order_'+el+'_chart_from'] || '';
+                document.getElementById('order_'+el+'_chart_to').value = queryVars['order_'+el+'_chart_to'] || '';
+            }
             
 
         },
