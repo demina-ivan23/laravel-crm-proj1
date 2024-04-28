@@ -24,7 +24,8 @@ class OrderSeeder extends Seeder
             $products->each(function ($product) use ($order) {
                 $order->products()->attach($product, ['quantity' => rand(1, 5)]);
             });
-            $order->statuses()->attach(OrderStatus::inRandomOrder()->first()->id, ['explanation' => 'loremus ipsumus', 'expires_at' => Carbon::now()->addDays(rand(1,5)), 'default_order_transition' => null]);
+            $order_status = OrderStatus::inRandomOrder()->first();
+            $order->statuses()->attach($order_status->id, ['explanation' => 'loremus ipsumus', 'expires_at' => $order_status->is_final ? null : Carbon::now()->addDays(rand(1,5)), 'default_order_transition' => null]);
             $order->save();
         });
     }
