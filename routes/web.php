@@ -38,6 +38,7 @@ Route::prefix('superadmin')->middleware(['auth', 'superadmin'])->group(function 
     // All superadmin charts are drawn by the index method, thus the code is cleaner  
     Route::get('/order_product_chart', [SuperadminController::class, 'index'])->name('superadmin.order_product_chart');  
     Route::get('/order_prospect_chart', [SuperadminController::class, 'index'])->name('superadmin.order_prospect_chart');
+    Route::get('/order_chart', [SuperadminController::class, 'index'])->name('superadmin.order_chart');
 
     // Order status is the almost the same thing as prospect state or product category, it's difference 
     //from the upper mentioned two is that process of it's creation and modification requires admin access

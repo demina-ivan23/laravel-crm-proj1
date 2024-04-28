@@ -97,7 +97,7 @@ const app = createApp({
 
             return days;
         },
-        drawSuperadminOrderCharts() {
+        drawSuperadminCharts() {
             const queryVars = this.getQueryVars();
             let days = [];
             let el = '';
@@ -111,10 +111,16 @@ const app = createApp({
                 this.drawSuperadminProspectOrderChart(days, document.getElementById('order_prospect_data').value ?? [])
                 el = 'prospect';
                 document.getElementById('prospect_state').value = queryVars['prospect_state'] || 'all';
+            } else if(queryVars['order_chart_to'] != null && queryVars['order_chart_from'] != null){
+                days = this.getDaysBetweenDates(queryVars['order_prospect_chart_from'], queryVars['order_prospect_chart_to']);
+                this.drawSuperadminOrderChart(days, document.getElementById('order_data').value ?? []);
             }
             if(el != ''){
                 document.getElementById('order_'+el+'_chart_from').value = queryVars['order_'+el+'_chart_from'] || '';
                 document.getElementById('order_'+el+'_chart_to').value = queryVars['order_'+el+'_chart_to'] || '';
+            } else {
+                document.getElementById('order_chart_from').value = queryVars['order_chart_from'] || '';
+                document.getElementById('order_chart_to').value = queryVars['order_chart_to'] || '';              
             }
             
 
@@ -281,6 +287,10 @@ const app = createApp({
             const prospectOrderCanvas = document.getElementById('prospectOrderChartCanvas');
             const prospectOrderChart = new Chart(prospectOrderCanvas, config);
         },
+        drawSuperadminOrderChart()
+        {
+
+        },
         incrementDecrementProductCount(productId, action) {
             let productCount = parseInt(document.getElementById('product_count_' + productId).value);
             if (action == 'increment') {
@@ -336,7 +346,7 @@ const app = createApp({
     },
         mounted() {
             this.addListenersToFilterCheckboxes();
-            this.drawSuperadminOrderCharts();
+            this.drawSuperadminCharts();
             this.handleSelectedProductsReload();
         }
     });

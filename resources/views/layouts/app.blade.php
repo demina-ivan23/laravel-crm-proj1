@@ -113,6 +113,9 @@
                                                 <p>Chart Links</p>
                                             </li>
                                             <li class="ml-7">
+                                                <a href="{{route('superadmin.order_chart')}}" class="dropdown-item" style="{{ request()->routeIs('superadmin.order_chart') ? 'color:gray' : '' }}">Order info page</a>
+                                            </li>
+                                            <li class="ml-7">
                                                 <a href="{{route('superadmin.order_product_chart')}}" class="dropdown-item" style="{{ request()->routeIs('superadmin.order_product_chart') ? 'color:gray' : '' }}">Order-Product info page</a>
                                             </li>
                                             <li class="ml-7">

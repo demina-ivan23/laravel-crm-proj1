@@ -18,6 +18,8 @@ class SuperadminService
         $data = [
             'order_product_chart_info' => static::getOrderProductChartInfo($query) ?? [],
             'order_prospect_chart_info' => static::getOrderProspectChartInfo($query) ?? [],
+            'order_chart_info' => static::getOrderChartInfo($query) ?? [],
+            
         ];
         return $data;
     }
@@ -129,4 +131,41 @@ class SuperadminService
         }
         return ['days_count' => $daysCount, 'days_array' => $daysArray];
     }
+    static function getOrderChartInfo($query)
+    {
+        if($query['order_chart_from'] ?? null && $query['order_chart_to'] ?? null)
+        {
+            $order_statuses  = OrderStatus::all();
+            $array = [];
+            $days = static::getDaysCount($query['order_chart_from'], $query['order_chart_to']);
+            $daysCount = $days['days_count'];
+            $daysArray = $days['days_array'];
+            $i = 0;
+            $statuses = [];
+            if($query['order_status'] === 'all')
+            {
+                $statuses = OrderStatus::all();
+            } elseif($query['order_status'] != null) {
+                $statuses = OrderStatus::where('title', $query['order_status']);
+            }
+            foreach($statuses as $status){
+                $array[$i] = static::processForOrder($status->title, $status->id, $daysCount, $daysArray); 
+                $i++;
+            }
+            return $array;
+        }
+        return null;
+    }
+    static function processForOrder(string $status_title, int $status_id, int $daysCount, array $daysArray)
+    {
+            $result = [];
+            $result['status'] = $status_title;
+                    for ($k = 0; $k <= $daysCount; $k++) {
+                        $result['orders'][$k]  = Order::whereHas('statuses', function ($query) use ($status_id) {
+                            $query->where('order_status_id', $status_id);
+                        })->whereDate('created_at', $daysArray[$k])->count(); 
+         }
+         return $result;
+    }
+   
 }

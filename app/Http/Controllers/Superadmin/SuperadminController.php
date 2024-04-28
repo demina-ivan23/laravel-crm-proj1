@@ -13,14 +13,11 @@ class SuperadminController extends Controller
     //superadmins can view and edit ther profile, can access dashboard
     public function index()
     {
+        $routeName = request()->route()->getName();
+        $str_array = explode('.', $routeName);
+        $viewName = $str_array[count($str_array)-1];
         $data = SuperadminService::getDashboardData(request()->query());
-        if(request()->route()->getName() == 'superadmin.index'){
-            return view('superadmin.index', ['data' => $data]);
-        } elseif(request()->routeIs('superadmin.order_product_chart')) {
-            return view('superadmin.charts.order_product_chart', ['data' => $data]);
-        } elseif(request()->routeIs('superadmin.order_prospect_chart')) {
-            return view('superadmin.charts.order_prospect_chart', ['data' => $data]);
-        }
+        return view('superadmin.charts.' . $viewName, ['data' => $data]);
     }
 
     public function show(string $id)
