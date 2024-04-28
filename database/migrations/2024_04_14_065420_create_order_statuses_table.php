@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('description')->nillable();
             $table->boolean('first_step_status')->default(0);
-            $table->text('can_transit_into')->default('');
+            $table->boolean('is_final')->default(0);
             $table->timestamps();
         });
     }

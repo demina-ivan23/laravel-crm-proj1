@@ -20,7 +20,8 @@ const app = createApp({
         return {
             showLeadAddition: false,
             showCustomCategoryInput: false,
-            showCustomProspectStateInput: false
+            showCustomProspectStateInput: false,
+            statusIsFinal: false,
         };
     },
     methods: {
@@ -39,6 +40,10 @@ const app = createApp({
             } else {
                 this.showCustomProspectStateInput = false;
             }
+        },
+        changeStatusIsFinal() {
+            let val = document.getElementById('status_is_final').value;
+            val == true ? this.statusIsFinal = true : this.statusIsFinal = false;
         },
         applyFilters() {
             var selectedFilters = {};
@@ -120,8 +125,8 @@ const app = createApp({
                 document.getElementById('order_' + el + '_chart_from').value = queryVars['order_' + el + '_chart_from'] || '';
                 document.getElementById('order_' + el + '_chart_to').value = queryVars['order_' + el + '_chart_to'] || '';
             } else {
-                document.getElementById('order_chart_from').value = queryVars['order_chart_from'] || '';
-                document.getElementById('order_chart_to').value = queryVars['order_chart_to'] || '';
+                document.getElementById('order_chart_from') ? document.getElementById('order_chart_from').value = queryVars['order_chart_from'] || '' : '';
+                document.getElementById('order_chart_from') ? document.getElementById('order_chart_to').value = queryVars['order_chart_to'] || '' : '';
             }
 
 

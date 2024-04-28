@@ -16,4 +16,8 @@ class OrderStatus extends Model
             ->withPivot('explanation')
             ->withTimestamps();
     }
+    public function statuses()
+    {
+        return $this->belongsToMany(OrderStatus::class, 'order_status_order_status', 'order_status_id_1', 'order_status_id_2')->where('is_final', false);
+    }
 }
