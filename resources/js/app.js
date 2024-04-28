@@ -114,6 +114,7 @@ const app = createApp({
             } else if (queryVars['order_chart_to'] != null && queryVars['order_chart_from'] != null) {
                 days = this.getDaysBetweenDates(queryVars['order_chart_from'], queryVars['order_chart_to']);
                 this.drawSuperadminOrderChart(days, document.getElementById('order_data').value ?? []);
+                document.getElementById('order_status').value = queryVars['order_status'] || 'all';
             }
             if (el != '') {
                 document.getElementById('order_' + el + '_chart_from').value = queryVars['order_' + el + '_chart_from'] || '';
