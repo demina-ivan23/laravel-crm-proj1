@@ -1,7 +1,9 @@
-@extends('superadmin.layouts.superadmin')
 
-@section('superadmin-content')
-
+@extends('layouts.app')
+@section('content')
+    <div class="container">
+        <div class="card mt-4">
+            <div class="card-body">
                 <div class="row">
                 <h4 class="mb-3 d-flex justify-content-center">Product-related chart</h4>
 
@@ -49,5 +51,7 @@
                         </div>
                     </div>
                 </div>
-   
+            </div>
+        </div>
+    </div>
 @endsection
