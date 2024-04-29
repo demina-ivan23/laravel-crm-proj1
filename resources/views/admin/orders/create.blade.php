@@ -2,12 +2,23 @@
 
 @section('content')
     <div class="container">
-        <a href="{{ route('admin.orders.create.select_products', ['prospect' => $prospect]) }}" class="btn btn-light">Go Back To Product Selection</a>
+        <a href="{{ route('admin.orders.create.select_products', ['prospect' => $prospect]) }}" class="btn btn-light">Go Back
+            To Product Selection</a>
+        @if (session('error'))
+            <div class="alert alert-danger">
+                {{ session('error') }}
+            </div>
+        @endif
+        @if (session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
         <div class="card mt-4">
             <div class="card-body">
                 <div class="d-flex">
 
-                    <h2>Make An Order For {{$prospect->name}}</h2>
+                    <h2>Make An Order For {{ $prospect->name }}</h2>
 
                     <div class="ml-auto" style="margin-left: auto">
                         <div class="dropdown">
@@ -57,8 +68,8 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="explanation">Why this status?</label>
-                        <input class="form-control" type="text" name="order_status_explanation" id="order_status_explanation"
-                            placeholder="Write a short description">
+                        <input class="form-control" type="text" name="order_status_explanation"
+                            id="order_status_explanation" placeholder="Write a short description">
                     </div>
                     <div class="mb-3">
                         <label for="default_order_transition" class="form-label">Choose a default order transition
@@ -70,7 +81,8 @@
                             @endforeach
                         </select>
                         <p style="font-size: 0.9em">The order will automaticaly transit to the chosen status if it reaches
-                            it's expiery date. If no default transitoin status chosen, upon reaching it's expiery date, the order will be
+                            it's expiery date. If no default transitoin status chosen, upon reaching it's expiery date, the
+                            order will be
                             soft-deleted.</p>
                     </div>
                     <div class="mb-3">

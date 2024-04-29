@@ -3,7 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\{
-    Product, 
+    Product,
     Order,
     OrderStatus,
 };
@@ -25,8 +25,14 @@ class OrderSeeder extends Seeder
                 $order->products()->attach($product, ['quantity' => rand(1, 5)]);
             });
             $order_status = OrderStatus::inRandomOrder()->first();
-            $order->statuses()->attach($order_status->id, ['explanation' => 'loremus ipsumus', 'expires_at' => $order_status->is_final ? null : Carbon::now()->addDays(rand(1,5)), 'default_order_transition' => null]);
+            $order->statuses()->attach($order_status->id, ['explanation' => 'loremus ipsumus tyuertheilwrfgdiugdsuygsdukfygsduifghsdfgsduygfdsguysdfuioiudsfhgildsfhgioudfyhgiudsfhglidusfhgsidugh', 'expires_at' => $order_status->is_final ? null : Carbon::now()->addDays(rand(1, 5)), 'default_order_transition' => null]);
             $order->save();
+            if (!$order_status->is_final) {
+                sleep(1);
+                $order_status = $order_status->statuses->random()->first();
+                $order->statuses()->attach($order_status->id, ['explanation' => 'loremus ipsumus tyuertheilwrfgdiugdsuygsdukfygsduifghsdfgsduygfdsguysdfuioiudsfhgildsfhgioudfyhgiudsfhglidusfhgsidugh', 'expires_at' => $order_status->is_final ? null : Carbon::now()->addDays(rand(1, 5)), 'default_order_transition' => null]);
+                $order->save();
+            }
         });
     }
 }

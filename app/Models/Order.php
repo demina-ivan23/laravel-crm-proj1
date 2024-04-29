@@ -25,7 +25,7 @@ class Order extends Model
     public function statuses()
     {
         return $this->belongsToMany(OrderStatus::class, 'order_status_transition', 'order_id', 'order_status_id')
-            ->withPivot('explanation')
+            ->withPivot('explanation', 'expires_at')
             ->withTimestamps();
     }
 

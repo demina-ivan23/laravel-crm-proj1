@@ -9,7 +9,7 @@ class OrderStatus extends Model
 {
     use HasFactory;
     protected $guarded = ['id'];
-
+    public $timestamps = false;
     public function orders()
     {
         return $this->belongsToMany(Order::class, 'order_status_transition', 'order_status_id', 'order_id')

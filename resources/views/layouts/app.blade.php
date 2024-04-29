@@ -193,6 +193,7 @@
 
                 </div>
             </div>
+            <a href="#" onclick="window.history.back();"class="btn btn-light ml-5">Go Back</a>
             @yield('content')
         </main>
     </div>

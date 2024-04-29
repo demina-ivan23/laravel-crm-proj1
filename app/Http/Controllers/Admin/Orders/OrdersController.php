@@ -3,13 +3,14 @@
 namespace App\Http\Controllers\Admin\Orders;
 
 use App\Models\Order;
+use App\Models\Prospect;
 use Illuminate\Http\Request;
 use App\Services\OrderService;
 use App\Services\ProductService;
 use App\Services\ProspectService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Orders\StoreOrderRequest;
-use App\Models\Prospect;
+use App\Http\Requests\Orders\UpdateOrderRequest;
 
 class OrdersController extends Controller
 {
@@ -56,14 +57,27 @@ class OrdersController extends Controller
      */
     public function show(string $id)
     {
-        $prospect = ProspectService::findProspect($id);
-        $orders = Order::where('customer_id', $id)->latest()->paginate(5);
-        return view('admin.orders.show', ['orders' => $orders, 'prospect' => $prospect]);
+      $order = OrderService::findOrder($id);
+      return view('admin.orders.show', ['order' => $order]);
     }
+
+    public function edit(string $id){
+        $order = Order::findOrFail($id);
+        return view('admin.orders.edit', ['order', $order]);
+    }
+
+    public function update(string $id, UpdateOrderRequest $request)
+    {
+        $data = $request->all();
+        $data['order_id'] = $id;
+        $order = OrderService::updateOrder($data); 
+    }
+
 
     /**
      * Remove the specified resource from storage.
      */
+
     // public function destroy(string $id)
     // {
     //     $order = Order::find($id);

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin\Prospects;
 
+use App\Models\Order;
 use App\Models\Prospect;
 use App\Mappers\DTOMapper;
 use Illuminate\Http\Request;
@@ -13,7 +14,7 @@ use App\Http\Requests\Prospects\UpdateProspectRequest;
 class ProspectsController extends Controller
 
 {
-  
+
     /**
      * Display a listing of the resource.
      */
@@ -52,8 +53,14 @@ class ProspectsController extends Controller
      */
     public function show($id)
     {
-        $prospect = ProspectService::findProspect($id);
-        return view('admin.prospects.show', ['prospect' => $prospect]);
+        if (request()->routeIs('admin.prospects.show')) {
+            $prospect = ProspectService::findProspect($id);
+            return view('admin.prospects.show', ['prospect' => $prospect]);
+        } elseif (request()->routeIs('admin.prospects.show-orders')) {
+            $prospect = ProspectService::findProspect($id);
+            $orders = Order::where('customer_id', $id)->latest()->paginate(5);
+            return view('admin.prospects.show-orders', ['orders' => $orders, 'prospect' => $prospect]);
+        }
     }
 
     /**

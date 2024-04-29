@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('description')->nillable();
             $table->boolean('first_step_status')->default(0);
             $table->boolean('is_final')->default(0);
-            $table->timestamps();
         });
     }
 
