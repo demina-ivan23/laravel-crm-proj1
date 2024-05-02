@@ -37,7 +37,6 @@ class Kernel extends HttpKernel
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \App\Http\Middleware\VerifyCsrfToken::class,
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
-            \App\Http\Middleware\RedirectIfRoot::class,
         ],
 
         'api' => [
@@ -67,7 +66,6 @@ class Kernel extends HttpKernel
         'superadmin' => \App\Http\Middleware\IsSuperadmin::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
-        'redirect.if.root' => \App\Http\Middleware\RedirectIfRoot::class,
         'redirect.if.register' => \App\Http\Middleware\RedirectIfRegister::class,
     ];
 }

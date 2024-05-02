@@ -18,13 +18,13 @@ use App\Http\Controllers\Superadmin\OrderStatusController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Auth::routes();
 
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::redirect('/', '/home');
 
 //Superadmin routes
 Route::prefix('superadmin')->middleware(['auth', 'superadmin'])->group(function () {
@@ -60,6 +60,6 @@ Route::prefix('orders')->middleware('auth')->name('admin.orders.')->group(base_p
 
 
 
-//Graph route is for a page that determines prospects creation, 
+//Graph route is for a page that measures prospects creation, 
 // product creation and order creation speed via testing
 Route::get('/graphs', [GraphController::class, 'index'])->name('graphs.index');
