@@ -15,9 +15,21 @@
         @endif
     </div>
     <div class="card-body d-flex">
-        <a href="{{ route('admin.prospects.show', ['prospect' => $order->customer]) }}"
-            class="dropdown-item justify-center">View "{{ $order->customer->name }}"</a>
-        <a href="{{ route('admin.orders.show', ['order' => $order]) }}"
-            class="dropdown-item justify-center">View this order</a>
+        <div class="dropdown">
+            <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Actions
+            </button>
+            <ul class="dropdown-menu">
+                <a href="{{ route('admin.prospects.show', ['prospect' => $order->customer]) }}"
+                    class="dropdown-item justify-center">View "{{ $order->customer->name }}"</a>
+                <a href="{{ route('admin.orders.show', ['order' => $order]) }}"
+                    class="dropdown-item justify-center">View
+                    this order</a>
+                <a href="{{ route('admin.orders.edit', ['order' => $order]) }}"
+                    class="dropdown-item justify-center">Edit
+                    this order</a>
+            </ul>
+        </div>
     </div>
 </div>

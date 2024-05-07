@@ -30,11 +30,10 @@ class OrdersController extends Controller
     {
         $products = ProductService::getAllProducts();
         $prospect = ProspectService::findProspect($id);
-        if(request()->routeIs('admin.orders.create.select_products')){
+        if (request()->routeIs('admin.orders.create.select_products')) {
             return view('admin.orders.select_products', ['products' => $products, 'prospect' => $prospect]);
         }
-        if(request()->routeIs('admin.orders.create'))
-        {
+        if (request()->routeIs('admin.orders.create')) {
             return view('admin.orders.create', ['prospect' => $prospect]);
         }
     }
@@ -46,7 +45,7 @@ class OrdersController extends Controller
     {
         $prospect = ProspectService::findProspect($id);
         $order = OrderService::storeOrder($prospect, $request->all());
-        if(!$order){
+        if (!$order) {
             return redirect('/prospects/prospects')->with('error', 'Something went wrong');
         }
         return redirect('/prospects/prospects')->with('success', 'Order Successful');
@@ -57,20 +56,26 @@ class OrdersController extends Controller
      */
     public function show(string $id)
     {
-      $order = OrderService::findOrder($id);
-      return view('admin.orders.show', ['order' => $order]);
+        $order = Order::findOrFail($id);
+        return view('admin.orders.show', ['order' => $order]);
     }
 
-    public function edit(string $id){
+    public function edit(string $id)
+    {
         $order = Order::findOrFail($id);
-        return view('admin.orders.edit', ['order', $order]);
+        return view('admin.orders.edit', ['order' => $order]);
     }
 
     public function update(string $id, UpdateOrderRequest $request)
     {
         $data = $request->all();
         $data['order_id'] = $id;
-        $order = OrderService::updateOrder($data); 
+        $result = OrderService::updateOrder($data);
+        if (str_contains($result, 'successful')) {
+            return redirect()->route('admin.orders.dashboard')->with('success', $result);
+        } else {
+            return redirect()->back()->with('error', $result);
+        }
     }
 
 

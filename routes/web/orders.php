@@ -12,5 +12,7 @@ Route::get('/{prospect}/create', [OrdersController::class, 'create'])->name('cre
 
 Route::get('/{order}/edit', [OrdersController::class, 'edit'])->name('edit');
 
-Route::post('/{prospect}/store', [OrdersController::class, 'store'])->name('store');
+Route::post('/{prospect}', [OrdersController::class, 'store'])->name('store');
+
+Route::put('/{order}', [OrdersController::class, 'update'])->name('update');
 
