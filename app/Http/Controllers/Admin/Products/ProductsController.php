@@ -16,7 +16,7 @@ class ProductsController extends Controller
     {
         $categories = ProductService::getAllCategories();
         $products = ProductService::getAllProducts();
-        return view('admin.products.index', [
+        return view('user.products.index', [
             'products' => $products,
             'categories' => $categories
         ]);
@@ -25,7 +25,7 @@ class ProductsController extends Controller
 
     public function create()
     {
-       return view('admin.products.create');
+       return view('user.products.create');
     }
 
   
@@ -41,7 +41,7 @@ class ProductsController extends Controller
     public function show(string $id)
     {
         $product = ProductService::findProduct($id);
-        return view('admin.products.show', ['product' => $product]);
+        return view('user.products.show', ['product' => $product]);
     }
 
     /**
@@ -50,7 +50,7 @@ class ProductsController extends Controller
     public function edit(string $id)
     {
         $product = ProductService::getProductById($id);
-        return view('admin.products.edit', ['product' => $product]);
+        return view('user.products.edit', ['product' => $product]);
 
     }
 

@@ -16,7 +16,7 @@ class GraphController extends Controller
     public function index()
     {
        $timeTakenArray = TimeTakenForOrder::all();
-        return view('admin.graphs.index', ['timeTakenArray' => $timeTakenArray]);
+        return view('user.graphs.index', ['timeTakenArray' => $timeTakenArray]);
     }
 
     /**

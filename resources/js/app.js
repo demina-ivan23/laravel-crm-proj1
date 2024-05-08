@@ -102,23 +102,23 @@ const app = createApp({
 
             return days;
         },
-        drawSuperadminCharts() {
+        drawAdminCharts() {
             const queryVars = this.getQueryVars();
             let days = [];
             let el = '';
             if (queryVars['order_product_chart_to'] != null && queryVars['order_product_chart_from'] != null) {
                 days = this.getDaysBetweenDates(queryVars['order_product_chart_from'], queryVars['order_product_chart_to']);
-                this.drawSuperadminProductOrderChart(days, document.getElementById('order_product_data').value ?? []);
+                this.drawAdminProductOrderChart(days, document.getElementById('order_product_data').value ?? []);
                 document.getElementById('product_category').value = queryVars['product_category'] || 'all';
                 el = 'product';
             } else if (queryVars['order_prospect_chart_to'] != null && queryVars['order_prospect_chart_from'] != null) {
                 days = this.getDaysBetweenDates(queryVars['order_prospect_chart_from'], queryVars['order_prospect_chart_to']);
-                this.drawSuperadminProspectOrderChart(days, document.getElementById('order_prospect_data').value ?? [])
+                this.drawAdminProspectOrderChart(days, document.getElementById('order_prospect_data').value ?? [])
                 el = 'prospect';
                 document.getElementById('prospect_state').value = queryVars['prospect_state'] || 'all';
             } else if (queryVars['order_chart_to'] != null && queryVars['order_chart_from'] != null) {
                 days = this.getDaysBetweenDates(queryVars['order_chart_from'], queryVars['order_chart_to']);
-                this.drawSuperadminOrderChart(days, document.getElementById('order_data').value ?? []);
+                this.drawAdminOrderChart(days, document.getElementById('order_data').value ?? []);
                 document.getElementById('order_status').value = queryVars['order_status'] || 'all';
             }
             if (el != '') {
@@ -145,7 +145,7 @@ const app = createApp({
         rand(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         },
-        drawSuperadminProductOrderChart(days, jsonedProducts) {
+        drawAdminProductOrderChart(days, jsonedProducts) {
             const orderProductsArray = JSON.parse(jsonedProducts);
             const daysCount = days.length;
             if (daysCount == 0) {
@@ -219,7 +219,7 @@ const app = createApp({
             const productOrderCanvas = document.getElementById('productOrderChartCanvas');
             const productOrderChart = new Chart(productOrderCanvas, config);
         },
-        drawSuperadminProspectOrderChart(days, jsonedProspects) {
+        drawAdminProspectOrderChart(days, jsonedProspects) {
             const orderProspectsArray = JSON.parse(jsonedProspects);
             const daysCount = days.length;
             if (daysCount == 0) {
@@ -293,7 +293,7 @@ const app = createApp({
             const prospectOrderCanvas = document.getElementById('prospectOrderChartCanvas');
             const prospectOrderChart = new Chart(prospectOrderCanvas, config);
         },
-        drawSuperadminOrderChart(days, jsonedOrders) {
+        drawAdminOrderChart(days, jsonedOrders) {
             const ordersArray = JSON.parse(jsonedOrders);
             const daysCount = days.length;
             if (daysCount == 0) {
@@ -395,7 +395,7 @@ const app = createApp({
     },
     mounted() {
         this.addListenersToFilterCheckboxes();
-        this.drawSuperadminCharts();
+        this.drawAdminCharts();
         this.handleSelectedProductsReload();
     }
 });

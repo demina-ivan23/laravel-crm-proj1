@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Superadmin\OrderStatus;
+namespace App\Http\Requests\Admin\OrderStatus;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -11,7 +11,7 @@ class UpdateOrderStatusRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(auth()->user()->is_superadmin)
+        if(auth()->user()->is_Admin)
         {
             return true;
         }

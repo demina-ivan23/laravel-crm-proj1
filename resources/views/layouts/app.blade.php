@@ -94,45 +94,45 @@
                                 </a>
                                 <div class="collapse" id="userMenu">
                                     <ul class="navbar-nav">
-                                        @if (auth()->user()->is_superadmin)
+                                        @if (auth()->user()->is_admin)
                                             <li class="ml-7">
-                                                <a href="{{ route('superadmin.index') }}" class="dropdown-item"
-                                                    style="{{ request()->routeIs('superadmin.index') ? 'color:gray' : '' }}">Superadmin
+                                                <a href="{{ route('admin.index') }}" class="dropdown-item"
+                                                    style="{{ request()->routeIs('admin.index') ? 'color:gray' : '' }}">Admin
                                                     Dashboard</a>
                                             </li>
                                             <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
                                                 <p>Chart Links</p>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('superadmin.order_chart') }}" class="dropdown-item"
-                                                    style="{{ request()->routeIs('superadmin.order_chart') ? 'color:gray' : '' }}">Order
+                                                <a href="{{ route('admin.order_chart') }}" class="dropdown-item"
+                                                    style="{{ request()->routeIs('admin.order_chart') ? 'color:gray' : '' }}">Order
                                                     info page</a>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('superadmin.order_product_chart') }}"
+                                                <a href="{{ route('admin.order_product_chart') }}"
                                                     class="dropdown-item"
-                                                    style="{{ request()->routeIs('superadmin.order_product_chart') ? 'color:gray' : '' }}">Order-Product
+                                                    style="{{ request()->routeIs('admin.order_product_chart') ? 'color:gray' : '' }}">Order-Product
                                                     info page</a>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('superadmin.order_prospect_chart') }}"
+                                                <a href="{{ route('admin.order_prospect_chart') }}"
                                                     class="dropdown-item"
-                                                    style="{{ request()->routeIs('superadmin.order_prospect_chart') ? 'color:gray' : '' }}">Order-Prospect
+                                                    style="{{ request()->routeIs('admin.order_prospect_chart') ? 'color:gray' : '' }}">Order-Prospect
                                                     info page</a>
                                             </li>
                                             <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
                                                 <p>Order Status Links</p>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('superadmin.order_statuses.index') }}"
+                                                <a href="{{ route('admin.order_statuses.index') }}"
                                                     class="dropdown-item"
-                                                    style="{{ request()->routeIs('superadmin.order_statuses.index') ? 'color:gray' : '' }}">All
+                                                    style="{{ request()->routeIs('admin.order_statuses.index') ? 'color:gray' : '' }}">All
                                                     Order Statuses</a>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('superadmin.order_statuses.create') }}"
+                                                <a href="{{ route('admin.order_statuses.create') }}"
                                                     class="dropdown-item"
-                                                    style="{{ request()->routeIs('superadmin.order_statuses.create') ? 'color:gray' : '' }}">Create
+                                                    style="{{ request()->routeIs('admin.order_statuses.create') ? 'color:gray' : '' }}">Create
                                                     Order Status</a>
                                             </li>
                                         @endif
@@ -154,7 +154,7 @@
                                 <div class="collapse" id="productsMenu">
                                     <ul class="navbar-nav">
                                         <li class="nav-item ml-5">
-                                            <a href="{{ route('admin.products.dashboard') }}" class="nav-link">Manage</a>
+                                            <a href="{{ route('user.products.dashboard') }}" class="nav-link">Manage</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -168,7 +168,7 @@
                                 <div class="collapse" id="prospectsMenu">
                                     <ul class="navbar-nav">
                                         <li class="nav-item ml-5">
-                                            <a href="{{ route('admin.prospects.dashboard') }}"
+                                            <a href="{{ route('user.prospects.dashboard') }}"
                                                 class="nav-link">Manage</a>
                                         </li>
                                     </ul>
@@ -183,7 +183,7 @@
                                 <div class="collapse" id="ordersMenu">
                                     <ul class="navbar-nav">
                                         <li class="nav-item ml-5">
-                                            <a href="{{ route('admin.orders.dashboard') }}" class="nav-link">Manage</a>
+                                            <a href="{{ route('user.orders.dashboard') }}" class="nav-link">Manage</a>
                                         </li>
                                     </ul>
                                 </div>

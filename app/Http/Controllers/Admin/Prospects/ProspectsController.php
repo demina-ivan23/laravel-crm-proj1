@@ -23,7 +23,7 @@ class ProspectsController extends Controller
         $states = ProspectService::getAllStates();
         $prospects = ProspectService::getAllProspects();
         return view(
-            'admin.prospects.index',
+            'user.prospects.index',
             [
                 'prospects' => $prospects,
                 'states' => $states
@@ -36,7 +36,7 @@ class ProspectsController extends Controller
      */
     public function create()
     {
-        return view('admin.prospects.create');
+        return view('user.prospects.create');
     }
 
     /**
@@ -45,7 +45,7 @@ class ProspectsController extends Controller
     public function store(StoreProspectRequest $request)
     {
         $prospect = ProspectService::storeProspect($request->all());
-        return redirect()->route('admin.prospects.dashboard', ['prospect' => $prospect])->with('success', 'Prospect created successfully');
+        return redirect()->route('user.prospects.dashboard', ['prospect' => $prospect])->with('success', 'Prospect created successfully');
     }
 
     /**
@@ -53,13 +53,13 @@ class ProspectsController extends Controller
      */
     public function show($id)
     {
-        if (request()->routeIs('admin.prospects.show')) {
+        if (request()->routeIs('user.prospects.show')) {
             $prospect = ProspectService::findProspect($id);
-            return view('admin.prospects.show', ['prospect' => $prospect]);
-        } elseif (request()->routeIs('admin.prospects.show-orders')) {
+            return view('user.prospects.show', ['prospect' => $prospect]);
+        } elseif (request()->routeIs('user.prospects.show-orders')) {
             $prospect = ProspectService::findProspect($id);
             $orders = Order::where('customer_id', $id)->latest()->paginate(5);
-            return view('admin.prospects.show-orders', ['orders' => $orders, 'prospect' => $prospect]);
+            return view('user.prospects.show-orders', ['orders' => $orders, 'prospect' => $prospect]);
         }
     }
 
@@ -69,7 +69,7 @@ class ProspectsController extends Controller
     public function edit($id)
     {
         $prospect = ProspectService::findProspect($id);
-        return view('admin.prospects.edit', ['prospect' => $prospect]);
+        return view('user.prospects.edit', ['prospect' => $prospect]);
     }
 
     /**
