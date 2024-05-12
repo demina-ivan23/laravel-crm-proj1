@@ -1,0 +1,12 @@
+- Order Updating; // in progress
+- clean up the code mess (refactor the fucking code); //next
+- Prospect state transition; 
+- Set users's timezone;
+- History or Message model for prospects' history tracking;
+- User routes (for superadmin); 
+- change API logic;
+- dashboard for superadmins (app's performance data, total number of prospects/orders created, types of products bought etc.);
+- create tests;
+
+
+                                         Remember to do small separate commits.

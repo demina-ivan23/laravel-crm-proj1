@@ -1,0 +1,57 @@
+!!ROUTING!!
+ - General stuff:
+Use "use ClasessFolder\{ Class, Class ... }"
+
+Specify any custom routes before Route::resource
+
+Group routes inside of groups if possible
+
+Use parameter validation
+
+Use RouteServiceProvider to map over the API;
+
+
+php artisan route:clear each time you change something in routes files
+
+ - Use model binding:
+
+Recieve a model's instance instead of an id of an instance in your controller's methods
+php artisan make:controller --model=Model
+
+If you want to use something else as an id [for your routes] instead of the default one,
+you can define that in routes as {model:the-param-you-want} or
+in the model itself by defining getRoutingKeyName() in the desired 
+model
+
+!!ROLES AND PERMISSIONS!!
+ - General:
+
+php artisan make:middleware MiddlewareName
+
+for blade you can use @can('ability') @endcan; ability is defined in 
+AuthServiceProvider or in a Policy with the name of the resource that
+requires permission validation
+
+!!SIX QUICK NOTES FOR A BETTER CODE!!
+
+1. Prevent unfinished work.
+2. Enforce coding standarts.
+3. Document chosen patterns.
+4. Review new patterns early.
+5. Never expose refractoring.
+6. Assume unexpected change.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
