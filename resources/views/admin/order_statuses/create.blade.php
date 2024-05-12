@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <a href="{{ route('superuser.order_statuses.index') }}" class="btn btn-light">Go Back To Dashboard</a>
+        <a href="{{ route('admin.order_statuses.index') }}" class="btn btn-light">Go Back To Dashboard</a>
         <div class="card mt-4">
             <div class="card-body">
                 <div class="d-flex">
@@ -16,7 +16,7 @@
                                 Actions
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('superuser.order_statuses.index') }}">All Order
+                                <li><a class="dropdown-item" href="{{ route('admin.order_statuses.index') }}">All Order
                                         Statuses</a></li>
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
@@ -36,7 +36,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('superuser.order_statuses.store') }}" method="POST">
+            <form action="{{ route('admin.order_statuses.store') }}" method="POST">
                 @csrf
 
                 <div class="p-3">

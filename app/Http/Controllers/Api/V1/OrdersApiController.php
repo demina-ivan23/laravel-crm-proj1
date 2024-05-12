@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Order;
 use Illuminate\Http\Request;
 use App\Services\OrderService;
 use App\Services\ProspectService;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Admin\Orders\OrdersController;
 
 class OrdersApiController extends Controller
 {
@@ -38,7 +38,7 @@ class OrdersApiController extends Controller
      */
     public function show(string $id)
     {
-        $order = OrderService::findOrder($id);
+        $order = Order::findOrFail($id);
         return response()->json(['order' => $order]);
     }
 

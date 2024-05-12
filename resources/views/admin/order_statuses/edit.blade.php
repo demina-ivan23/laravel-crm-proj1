@@ -5,7 +5,7 @@
         @if (session('error'))
             <div class="alert alert-danger">{{ session('error') }}</div>
         @endif
-        <a href="{{ route('superuser.order_statuses.index') }}" class="btn btn-light">Go Back To Dashboard</a>
+        <a href="{{ route('admin.order_statuses.index') }}" class="btn btn-light">Go Back To Dashboard</a>
         <div class="card mt-4">
             <div class="card-body">
                 <div class="d-flex">
@@ -19,9 +19,9 @@
                                 Actions
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('superuser.order_statuses.index') }}">All Order
+                                <li><a class="dropdown-item" href="{{ route('admin.order_statuses.index') }}">All Order
                                         Statuses</a></li>
-                                <li><a class="dropdown-item" href="{{ route('superuser.order_statuses.create') }}">Create A
+                                <li><a class="dropdown-item" href="{{ route('admin.order_statuses.create') }}">Create A
                                         New Order Status</a></li>
                             </ul>
                         </div>
@@ -39,7 +39,7 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('superuser.order_statuses.update', ['order_status' => $order_status]) }}"
+            <form action="{{ route('admin.order_statuses.update', ['order_status' => $order_status]) }}"
                 method="POST">
                 @csrf
                 @method('PUT')

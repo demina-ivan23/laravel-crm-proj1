@@ -3,13 +3,12 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
-    GraphController,
-    Admin\UserController,
-    Admin\Orders\OrdersController,
-    Admin\Prospects\ProspectsController,
-    Admin\Products\ProductsController,
-    Admin\AdminController,
-    Admin\OrderStatusController
+    User\UserController,
+    User\Orders\OrdersController,
+    User\Prospects\ProspectsController,
+    User\Products\ProductsController,
+    User\AdminController,
+    User\OrderStatusController
 };
 
 /*
@@ -73,4 +72,4 @@ Route::prefix('users/')->middleware('auth')->name('user.')->group(function () {
 
 //Graph route is for a page that measures prospects creation, 
 // product creation and order creation speed via testing
-Route::get('/graphs', [GraphController::class, 'index'])->name('graphs.index');
+// Route::get('/graphs', [GraphController::class, 'index'])->name('graphs.index');

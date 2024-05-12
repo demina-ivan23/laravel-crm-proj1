@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers\User;
 
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -9,16 +9,16 @@ use App\Http\Controllers\Controller;
 
 class UserController extends Controller
 {
-    //Users can only view their profiles, whereas other methods are accessible for Admins only 
+    //Users can only view their profiles, whereas other methods are accessible for admins only 
 
     public function index()
     {
-        return view('superuser.users.index', ['users' => User::latest()->get()]);
+        return view('users.dashboard', ['users' => User::latest()->get()]);
     }
 
     public function create()
     {
-        return view('superuser.users.create');
+        return view('users.create');
     }
 
     public function store(Request $request)
@@ -32,12 +32,12 @@ class UserController extends Controller
 
     public function show(string $id)
     {
-        return view('superuser.users.show', ['user' => UserService::findUser($id)]);
+        return view('users.show', ['user' => UserService::findUser($id)]);
     }
 
     public function edit(string $id)
     {
-        return view('superuser.users.edit', ['user' => UserService::findUser($id)]);
+        return view('users.edit', ['user' => UserService::findUser($id)]);
     }
     
     public function update(Request $request, string $id)
@@ -58,7 +58,7 @@ class UserController extends Controller
         //Only soft-deleting should be in action here
         $user = UserService::findUser($id);
         $user->delete();
-        return redirect()->route('superuser.users.dashboard')->with('success', 'User trashed successfully');
+        return redirect()->route('users.dashboard')->with('success', 'User trashed successfully');
     }
 
     //Because we use soft deletes we need one more method for restoing the user
@@ -68,7 +68,7 @@ class UserController extends Controller
         //In this case $user is searched only amongst trashed users, so if this user exists but is not trashed, 
         // an action will be aborted with 404 code;
         $user->restore();
-        return redirect()->route('superuser.users.dashboard')->with('success', 'User restored successfully');
+        return redirect()->route('users.dashboard')->with('success', 'User restored successfully');
     }
 
     //Additionaly, if we need to delete the user permanently, we have to declare a destroy method

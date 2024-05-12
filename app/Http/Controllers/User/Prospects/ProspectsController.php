@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin\Prospects;
+namespace App\Http\Controllers\User\Prospects;
 
 use App\Models\Order;
 use App\Models\Prospect;

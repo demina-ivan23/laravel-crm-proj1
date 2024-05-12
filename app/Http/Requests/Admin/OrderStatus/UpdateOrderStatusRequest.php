@@ -11,7 +11,7 @@ class UpdateOrderStatusRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(auth()->user()->is_Admin)
+        if(auth()->user()->is_admin)
         {
             return true;
         }
