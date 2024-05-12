@@ -1,11 +1,11 @@
-- Order Updating; // in progress
-- clean up the code mess (refactor the fucking code); //next
+- refactor the code;
+- User Permissions: create roles table and permissions table; add user-roles relationship;
 - Prospect state transition; 
 - Set users's timezone;
 - History or Message model for prospects' history tracking;
-- User routes (for superadmin); 
+- User routes (for admin); 
 - change API logic;
-- dashboard for superadmins (app's performance data, total number of prospects/orders created, types of products bought etc.);
+- dashboard for admins (app's performance data, total number of prospects/orders created, types of products bought etc.);
 - create tests;
 
 

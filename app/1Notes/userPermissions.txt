@@ -1,0 +1,13 @@
+User Permissions:
+
+ Prospects:
+ prospect-read, prospect-write, prospect-edit
+
+ Products:
+ prospect-read, product-write, product-edit
+
+ Orders:
+ order-read, order-write, order-edit
+
+ Order charts: 
+ order-chart-read
