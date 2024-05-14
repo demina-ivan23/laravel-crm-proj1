@@ -14,20 +14,10 @@ class Prospect extends Model
 
     protected $guarded = [];
 
-    public function getDateForHumansAttribute()
+    public function getCreatedAtHumanizedAttribute()
     {
       return date('F d, Y', strtotime($this->created_at)); 
     }
-
-    public function getProspectStateAttribute()
-    {
-      $state = ProspectService::getCustomStateTitle($this->state_id);
-      if(!$state){
-        return 'undefined';
-      }
-      return $state;
-    }
-
     public function orders(){
       return $this->hasMany(Order::class, 'customer_id');
     }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\User\Products;
 
 
+use App\Models\Product;
 use App\Services\ProductService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Products\StoreProductRequest;
@@ -16,10 +17,7 @@ class ProductsController extends Controller
     {
         $categories = ProductService::getAllCategories();
         $products = ProductService::getAllProducts();
-        return view('user.products.index', [
-            'products' => $products,
-            'categories' => $categories
-        ]);
+        return view('user.products.index', compact('products', 'categories'));
     }
 
 
@@ -32,47 +30,43 @@ class ProductsController extends Controller
     public function store(StoreProductRequest $request)
     {
         $product = ProductService::storeProduct($request->all());
-        return redirect('/products/products')->with('success', 'Product created successfully');
+        return redirect()->route('user.products.dashboard')->with('success', 'Product created successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        $product = ProductService::findProduct($id);
-        return view('user.products.show', ['product' => $product]);
+        return view('user.products.show', compact('product'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(Product $product)
     {
-        $product = ProductService::getProductById($id);
-        return view('user.products.edit', ['product' => $product]);
+        return view('user.products.edit', compact('product'));
 
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProductRequest $request, string $id)
+    public function update(UpdateProductRequest $request, Product $product)
     {
-        $data = $request->all();
-        $data['product_id'] = $id;
-        $product = ProductService::updateProduct($data);
+        $product = ProductService::updateProduct($request->all(), $product);
         if($product){
-            return redirect('/products/products')->with('success', 'Product updated successfully');
+            return redirect()->route('user.products.dashboard')->with('success', 'Product updated successfully');
         } else {
-            return redirect('/products/products')->with('erorr', 'Something went wrong'); 
+            return redirect()->route('user.products.dashboard')->with('erorr', 'Something went wrong'); 
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    // public function destroy(string $id)
+    // public function destroy(Product $product)
     // {
     //     $product = ProductService::getProductById($id);
 

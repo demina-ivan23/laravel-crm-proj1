@@ -26,10 +26,9 @@ class OrdersController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($id)
+    public function create(Prospect $prospect)
     {
         $products = ProductService::getAllProducts();
-        $prospect = ProspectService::findProspect($id);
         if (request()->routeIs('user.orders.create.select_products')) {
             return view('user.orders.select_products', ['products' => $products, 'prospect' => $prospect]);
         }
@@ -41,36 +40,32 @@ class OrdersController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store($id, StoreOrderRequest $request)
+    public function store(Prospect $prospect, StoreOrderRequest $request)
     {
-        $prospect = ProspectService::findProspect($id);
         $order = OrderService::storeOrder($prospect, $request->all());
         if (!$order) {
-            return redirect('/prospects/prospects')->with('error', 'Something went wrong');
+            return redirect()->back()->with('error', 'Something went wrong');
         }
-        return redirect('/prospects/prospects')->with('success', 'Order Successful');
+        return redirect()->route('user.prospects.dashboard')->with('success', 'Order Successful');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Order $order)
     {
-        $order = Order::findOrFail($id);
         return view('user.orders.show', ['order' => $order]);
     }
 
-    public function edit(string $id)
+    public function edit(Order $order)
     {
-        $order = Order::findOrFail($id);
         return view('user.orders.edit', ['order' => $order]);
     }
 
-    public function update(string $id, UpdateOrderRequest $request)
+    public function update(Order $order, UpdateOrderRequest $request)
     {
         $data = $request->all();
-        $data['order_id'] = $id;
-        $result = OrderService::updateOrder($data);
+        $result = OrderService::updateOrder($data, $order);
         if (str_contains($result, 'successful')) {
             return redirect()->route('user.orders.dashboard')->with('success', $result);
         } else {
@@ -83,12 +78,9 @@ class OrdersController extends Controller
      * Remove the specified resource from storage.
      */
 
-    // public function destroy(string $id)
+    // public function destroy(Order $order)
     // {
-    //     $order = Order::find($id);
-    //     if($order){
     //         $order->delete();
-    //     }
     //     return redirect()->back()->with('success', 'Order trashed successfully');
     // }
 }

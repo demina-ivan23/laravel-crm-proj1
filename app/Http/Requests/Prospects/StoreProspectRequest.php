@@ -21,10 +21,16 @@ class StoreProspectRequest extends FormRequest
      */
     public function rules(): array
     {
+        $emailRule = 'max:225|unique:prospects,email,' . $this->route('prospect');
+        $smalltext = 'string|max:225';
         return [
-            'name' => 'required',
-            'email' => 'required|unique:prospects',
-            'profile_image' => 'nullable|mimes:img,jpg,jpeg,png|max:2000'
+            'name' => 'required|'.$smalltext,
+            'email' => $emailRule,
+            'phone_number' => 'string|min:8|max:12',
+            'facebook_account' => $smalltext,
+            'instagram_account' => $smalltext,
+            'address' => $smalltext,
+            'personal_info' => 'string',
         ];
     }
 }

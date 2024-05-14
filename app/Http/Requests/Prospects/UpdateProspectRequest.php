@@ -21,12 +21,16 @@ class UpdateProspectRequest extends FormRequest
      */
     public function rules(): array
     {
-        $emailRule = 'required|unique:prospects,email,' . $this->route('prospect');
-
+        $emailRule = 'max:225|unique:prospects,email,' . $this->route('prospect');
+        $smalltext = 'string|max:225';
         return [
-            'name' => 'required',
+            'name' => $smalltext,
             'email' => $emailRule,
-            'profile_image' => 'nullable|mimes:img,jpg,jpeg,png|max:2000'
+            'phone_number' => 'string|min:8|max:12',
+            'facebook_account' => $smalltext,
+            'instagram_account' => $smalltext,
+            'address' => $smalltext,
+            'personal_info' => 'string',
         ];
     }
 }

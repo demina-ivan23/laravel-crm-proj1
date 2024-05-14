@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\User\Prospects;
 
-use App\Models\Order;
 use App\Models\Prospect;
-use App\Mappers\DTOMapper;
-use Illuminate\Http\Request;
 use App\Services\ProspectService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Prospects\StoreProspectRequest;
-use App\Http\Requests\Prospects\UpdateProspectRequest;
+use App\Http\Requests\Prospects\{
+    StoreProspectRequest,
+    UpdateProspectRequest
+};
 
 class ProspectsController extends Controller
 
@@ -22,13 +21,7 @@ class ProspectsController extends Controller
     {
         $states = ProspectService::getAllStates();
         $prospects = ProspectService::getAllProspects();
-        return view(
-            'user.prospects.index',
-            [
-                'prospects' => $prospects,
-                'states' => $states
-            ]
-        );
+        return view('user.prospects.index', compact('prospects', 'states'));
     }
 
     /**
@@ -45,55 +38,49 @@ class ProspectsController extends Controller
     public function store(StoreProspectRequest $request)
     {
         $prospect = ProspectService::storeProspect($request->all());
-        return redirect()->route('user.prospects.dashboard', ['prospect' => $prospect])->with('success', 'Prospect created successfully');
+        return redirect()->route('user.prospects.dashboard')->with('success', 'Prospect created successfully');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show(Prospect $prospect)
     {
         if (request()->routeIs('user.prospects.show')) {
-            $prospect = ProspectService::findProspect($id);
-            return view('user.prospects.show', ['prospect' => $prospect]);
+            return view('user.prospects.show', compact('prospect'));
         } elseif (request()->routeIs('user.prospects.show-orders')) {
-            $prospect = ProspectService::findProspect($id);
-            $orders = Order::where('customer_id', $id)->latest()->paginate(5);
-            return view('user.prospects.show-orders', ['orders' => $orders, 'prospect' => $prospect]);
+            $orders = $prospect->orders()->latest()->paginate(5);
+            return view('user.prospects.show-orders', compact('prospect', 'orders'));
         }
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Prospect $prospect)
     {
-        $prospect = ProspectService::findProspect($id);
-        return view('user.prospects.edit', ['prospect' => $prospect]);
+        return view('user.prospects.edit', compact('prospect'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateProspectRequest $request, string $id)
+    public function update(UpdateProspectRequest $request, Prospect $prospect)
     {
-        $data = $request->all();
-        $data['prospect_id'] = $id;
-        $prospect = ProspectService::updateProspect($data);
+        $prospect = ProspectService::updateProspect($request->all(), $prospect);
         if ($prospect) {
-            return redirect('/prospects/prospects')->with('success', 'Prospect "' . $prospect->name . '" updated successfully');
+            return redirect()->route('user.prospects.dashboard')->with('success', 'Prospect "' . $prospect->name . '" updated successfully');
         } else {
-            return redirect('/prospects/prospects')->with('error', 'Sorry, something went wrong');
+            return redirect()->route('user.prospects.dashboard')->with('error', 'Sorry, something went wrong');
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(Prospect $prospect)
     {
-        $prospect = ProspectService::findProspect($id);
         ProspectService::deleteProspect($prospect);
-        return redirect('/prospects/prospects')->with('success', 'Prospect Deleted Successfully');
+        return redirect()->route('user.prospects.dashboard')->with('success', 'Prospect Trashed Successfully');
     }
 }

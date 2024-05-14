@@ -10,4 +10,7 @@ class ProductCategory extends Model
     use HasFactory;
     protected $guarded = [];
     public $timestamps = false;
+    public function products(){
+        return $this->hasMany(Products::class);
+    }
 }

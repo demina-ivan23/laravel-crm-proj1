@@ -3,10 +3,11 @@
 namespace App\Services;
 
 use Exception;
-use App\Models\Order;
-use App\Models\OrderStatus;
-use App\Services\ProductService;
 use Carbon\Carbon;
+use App\Models\Order;
+use App\Models\Product;
+use App\Models\OrderStatus;
+
 
 class OrderService
 {
@@ -18,11 +19,11 @@ class OrderService
     $selectedProducts = json_decode($data['selected_products_json'], true);
 
     foreach ($selectedProducts as $productId => $quantity) {
-      $product = ProductService::getProductById($productId);
+      $product = Product::findOrFail($productId);
       if ($product) {
         $order->products()->attach($productId, ['quantity' => $quantity]);
       } else {
-        throw new Exception('Product not found ' . $product);
+        throw new Exception('Product not found: ' . $product);
       }
     }
     $order_status = OrderStatus::find($data['order_status']);
@@ -30,9 +31,8 @@ class OrderService
     $order->statuses()->attach($order_status, ['explanation' => $data['order_status_explanation'], 'expires_at' => $data['expires_at'] ?? Carbon::now()->addDays(1), 'default_order_transition' => $data['default_order_transition']] ?? null);
     return $order;
   }
-  static function updateOrder($data)
+  static function updateOrder($data, $order)
   {
-    $order = Order::findOrFail($data['order_id']);
     unset($data['order_id']);
     $currentStatus = $order->statuses()->latest()->first();
     $status = OrderStatus::findOrFail($data['order_status']);
