@@ -13,7 +13,11 @@
       <li class="list-group-item" id="card-item-1">${{$product->price}}</li>
     </ul>
     <ul class="list-group list-group-flush" id="card-items-container">
-      <li class="list-group-item" id="card-item-1">Category: {{$product->category}}</li>
+      @if($product->category != null)
+      <li class="list-group-item" id="card-item-1">Category: {{$product->category->title}}</li>
+      @else
+      <li class="list-group-item" id="card-item-1">Category: none</li>
+      @endif
     </ul>
     <div class="card-body">
       <ul>

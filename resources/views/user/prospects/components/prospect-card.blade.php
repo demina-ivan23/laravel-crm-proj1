@@ -12,10 +12,10 @@
                  <ul>
                     <strong>Email: </strong> {{ $prospect->email }}
                    <li>
-                    <strong>Date Of Creation: </strong> {{ $prospect->dateForHumans }}
+                    <strong>Date Of Creation: </strong> {{ $prospect->createdAtHumanized }}
                    </li>
                    <li>
-                    <strong>State: </strong> {{ $prospect->prospectState }}
+                    <strong>State: </strong> {{ $prospect->state->title}}
                    </li>
                    @if ($prospect->phone_number !== null)    
                    <li>
