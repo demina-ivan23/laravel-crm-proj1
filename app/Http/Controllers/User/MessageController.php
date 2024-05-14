@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers\User;
 
-use App\Http\Controllers\Controller;
 use App\Models\Message;
+use App\Models\Prospect;
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class MessageController extends Controller
 {
@@ -12,6 +13,10 @@ class MessageController extends Controller
     /**
      * Show the form for creating a new resource.
      */
+    public function index(string $id)
+    {
+        //
+    }
     public function create()
     {
         //
@@ -33,12 +38,11 @@ class MessageController extends Controller
         //
     }
 
-
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Message $message)
-    {
-        //
-    }
+    // public function destroy(Message $message)
+    // {
+    //     //
+    // }
 }
