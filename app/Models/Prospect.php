@@ -26,9 +26,9 @@ class Prospect extends Model
     {
       return $this->belongsTo(ProspectState::class);
     }
-    public function state_transition()
+    public function messages()
     {
-      return $this->hasMany(ProspectTransitionTracking::class, 'prospect_id');
+        return $this->morphMany(Message::class, 'messagable');
     }
     public function scopeFilter($query)
     { 

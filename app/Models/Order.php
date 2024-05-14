@@ -22,6 +22,10 @@ class Order extends Model
     {
         return $this->belongsTo(Prospect::class);
     }
+    public function messages()
+    {
+        return $this->morphMany(Message::class, 'messagable');
+    }
     public function statuses()
     {
         return $this->belongsToMany(OrderStatus::class, 'order_status_transition', 'order_id', 'order_status_id')
