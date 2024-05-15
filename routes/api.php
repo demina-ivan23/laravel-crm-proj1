@@ -16,17 +16,30 @@ use \App\Http\Middleware\ApiKeyAuthMiddleware;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
-
 });
 
-
-//CRM API route prefixes
-
-//GET/POST/PUT for prospects
-Route::prefix('v1/prospects/')->middleware(ApiKeyAuthMiddleware::class)->name('api.prospects.')->group(base_path('routes/api/prospects.php'));
-
-//GET/POST/PUT for products
-Route::prefix('v1/products/')->middleware(ApiKeyAuthMiddleware::class)->name('api.products.')->group(base_path('routes/api/products.php'));
-
-//GET/POST/PUT for orders
-Route::prefix('v1/orders/')->middleware(ApiKeyAuthMiddleware::class)->name('api.orders.')->group(base_path('routes/api/orders.php'));
+Route::prefix('v1/')->middleware(ApiKeyAuthMiddleware::class)->name('api.')->group(function () {
+    Route::prefix('admin/')->middleware(IsAdmin::class)->name('admin.')->group( function () {
+        
+    });
+    Route::prefix('users/')->name('users.')->group(function () {
+        Route::prefix('prospects/')->name('prospects.')->group(function () {
+            Route::get('index.json', [ProspectsApiController::class, 'index'])->name('index');
+            Route::get('{prospect}.json', [ProspectsApiController::class, 'show'])->name('show');
+            Route::post('store', [ProspectsApiController::class, 'store'])->name('store');
+            Route::put('{prospect}', [ProspectsApiController::class, 'update'])->name('update');
+        });
+        Route::prefix('products/')->name('products.')->group(function () {
+            Route::get('index.json', [ProductsApiController::class, 'index'])->name('index');
+            Route::get('{product}.json', [ProductsApiController::class, 'show'])->name('show');
+            Route::post('store', [ProductsApiController::class, 'store'])->name('store');
+            Route::put('{product}', [ProductsApiController::class, 'update'])->name('update');
+        });
+        Route::prefix('orders/')->name('orders.')->group(function () {
+            Route::get('index.json', [OrdersApiController::class, 'index'])->name('index');
+            Route::get('{order}.json', [OrdersApiController::class, 'show'])->name('show');
+            Route::post('{prospect}/store', [OrdersApiController::class, 'store'])->name('store');
+            Route::put('{order}', [OrdersApiController::class, 'update'])->name('update');
+        });
+    });
+});
