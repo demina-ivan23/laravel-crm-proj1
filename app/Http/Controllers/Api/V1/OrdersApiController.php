@@ -23,7 +23,7 @@ class OrdersApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Prospect $prospect, Request $request)
+    public function store(Request $request, Prospect $prospect)
     {
         $order = OrderService::storeOrder($prospect, $request->all());
         if($order){
@@ -39,4 +39,17 @@ class OrdersApiController extends Controller
     {
         return response()->json(['order' => $order]);
     }
-}
+
+    public function update(Request $request, Order $order)
+    {
+     $result = OrderService::updateOrder($request->all(), $order);
+     return response()->json(['result' => $result, 'order' => $order]);
+    }
+
+
+    //                                     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! 
+    // 
+    //                          !!! Don't forget to write docs for the API when you are done  !!!
+    //  
+    //                                     !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ }
