@@ -10,6 +10,7 @@ use App\Http\Controllers\{
     User\AdminController,
     User\OrderStatusController
 };
+use App\Http\Controllers\User\MessageController;
 
 /*
 |--------------------------------------------------------------------------
@@ -62,10 +63,14 @@ Route::prefix('users/')->middleware('auth')->name('user.')->group(function () {
     Route::resource('products', ProductsController::class)->names(['index' => 'products.dashboard']);
 
     Route::resource('orders', OrdersController::class)->names(['index' => 'orders.dashboard'])->except(['create', 'store']);
-    Route::prefix('orders')->name('orders.')->group(function () {
-        Route::get('/{prospect}/create/select_products', [OrdersController::class, 'create'])->name('create.select_products');
-        Route::get('/{prospect}/create', [OrdersController::class, 'create'])->name('create');
-        Route::post('/{prospect}', [OrdersController::class, 'store'])->name('store');
+    Route::prefix('orders/')->name('orders.')->group(function () {
+        Route::get('{prospect}/create/select_products', [OrdersController::class, 'create'])->name('create.select_products');
+        Route::get('{prospect}/create', [OrdersController::class, 'create'])->name('create');
+        Route::post('{prospect}', [OrdersController::class, 'store'])->name('store');
+    });
+    Route::prefix('messages/')->name('messages.')->group(function () {
+        Route::get('{id}/{messagable}/view_all', [MessageController::class, 'index'])->name('index');
+        Route::get('show/{message}', [MessageController::class, 'show'])->name('show');
     });
 });
 

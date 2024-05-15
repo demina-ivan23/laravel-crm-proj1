@@ -15,4 +15,12 @@ class Message extends Model
     {
         return $this->morphTo('messagable');
     }
+    public function getCreatedAtHumanizedAttribute()
+    {
+        return date('h:m:s, F d, Y', strtotime($this->created_at)); 
+    }
+    public function scopeFilter()
+    {
+        
+    }
 }

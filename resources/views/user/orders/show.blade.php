@@ -46,9 +46,9 @@
                     </div>
                 @endif
                 <div class="mb-3 form-control">
-                  <label for="order_history_table" class="form-label d-flex justify-content-center"><h4>Order's Status Transition History</h4></label>
-                    <div class="relative overflow-x-auto" name="order_history_table">
-                        <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+                    {{-- <label for="order_history_table" class="form-label d-flex justify-content-center"><h4>Order's Status Transition History</h4></label> --}}
+                    {{-- <div class="relative overflow-x-auto" name="order_history_table"> --}}
+                    {{-- <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
                             <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
                                 <tr>
                                     <th scope="col" class="px-6 py-3">
@@ -97,8 +97,26 @@
                                 @endforeach
                             </tbody>
                         </table>
+                    </div> --}}
+                    @if ($order->messages->count())
+                        <h4 class="d-flex justify-content-center mb-5">Order's history</h4>
+                        @foreach ($order->messages()->latest()->get() as $message)
+                            <div class="mb-2 card p-2">
+                                <div class="d-flex justify-content-end mb-1">
+                                    {{ $message->createdAtHumanized }}
+                                </div>
+                                <div class="mb-1">{{ $message->text }}</div>
+                                <div class="d-flex justify-content-end">
+                                    <a href="{{ route('user.messages.show', ['message' => $message]) }}"
+                                        class="btn btn-primary">View this message</a>
+                                </div>
+                            </div>
+                        @endforeach
+                    @endif
+                    <div class="d-flex justify-content-end mt-4 mb-2">
+                        <a href="{{ route('user.messages.index', ['id' => $order->id, 'messagable' => 'order']) }}"
+                            class="btn btn-primary">View all messages of this order</a>
                     </div>
-
                 </div>
             </div>
         </div>

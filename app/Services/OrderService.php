@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Message;
 use Exception;
 use Carbon\Carbon;
 use App\Models\Order;
@@ -26,9 +27,13 @@ class OrderService
         throw new Exception('Product not found: ' . $product);
       }
     }
-    $order_status = OrderStatus::find($data['order_status']);
-    $prospect->update(['state_id' => 3]);
-    $order->statuses()->attach($order_status, ['explanation' => $data['order_status_explanation'], 'expires_at' => $data['expires_at'] ?? Carbon::now()->addDays(1), 'default_order_transition' => $data['default_order_transition']] ?? null);
+    $orderStatus = OrderStatus::findOrFail($data['order_status']);
+    $order->statuses()->attach($orderStatus, ['explanation' => $data['order_status_explanation'], 'expires_at' => $data['expires_at'] ?? Carbon::now()->addDays(1), 'default_order_transition' => $data['default_order_transition']] ?? null);
+    $statusIsFinal = $order->statuses()->latest()->first()->is_final ? 'Status is final.' : 'Status is not final';
+    $message = new Message([
+      'text' => "Order created. Status: $orderStatus->title; Explanation: {$data['order_status_explanation']}; Expires at: " . ($order->statuses()->latest()->first()->pivot->expires_at . "; " ?? "no expiration date; ") . " By default transits to: " . (OrderStatus::find($data['default_order_transition'])->title . "; " ?? "no default transition; ") . $statusIsFinal,
+    ]);
+    $order->messages()->save($message);
     return $order;
   }
   static function updateOrder($data, $order)
@@ -46,6 +51,11 @@ class OrderService
       return 'Invalid status provided';
     }
     $order->update(['updated_at' => $order->statuses()->latest()->first()->pivot->updated_at]);
+    $statusIsFinal = $order->statuses()->latest()->first()->is_final ? 'Status is final.' : 'Status is not final';
+    $message = new Message([
+      'text' => "Order updated. Status: {$order->statuses()->latest()->first()->title}; Explanation: {$order->statuses()->latest()->first()->pivot->explanation}; Expires at: " . ($order->statuses()->latest()->first()->pivot->expires_at . "; " ?? "no expiration date; ") . "By default transits to: " . (OrderStatus::find($order->statuses()->latest()->first()->pivot->default_order_transition)->title . "; " ?? 'no default transition') . $statusIsFinal,
+    ]);
+    $order->messages()->save($message);
     return 'Order updating successful';
   }
   static function getAllOrders()

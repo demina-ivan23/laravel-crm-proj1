@@ -10,31 +10,32 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Prospect extends Model
 {
-    use HasFactory;
+  use HasFactory;
 
-    protected $guarded = [];
+  protected $guarded = [];
 
-    public function getCreatedAtHumanizedAttribute()
-    {
-      return date('F d, Y', strtotime($this->created_at)); 
-    }
-    public function orders(){
-      return $this->hasMany(Order::class, 'customer_id');
-    }
+  public function getCreatedAtHumanizedAttribute()
+  {
+    return date('F d, Y', strtotime($this->created_at));
+  }
+  public function orders()
+  {
+    return $this->hasMany(Order::class, 'customer_id');
+  }
 
-    public function state()
-    {
-      return $this->belongsTo(ProspectState::class);
-    }
-    public function messages()
-    {
-        return $this->morphMany(Message::class, 'messagable');
-    }
-    public function scopeFilter($query)
-    { 
-      if(request('search')){
-        
-        $query 
+  public function state()
+  {
+    return $this->belongsTo(ProspectState::class);
+  }
+  public function messages()
+  {
+    return $this->morphMany(Message::class, 'messagable');
+  }
+  public function scopeFilter($query)
+  {
+    if (request('search')) {
+
+      $query
         ->where('name', 'like', '%' . request('search') . '%')
         ->orWhere('email', 'like', '%' . request('search') . '%')
         ->orWhere('state_id', 'like', '%' . request('search') . '%')
@@ -42,17 +43,15 @@ class Prospect extends Model
         ->orWhere('facebook_account', 'like', '%' . request('search') . '%')
         ->orWhere('instagram_account', 'like', '%' . request('search') . '%')
         ->orWhere('address', 'like', '%' . request('search') . '%');
-      }
-      if(request('filter_state')){
-        if(request('filter_state') === 'all'){ 
-        $query 
-        ->where('name', 'like', '%' . '' . '%'); 
-      } 
-      else {
+    }
+    if (request('filter_state')) {
+      if (request('filter_state') === 'all') {
         $query
-        ->where('state_id', 'like', request('filter_state'));
+          ->where('name', 'like', '%' . '' . '%');
+      } else {
+        $query
+          ->where('state_id', 'like', request('filter_state'));
       }
     }
-    }
- 
+  }
 }

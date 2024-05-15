@@ -3,8 +3,6 @@
 namespace App\Http\Controllers\User;
 
 use App\Models\Message;
-use App\Models\Prospect;
-use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 
 class MessageController extends Controller
@@ -13,23 +11,17 @@ class MessageController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function index(string $id)
+    public function index(string $id, string $messagable)
     {
-        //
+        $namespace = 'App\\Models\\'; 
+        $messagableClassName = $namespace . $messagable; 
+        $messagable = ucfirst($messagableClassName);
+        if (class_exists($messagable)) {
+            $messages = $messagable::findOrFail($id)->messages()->latest()->filter()->paginate(15);
+            return view('user.messages.index', compact('messages'));
+        }
+        abort(404);
     }
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
     /**
      * Display the specified resource.
      */
@@ -37,12 +29,4 @@ class MessageController extends Controller
     {
         //
     }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    // public function destroy(Message $message)
-    // {
-    //     //
-    // }
 }

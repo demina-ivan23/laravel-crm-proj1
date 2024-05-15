@@ -8,7 +8,7 @@
                 {{ $product->title }};
             @endforeach
         </p>
-        <p class="card-text">Order's current status: {{ $order->statuses()->latest()->first()->title }}</p>
+        <p class="card-text">Order's current status: {{ $order->statuses()->latest()->first()->title}}</p>
         <p class="card-text">Order created at: {{ $order->created_at }} by GMT+0</p>
         @if ($order->statuses()->latest()->first()->is_final)
             <p class="card-text">Order closed at: {{ $order->statuses()->latest()->first()->created_at }} by GMT+0</p>
