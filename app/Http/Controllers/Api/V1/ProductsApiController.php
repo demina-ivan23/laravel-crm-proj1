@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 use App\Services\ProductService;
 use App\Http\Controllers\Controller;
@@ -13,12 +14,9 @@ class ProductsApiController extends Controller
      */
     public function index()
     {
-        $products = ProductService::getAllProducts(); // it shows the latest prospects first
+        $products = ProductService::getAllProducts(); 
         return response()->json(['products' => $products]);
     }
-
-   
-
     /**
      * Store a newly created resource in storage.
      */
@@ -35,22 +33,18 @@ class ProductsApiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Product $product)
     {
-        $product = ProductService::findProduct($id);
         return response()->json(['product' => $product]);
     }
-
-   
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Product $product)
     {
         $data = $request->all();
-        $data['product_id'] = $id;
-        $product = ProductService::updateProduct($data);
+        $product = ProductService::updateProduct($data, $product);
         if($product){
             return response()->json(['result' => 'Product updated successfully', 'product' => $product]);
         } else {

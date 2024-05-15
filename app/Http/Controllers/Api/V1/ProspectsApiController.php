@@ -36,20 +36,18 @@ class ProspectsApiController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Prospect $prospect)
     {
-        $prospect = ProspectService::findProspect($id);
         return response()->json(['prospect' => $prospect]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Prospect $prospect)
     {
         $data = $request->all();
-        $data['prospect_id'] = $id;
-        $prospect = ProspectService::updateProspect($data);
+        $prospect = ProspectService::updateProspect($data, $prospect);
         if($prospect){
             return response()->json(['result'=>'Prospect updated successfully', 'prospect' => $prospect]);
         } else {

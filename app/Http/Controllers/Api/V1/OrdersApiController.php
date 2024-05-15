@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\V1;
 
 use App\Models\Order;
+use App\Models\Prospect;
 use Illuminate\Http\Request;
 use App\Services\OrderService;
 use App\Services\ProspectService;
@@ -22,9 +23,8 @@ class OrdersApiController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(string $id, Request $request)
+    public function store(Prospect $prospect, Request $request)
     {
-        $prospect = ProspectService::findProspect($id);
         $order = OrderService::storeOrder($prospect, $request->all());
         if($order){
             return response()->json(['result' => 'Order created successfully', 'order' => $order]);
@@ -41,5 +41,4 @@ class OrdersApiController extends Controller
         $order = Order::findOrFail($id);
         return response()->json(['order' => $order]);
     }
-
 }
