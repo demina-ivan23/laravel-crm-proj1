@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\Message;
 use App\Models\Prospect;
 use App\Models\ProspectState;
 
@@ -21,12 +22,20 @@ class ProspectService
   {
     $prospect = Prospect::create($data);    
     static::setProspectState($data['prospect_state'] ?? null, $data['custom_prospect_state'] ?? null, $prospect);
+    $message = new Message([
+      'text' => 'Prospect created. State of a prospect: ' . $prospect->state->title
+    ]);
+    $prospect->messages()->save($message);
     return $prospect;
   }
   static function updateProspect(?array $data, Prospect $prospect)
   {
     $prospect->update($data);
     static::setProspectState($data['prospect_state'] ?? null, $data['custom_prospect_state'] ?? null, $prospect);
+    $message = new Message([
+      'text' => 'Prospect updated. State of a prospect: ' . $prospect->state->title
+    ]);
+    $prospect->messages()->save($message);
     return $prospect;
   }
   static function deleteProspect(Prospect $prospect)

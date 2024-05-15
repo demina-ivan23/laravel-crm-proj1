@@ -34,6 +34,15 @@ class OrderService
       'text' => "Order created. Status: $orderStatus->title; Explanation: {$data['order_status_explanation']}; Expires at: " . ($order->statuses()->latest()->first()->pivot->expires_at . "; " ?? "no expiration date; ") . " By default transits to: " . (OrderStatus::find($data['default_order_transition'])->title . "; " ?? "no default transition; ") . $statusIsFinal,
     ]);
     $order->messages()->save($message);
+    $productsStr = '';
+    foreach($order->products as $product)
+    {
+      $productsStr .= $product->title . ': ' . $product->pivot->quantity . ' pcs, ';
+    }
+    $messageForProspect = new Message([
+      'text' => 'Order created. Id of the order: ' . $order->id . ';  Products chosen: ' . substr_replace($productsStr, '', -1)
+    ]);
+    $order->customer->messages()->save($messageForProspect);
     return $order;
   }
   static function updateOrder($data, $order)
@@ -56,6 +65,15 @@ class OrderService
       'text' => "Order updated. Status: {$order->statuses()->latest()->first()->title}; Explanation: {$order->statuses()->latest()->first()->pivot->explanation}; Expires at: " . ($order->statuses()->latest()->first()->pivot->expires_at . "; " ?? "no expiration date; ") . "By default transits to: " . (OrderStatus::find($order->statuses()->latest()->first()->pivot->default_order_transition)->title . "; " ?? 'no default transition') . $statusIsFinal,
     ]);
     $order->messages()->save($message);
+    $productsStr = '';
+    foreach($order->products as $product)
+    {
+      $productsStr .= $product->title . ': ' . $product->pivot->quantity . ' pcs, ';
+    }
+    $messageForProspect = new Message([
+      'text' => 'Order updated. Id of the order: ' . $order->id . ';  Products: ' . substr_replace($productsStr, '', -1)
+    ]);
+    $order->customer->messages()->save($messageForProspect);
     return 'Order updating successful';
   }
   static function getAllOrders()
