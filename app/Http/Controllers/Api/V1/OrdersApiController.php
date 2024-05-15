@@ -32,13 +32,11 @@ class OrdersApiController extends Controller
             return response()->json(['result' => 'Something went wrong']);
         }
     }
-
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Order $order)
     {
-        $order = Order::findOrFail($id);
         return response()->json(['order' => $order]);
     }
 }
