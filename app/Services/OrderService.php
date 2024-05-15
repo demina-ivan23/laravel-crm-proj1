@@ -2,17 +2,20 @@
 
 namespace App\Services;
 
-use App\Models\Message;
 use Exception;
 use Carbon\Carbon;
-use App\Models\Order;
-use App\Models\Product;
-use App\Models\OrderStatus;
+use App\Models\{
+   Order,
+   Message,
+   Product,
+   Prospect,
+   OrderStatus
+};
 
 
 class OrderService
 {
-  static function storeOrder($prospect, $data)
+  static function storeOrder(Prospect $prospect, array $data)
   {
     $order = Order::create([
       'customer_id' => $prospect->id
@@ -45,7 +48,7 @@ class OrderService
     $order->customer->messages()->save($messageForProspect);
     return $order;
   }
-  static function updateOrder($data, $order)
+  static function updateOrder(array $data, Order $order)
   {
     unset($data['order_id']);
     $currentStatus = $order->statuses()->latest()->first();
