@@ -11,10 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('prospect_states', function (Blueprint $table) {
+        Schema::create('prospect_state_transition', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
-            $table->string('description')->nulable();
+            $table->foreignId('prospect_id')->constrained();
+            $table->foreignId('prospect_state_id')->constrained();
+            $table->string('explanation')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -23,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('prospect_states');
+        Schema::dropIfExists('prospect_transition_trackings');
     }
 };

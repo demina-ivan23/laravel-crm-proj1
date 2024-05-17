@@ -109,14 +109,12 @@
                                                     info page</a>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('admin.order_product_chart') }}"
-                                                    class="dropdown-item"
+                                                <a href="{{ route('admin.order_product_chart') }}" class="dropdown-item"
                                                     style="{{ request()->routeIs('admin.order_product_chart') ? 'color:gray' : '' }}">Order-Product
                                                     info page</a>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('admin.order_prospect_chart') }}"
-                                                    class="dropdown-item"
+                                                <a href="{{ route('admin.order_prospect_chart') }}" class="dropdown-item"
                                                     style="{{ request()->routeIs('admin.order_prospect_chart') ? 'color:gray' : '' }}">Order-Prospect
                                                     info page</a>
                                             </li>
@@ -124,8 +122,7 @@
                                                 <p>Order Status Links</p>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('admin.order_statuses.index') }}"
-                                                    class="dropdown-item"
+                                                <a href="{{ route('admin.order_statuses.index') }}" class="dropdown-item"
                                                     style="{{ request()->routeIs('admin.order_statuses.index') ? 'color:gray' : '' }}">All
                                                     Order Statuses</a>
                                             </li>
@@ -133,7 +130,21 @@
                                                 <a href="{{ route('admin.order_statuses.create') }}"
                                                     class="dropdown-item"
                                                     style="{{ request()->routeIs('admin.order_statuses.create') ? 'color:gray' : '' }}">Create
-                                                    Order Status</a>
+                                                    An Order Status</a>
+                                            </li>
+                                            <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
+                                                <p>Prospect State Links</p>
+                                            </li>
+                                            <li class="ml-7">
+                                                <a href="{{ route('admin.prospect_states.index') }}" class="dropdown-item"
+                                                    style="{{ request()->routeIs('admin.prospect_states.index') ? 'color:gray' : '' }}">All
+                                                    Prospect States</a>
+                                            </li>
+                                            <li class="ml-7">
+                                                <a href="{{ route('admin.prospect_states.create') }}"
+                                                    class="dropdown-item"
+                                                    style="{{ request()->routeIs('admin.prospect_states.create') ? 'color:gray' : '' }}">Create
+                                                    A Prospect State</a>
                                             </li>
                                         @endif
                                         <li class="nav-item ml-5">
@@ -168,8 +179,7 @@
                                 <div class="collapse" id="prospectsMenu">
                                     <ul class="navbar-nav">
                                         <li class="nav-item ml-5">
-                                            <a href="{{ route('user.prospects.dashboard') }}"
-                                                class="nav-link">Manage</a>
+                                            <a href="{{ route('user.prospects.dashboard') }}" class="nav-link">Manage</a>
                                         </li>
                                     </ul>
                                 </div>

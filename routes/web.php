@@ -2,13 +2,14 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{
-    User\UserController,
-    User\Orders\OrdersController,
-    User\Prospects\ProspectsController,
-    User\Products\ProductsController,
-    User\AdminController,
-    User\OrderStatusController
+use App\Http\Controllers\User\{
+    UserController,
+    Orders\OrdersController,
+    Prospects\ProspectsController,
+    Products\ProductsController,
+    AdminController,
+    OrderStatusController,
+    ProspectStateController
 };
 use App\Http\Controllers\User\MessageController;
 
@@ -32,7 +33,7 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::redirect('/', '/home');
 
 //Admin routes
-Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
+Route::prefix('admin/')->middleware(['auth', 'admin'])->group(function () {
     // User routes that are listed under the 'Admin' middleware are the routes created for 
     // Admins to manage CRM's users' data
     Route::resource('users', UserController::class)->except('show');
@@ -41,14 +42,15 @@ Route::prefix('admin')->middleware(['auth', 'admin'])->group(function () {
     // Admin routes are the routes which allow Admins to manage their data
 
     // All Admin charts are drawn by the index method, thus the code is cleaner  
-    Route::get('/order_product_chart', [AdminController::class, 'index'])->name('admin.order_product_chart');
-    Route::get('/order_prospect_chart', [AdminController::class, 'index'])->name('admin.order_prospect_chart');
-    Route::get('/order_chart', [AdminController::class, 'index'])->name('admin.order_chart');
+    Route::get('order_product_chart', [AdminController::class, 'index'])->name('admin.order_product_chart');
+    Route::get('order_prospect_chart', [AdminController::class, 'index'])->name('admin.order_prospect_chart');
+    Route::get('order_chart', [AdminController::class, 'index'])->name('admin.order_chart');
 
     // Order status is the almost the same thing as prospect state or product category, it's difference 
     //from the upper mentioned two is that process of it's creation and modification requires admin access
     Route::name('admin.')->group(function () {
         Route::resource('order_statuses', OrderStatusController::class)->except(['show', 'destroy']);
+        Route::resource('prospect_states', ProspectStateController::class)->except(['show', 'destroy']);
     });
 });
 

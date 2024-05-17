@@ -23,9 +23,11 @@ class Prospect extends Model
     return $this->hasMany(Order::class, 'customer_id');
   }
 
-  public function state()
+  public function states()
   {
-    return $this->belongsTo(ProspectState::class);
+    return $this->belongsToMany(ProspectState::class, 'prospect_state_transition', 'prospect_id', 'prospect_state_id')
+    ->withPivot('explanation')
+    ->withTimestamps();
   }
   public function messages()
   {
