@@ -21,7 +21,7 @@ class StoreProspectRequest extends FormRequest
      */
     public function rules(): array
     {
-        $emailRule = 'max:225|unique:prospects,email,' . $this->route('prospect');
+        $emailRule = 'max:225|unique:prospects,email,' . $this->route('prospect')->id;
         $smalltext = 'string|max:225';
         return [
             'name' => 'required|'.$smalltext,
@@ -31,6 +31,8 @@ class StoreProspectRequest extends FormRequest
             'instagram_account' => $smalltext,
             'address' => $smalltext,
             'personal_info' => 'string',
+            'prospect_state' => 'required|integer|exists:prospect_states,id',
+            'prospect_state_explanation' => 'string|max:1000'
         ];
     }
 }

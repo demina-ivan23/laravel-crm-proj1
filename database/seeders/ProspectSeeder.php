@@ -16,7 +16,7 @@ class ProspectSeeder extends Seeder
         $prospects = \App\Models\Prospect::factory(30)->create();
         foreach($prospects as $prospect)
         {
-            $prospect->states()->attach(ProspectState::inRandomOrder()->first(), ['explanation' => $prospect->addres]);
+            $prospect->states()->attach(ProspectState::inRandomOrder()->first(), ['explanation' => $prospect->address]);
         }
     }
 }

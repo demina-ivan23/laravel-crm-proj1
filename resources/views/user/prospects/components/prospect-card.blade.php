@@ -15,7 +15,10 @@
                     <strong>Date Of Creation: </strong> {{ $prospect->createdAtHumanized }}
                    </li>
                    <li>
-                    <strong>State: </strong> {{ $prospect->state->title}}
+                    <strong>State: </strong> {{ $prospect->latestState->title}}
+                   </li>
+                   <li>
+                    <strong>State explanation: </strong> {{ $prospect->latestState->pivot->explanation}}
                    </li>
                    @if ($prospect->phone_number !== null)    
                    <li>

@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Message;
 use App\Models\Prospect;
 use App\Models\ProspectState;
+use Exception;
 
 class ProspectService
 {
@@ -20,20 +21,23 @@ class ProspectService
   }
   static function storeProspect(array $data)
   {
-    $prospect = Prospect::create($data);    
-    static::setProspectState($data['prospect_state'] ?? null, $data['custom_prospect_state'] ?? null, $prospect);
+    $prospect = Prospect::create(['name' => $data['name']]);    
+    static::setProspectState($data['prospect_state'], $data['prospect_state_explanation'] ?? null, $prospect);
+    unset($data['prospect_state'], $data['prospect_state_explanation']);
+    $prospect->update($data);
     $message = new Message([
-      'text' => 'Prospect created. State of a prospect: ' . $prospect->state->title
+      'text' => 'Prospect created. State of a prospect: ' . $prospect->latestState->title
     ]);
     $prospect->messages()->save($message);
     return $prospect;
   }
-  static function updateProspect(?array $data, Prospect $prospect)
+  static function updateProspect(array $data, Prospect $prospect)
   {
+    static::setProspectState($data['prospect_state'], $data['prospect_state_explanation'] ?? null, $prospect);
+    unset($data['prospect_state'], $data['prospect_state_explanation']);
     $prospect->update($data);
-    static::setProspectState($data['prospect_state'] ?? null, $data['custom_prospect_state'] ?? null, $prospect);
     $message = new Message([
-      'text' => 'Prospect updated. State of a prospect: ' . $prospect->state->title
+      'text' => 'Prospect updated. State of a prospect: ' . $prospect->latestState->title
     ]);
     $prospect->messages()->save($message);
     return $prospect;
@@ -43,28 +47,21 @@ class ProspectService
     $prospect->delete();
   }
   
-  static function setProspectState(?string $state, ?string $customState, Prospect $prospect)
+  static function setProspectState(int $state, ?string $explanation, Prospect $prospect)
   {
-    if ($state) {
-      if ($state != ('custom' && null)) {
-        $stateId = static::getOrCreateState($state);
-      } elseif ($customState) {
-        $stateId = static::getOrCreateState($customState);
+    try{
+      $state = ProspectState::findOrFail($state);
+      if($prospect->latestState->id == $state->id)
+      {
+        $prospect->states()->updateExistingPivot($state->id, ['explanation' => $explanation]);
       } else {
-        return;
+        $prospect->states()->attach($state, ['explanation' => $explanation]);
       }
-      $prospect->update(['state_id' => $stateId]);
+      return true;
+    } catch(Exception $e) {
+      throw new Exception($e->getMessage());
     }
   }
 
-  static function getOrCreateState(?string $stateTitle)
-  {
-    $state = ProspectState::where('title', $stateTitle)->first() ?? null;
-    if (!$state) {
-      $customState = ProspectState::create(['title' => $state]);
-      return $customState->id;
-    }
-    return $state->id;
-  }
 
 }

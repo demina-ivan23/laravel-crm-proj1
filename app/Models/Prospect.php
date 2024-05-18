@@ -56,4 +56,7 @@ class Prospect extends Model
       }
     }
   }
+  public function getLatestStateAttribute(){
+    return $this->states()->latest()->first();
+  }
 }
