@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\OrderStatus;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\OrderStatusService;
@@ -27,18 +28,29 @@ class OrderStatusController extends Controller
             return redirect()->route('admin.order_statuses.create')->with('error', $result);
         }
     }
-    public function edit(string $id)
+    public function edit(OrderStatus $orderStatus)
     {
-        $order_status = OrderStatusService::findOrderStatus($id);
-        return view('admin.order_statuses.edit', ['order_status' => $order_status]);
+        $routeName = request()->route()->getName();
+        if($routeName == 'admin.order_statuses.edit'){
+            return view('admin.order_statuses.edit', compact('orderStatus'));
+        } elseif($routeName == 'admin.order_statuses.edit_via_table'){
+            return view('admin.order_statuses.edit_via_table', ['orderStatuses' => OrderStatus::all()]);
+        } else {
+            dd($routeName);
+        }
     }
-    public function update(string $id, UpdateOrderStatusRequest $request)
+    public function update(OrderStatus $orderStatus, UpdateOrderStatusRequest $request)
     {
-        $result = OrderStatusService::updateOrderStatus($id, $request->all());
+        $routeName = $request->route()->getName();
+        if($routeName === 'admin.order_statuses.update'){
+            $result = OrderStatusService::updateOrderStatus($orderStatus, $request->all());
+        } elseif($routeName === 'admin.order_statuses.update_via_table') {
+            $result = OrderStatusService::updateOrderStatusesViaTable($request->all());
+        }
         if (str_contains($result, 'successfully')) {
             return redirect()->route('admin.order_statuses.index')->with('success', $result);
         } else {
-            return redirect()->route('admin.order_statuses.edit', ['order_status' => $id])->with('error', $result);
+            return redirect()->route('admin.order_statuses.edit', ['order_status' => $orderStatus])->with('error', $result);
         }
     }
 }

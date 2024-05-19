@@ -1,1 +1,0 @@
-Remember to change the Model::find() to Model::findOrFail();

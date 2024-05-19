@@ -11,44 +11,47 @@ class OrderStatusService
     {
         return OrderStatus::all();
     }
-    static function storeOrderStatus($data)
+    static function storeOrderStatus(array $data)
     {
-        $order_status = OrderStatus::create($data);
-        if (!$order_status) {
+        $orderStatus = OrderStatus::create($data);
+        if (!$orderStatus) {
             return 'Order status creation failed, something must have gone wrong';
         }
         if ($data['can_transit_into'] ?? null) {
             foreach ($data['can_transit_into'] as $id) {
-                $order_status->statuses()->attach($id);
+                $orderStatus->statuses()->attach($id);
             }
         }
         return 'Order status created successfully';
     }
     static function findOrderStatus($id)
     {
-        $order_status = OrderStatus::find($id);
-        if (!$order_status) {
+        $orderStatus = OrderStatus::find($id);
+        if (!$orderStatus) {
             abort(404);
         }
-        return $order_status;
+        return $orderStatus;
     }
-    static function updateOrderStatus($id, $data)
+    static function updateOrderStatus(OrderStatus $orderStatus, array $data)
     {
         try {
-            $order_status = static::findOrderStatus($id);
-            $order_status->update($data);
+            $orderStatus->update($data);
             foreach (OrderStatus::all() as $other_order_status) {
-                $order_status->statuses->contains($other_order_status->id) ? $order_status->statuses()->detach($other_order_status->id) : '';
+                $orderStatus->statuses->contains($other_order_status->id) ? $orderStatus->statuses()->detach($other_order_status->id) : '';
             }
             if ($data['can_transit_into'] ?? null) {
                 foreach ($data['can_transit_into'] as $id) {
-                    $order_status->statuses()->attach($id);
+                    $orderStatus->statuses()->attach($id);
                 }
             }
             return 'Order status updated successfully';
         } catch (Exception $e) {
             return 'Something went wrong, Exception message: ' . $e->getMessage();
         }
+    }
+    static function updateOrderStatusesViaTable(array $data)
+    {
+        
     }
     static function getAllFSS()
     {

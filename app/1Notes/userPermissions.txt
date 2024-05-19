@@ -11,3 +11,6 @@ User Permissions:
 
  Order charts: 
  order-chart-read
+
+ Users:
+ user-read-self, user-read-all, user-write, user-edit-self, user-edit-all 

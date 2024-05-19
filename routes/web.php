@@ -50,6 +50,8 @@ Route::prefix('admin/')->middleware(['auth', 'admin'])->group(function () {
     //from the upper mentioned two is that process of it's creation and modification requires admin access
     Route::name('admin.')->group(function () {
         Route::resource('order_statuses', OrderStatusController::class)->except(['show', 'destroy']);
+        Route::get('order_statuses/edit_via_table', [OrderStatusController::class, 'edit'])->name('order_statuses.edit_via_table');
+        Route::put('order_statuses/update_via_table', [OrderStatusController::class, 'update'])->name('order_statuses.update_via_table');
         Route::resource('prospect_states', ProspectStateController::class)->except(['show', 'destroy']);
     });
 });

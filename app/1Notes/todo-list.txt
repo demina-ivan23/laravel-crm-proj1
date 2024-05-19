@@ -1,12 +1,10 @@
-- refactor the code;
-- User Permissions: create roles table and permissions table; add user-roles relationship;
-- Prospect state transition; 
-- Set users's timezone;
-- History or Message model for prospects' history tracking;
-- User routes (for admin); 
-- change API logic;
+- add a table for easier ProspectState and OrderStatus editing; 
+- Set the order_status expires_at automatisation;
+- refactor the code (migrations, views, services, controllers and routes);
+- User Permissions: create roles table and permissions table, add user-roles relationship;
+- User views; 
+- Set users' timezone;
 - dashboard for admins (app's performance data, total number of prospects/orders created, types of products bought etc.);
 - create tests;
-
-
+- write documentation: web and api;
                                          Remember to do small separate commits.
