@@ -31,7 +31,7 @@ class OrderService
       }
     }
     $orderStatus = OrderStatus::findOrFail($data['order_status']);
-    $order->statuses()->attach($orderStatus, ['explanation' => $data['order_status_explanation'], 'expires_at' => $data['expires_at'] ?? Carbon::now()->addDays(1), 'default_order_transition' => $data['default_order_transition']] ?? null);
+    $order->statuses()->attach($orderStatus, ['explanation' => $data['order_status_explanation'], 'expires_at' => $data['expires_at'] ?? null , 'default_order_transition' => $data['default_order_transition']] ?? null);
     $statusIsFinal = $order->statuses()->latest()->first()->is_final ? 'Status is final.' : 'Status is not final';
     $message = new Message([
       'text' => "Order created. Status: $orderStatus->title; Explanation: {$data['order_status_explanation']}; Expires at: " . ($order->statuses()->latest()->first()->pivot->expires_at . "; " ?? "no expiration date; ") . " By default transits to: " . (OrderStatus::find($data['default_order_transition'])->title . "; " ?? "no default transition; ") . $statusIsFinal,
@@ -57,7 +57,7 @@ class OrderService
       $pivot = $currentStatus->pivot;
       $order->statuses()->updateExistingPivot($currentStatus->id, ['explanation' => $data['order_status_explanation'] ?? $pivot->explanation, 'expires_at' => $data['expires_at'] ?? $pivot->expires_at]);
     } elseif ($currentStatus->statuses->contains($status->id)) {
-      $expires_at = $status->is_final ? null : ($data['expires_at'] ?? Carbon::now()->addDays(1));
+      $expires_at = $status->is_final ? null : ($data['expires_at'] ?? null);
       $order->statuses()->attach($status->id, ['explanation' => $data['order_status_explanation'] ?? null, 'expires_at' => $expires_at]);
     } else {
       return 'Invalid status provided';

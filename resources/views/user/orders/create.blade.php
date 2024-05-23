@@ -86,8 +86,7 @@
                             soft-deleted.</p>
                     </div>
                     <div class="mb-3">
-                        <label for="expires_at" class="form-label">Expires at (by default it's 1 day from the moment you
-                            make the order; please type in date and time like this: YYYY-MM-DD hh:mm:ss) </label>
+                        <label for="expires_at" class="form-label">Expires at (by default it's not set; if you want to set it, please type in date and time like this: YYYY-MM-DD hh:mm:ss) </label>
                         <input class="form-control" type="datetime" name="expires_at" id="expires_at">
                     </div>
                     <input type="hidden" name="selected_products_json" value="{{ request()['selected_products_json'] }}">
