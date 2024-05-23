@@ -10,7 +10,7 @@
             <div class="card-body">
                 <div class="d-flex">
 
-                    <h2>Edit "{{ $order_status->title }}"</h2>
+                    <h2>Edit "{{ $orderStatus->title }}"</h2>
 
                     <div class="ml-auto" style="margin-left: auto">
                         <div class="dropdown">
@@ -39,7 +39,7 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('admin.order_statuses.update', ['order_status' => $order_status]) }}"
+            <form action="{{ route('admin.order_statuses.update', ['order_status' => $orderStatus]) }}"
                 method="POST">
                 @csrf
                 @method('PUT')
@@ -47,20 +47,20 @@
                     <div class="mb-3">
                         <label class="form-label" for="title">Title</label>
                         <input class="form-control" type="text" name="title" id="title"
-                            value="{{ $order_status->title }}">
+                            value="{{ $orderStatus->title }}">
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="description">Description</label>
                         <input class="form-control" type="text" name="description" id="description"
-                            value="{{ $order_status->description }}">
+                            value="{{ $orderStatus->description }}">
                     </div>
                     <div class="mb-3" v-if="!statusIsFinal">
                         <label class="form-label" for="description">Can transit into</label>
-                        @foreach (App\Models\OrderStatus::all()->except($order_status->id) as $other_order_status)
+                        @foreach (App\Models\OrderStatus::all()->except($orderStatus->id) as $other_order_status)
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox" value="{{ $other_order_status->id }}"
                                     name="can_transit_into[]"
-                                    {{ $order_status->statuses->contains($other_order_status->id) ? 'checked' : '' }}>
+                                    {{ $orderStatus->statuses->contains($other_order_status->id) ? 'checked' : '' }}>
                                 <label class="form-check-label" for="flexCheckDefault">
                                     {{ $other_order_status->title }}
                                 </label>
@@ -73,7 +73,7 @@
                             For example, for such statuses as "new", "pending", "potentially_fake" etc. Other statuses with
                             "No" value will not be available at the order creation, only at the order edition.</p>
                         <select class="form-control" name="first_step_status" id="first_step_status">
-                            @if ($order_status->first_step_status)
+                            @if ($orderStatus->first_step_status)
                                 <option value="1">Yes</option>
                                 <option value="0">No</option>
                             @else
@@ -86,7 +86,7 @@
                         <label class="form-label" for="is_final">Is final</label>
                         <p>**If a status defined as final order with this status cannot transit to another status</p>
                         <select class="form-control" name="is_final" id="status_is_final" @input="changeStatusIsFinal">
-                            @if ($order_status->is_final)
+                            @if ($orderStatus->is_final)
                                 <option value="1">Yes</option>
                                 <option value="0">No</option>
                             @else
