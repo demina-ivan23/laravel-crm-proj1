@@ -36,7 +36,10 @@ class Order extends Model
         return $this->statuses()->latest()->first();
     }
     public function getExiresAtAttribute(){
-        return $this->statuses()->latest()->first()->pivot->expires_at;
+        return $this->latestStatus->pivot->expires_at;
+    }
+    public function getDefaultStatusTransitionAttribute(){
+        return $this->latestStatus->pivot->default_status_transition;
     }
     public function scopeFilter($query)
     {
