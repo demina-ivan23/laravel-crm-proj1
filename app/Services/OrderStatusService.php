@@ -35,6 +35,9 @@ class OrderStatusService
     static function updateOrderStatus(OrderStatus $orderStatus, array $data)
     {
         try {
+            if($orderStatus == null){
+                abort(404);
+            }
             $orderStatus->update($data);
             foreach (OrderStatus::all() as $other_order_status) {
                 $orderStatus->statuses->contains($other_order_status->id) ? $orderStatus->statuses()->detach($other_order_status->id) : '';
@@ -51,7 +54,24 @@ class OrderStatusService
     }
     static function updateOrderStatusesViaTable(array $data)
     {
-        
+        try {
+            foreach ($data as $key => $value) {
+                $keyStringArray = explode('-', $key);
+                if (array_key_exists(1, $keyStringArray)  && $keyStringArray[1] == 'can_transit_into') {
+                    $orderStatus = OrderStatus::findOrFail($keyStringArray[0]);
+                    foreach($orderStatus->statuses as $oldOrderStatus){
+                        $orderStatus->statuses()->detach($oldOrderStatus->id);
+                    }
+                    foreach ($value as $item) {
+                        $newOrderStatus = OrderStatus::findOrFail($item);
+                        $orderStatus->statuses()->attach($newOrderStatus->id);
+                    }
+                }
+            }
+            return "Order statuses updated successfully";
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
     }
     static function getAllFSS()
     {

@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\OrderStatusService;
 use App\Http\Requests\Admin\OrderStatus\UpdateOrderStatusRequest;
+use App\Http\Requests\Admin\OrderStatus\UpdateAllOrderStatusesRequest;
 
 
 class OrderStatusController extends Controller
@@ -31,9 +32,9 @@ class OrderStatusController extends Controller
     public function edit(OrderStatus $orderStatus)
     {
         $routeName = request()->route()->getName();
-        if($routeName == 'admin.order_statuses.edit'){
+        if ($routeName == 'admin.order_statuses.edit') {
             return view('admin.order_statuses.edit', compact('orderStatus'));
-        } elseif($routeName == 'admin.order_statuses.edit_via_table'){
+        } elseif ($routeName == 'admin.order_statuses.edit_via_table') {
             return view('admin.order_statuses.edit_via_table', ['orderStatuses' => OrderStatus::all()]);
         } else {
             dd($routeName);
@@ -41,16 +42,21 @@ class OrderStatusController extends Controller
     }
     public function update(OrderStatus $orderStatus, UpdateOrderStatusRequest $request)
     {
-        $routeName = $request->route()->getName();
-        if($routeName === 'admin.order_statuses.update'){
-            $result = OrderStatusService::updateOrderStatus($orderStatus, $request->all());
-        } elseif($routeName === 'admin.order_statuses.update_via_table') {
-            $result = OrderStatusService::updateOrderStatusesViaTable($request->all());
-        }
+        $result = OrderStatusService::updateOrderStatus($orderStatus, $request->all());
         if (str_contains($result, 'successfully')) {
             return redirect()->route('admin.order_statuses.index')->with('success', $result);
         } else {
             return redirect()->route('admin.order_statuses.edit', ['order_status' => $orderStatus])->with('error', $result);
+        }
+    }
+
+    public function updateAll(UpdateAllOrderStatusesRequest $request) //till now I tried my best not to create custom methods
+    {
+        $result = OrderStatusService::updateOrderStatusesViaTable($request->all());
+        if (str_contains($result, 'successfully')) {
+            return redirect()->route('admin.order_statuses.index')->with('success', $result);
+        } else {
+            return redirect()->route('admin.order_statuses.edit_via_table')->with('error', $result);
         }
     }
 }
