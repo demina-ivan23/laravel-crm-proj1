@@ -64,7 +64,9 @@ class OrderStatusService
                     }
                     foreach ($value as $item) {
                         $newOrderStatus = OrderStatus::findOrFail($item);
-                        $orderStatus->statuses()->attach($newOrderStatus->id);
+                        if($newOrderStatus->id !== $orderStatus->id){
+                            $orderStatus->statuses()->attach($newOrderStatus->id);
+                        }
                     }
                 }
             }
