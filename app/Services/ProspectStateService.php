@@ -37,4 +37,27 @@ class ProspectStateService
             return 'Something went wrong, Exception message: ' . $e->getMessage();
         }
     }
+    static function updateProspectStatesViaTable($data)
+    {
+        try {
+            foreach ($data as $key => $value) {
+                $keyStringArray = explode('-', $key);
+                if (array_key_exists(1, $keyStringArray)  && $keyStringArray[1] == 'can_transit_into') {
+                    $prospectState = ProspectState::findOrFail($keyStringArray[0]);
+                    foreach ($prospectState->states as $oldProspectState) {
+                        $prospectState->states()->detach($oldProspectState->id);
+                    }
+                    foreach ($value as $item) {
+                        $newProspectState = ProspectState::findOrFail($item);
+                        if($newProspectState->id !== $prospectState->id){
+                            $prospectState->states()->attach($newProspectState->id);
+                        }
+                    }
+                }
+            }
+            return 'Prospect states updated successfully';
+        } catch (Exception $e) {
+            return $e->getMessage();
+        }
+    }
 }
