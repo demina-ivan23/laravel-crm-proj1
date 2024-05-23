@@ -32,7 +32,12 @@ class Order extends Model
             ->withPivot('explanation', 'expires_at')
             ->withTimestamps();
     }
-
+    public function getLatestStatusAttribute(){
+        return $this->statuses()->latest()->first();
+    }
+    public function getExiresAtAttribute(){
+        return $this->statuses()->latest()->first()->pivot->expires_at;
+    }
     public function scopeFilter($query)
     {
         if (request('search')) {
