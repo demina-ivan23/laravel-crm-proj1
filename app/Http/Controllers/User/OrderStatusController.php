@@ -31,14 +31,7 @@ class OrderStatusController extends Controller
     }
     public function edit(OrderStatus $orderStatus)
     {
-        $routeName = request()->route()->getName();
-        if ($routeName == 'admin.order_statuses.edit') {
-            return view('admin.order_statuses.edit', compact('orderStatus'));
-        } elseif ($routeName == 'admin.order_statuses.edit_via_table') {
-            return view('admin.order_statuses.edit_via_table', ['orderStatuses' => OrderStatus::all()]);
-        } else {
-            dd($routeName);
-        }
+        return view(request()->route()->getName(), compact('orderStatus'));
     }
     public function update(OrderStatus $orderStatus, UpdateOrderStatusRequest $request)
     {
