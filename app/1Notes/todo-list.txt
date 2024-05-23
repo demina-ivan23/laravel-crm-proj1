@@ -1,4 +1,3 @@
-- Set the order_status expires_at automatisation;
 - refactor the code (migrations, views, services, controllers and routes);
 - User Permissions: create roles table and permissions table, add user-roles relationship;
 - User views; 
