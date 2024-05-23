@@ -11,6 +11,10 @@ class UpdateAllOrderStatusesRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        if (auth()->user()->is_admin) 
+        {
+            return true;
+        }
         return false;
     }
 
@@ -21,6 +25,7 @@ class UpdateAllOrderStatusesRequest extends FormRequest
      */
     public function rules(): array
     {
+
         return [
             //
         ];
