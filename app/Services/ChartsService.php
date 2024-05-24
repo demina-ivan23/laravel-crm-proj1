@@ -8,11 +8,8 @@ use App\Models\OrderStatus;
 use App\Models\ProspectState;
 use App\Models\ProductCategory;
 
-class AdminService
+class ChartsService
 {
-    static function update($data)
-    {
-    }
     static function getDashboardData($query)
     {
         $data = [

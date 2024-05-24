@@ -9,7 +9,8 @@ use App\Http\Controllers\User\{
     Prospects\ProspectsController,
     Prospects\ProspectStateController,
     Products\ProductsController,
-    Messages\MessageController
+    Messages\MessageController,
+    Charts\ChartsController
 };
 
 /*
@@ -38,9 +39,9 @@ Route::resource('users', UserController::class)->middleware('auth');
 //User-managed routes
 Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     //Charts
-    Route::get('order_product_chart', [AdminController::class, 'index'])->name('order_product_chart');
-    Route::get('order_prospect_chart', [AdminController::class, 'index'])->name('order_prospect_chart');
-    Route::get('order_chart', [AdminController::class, 'index'])->name('order_chart');
+    Route::get('order_product_chart', [ChartsController::class, 'index'])->name('order_product_chart');
+    Route::get('order_prospect_chart', [ChartsController::class, 'index'])->name('order_prospect_chart');
+    Route::get('order_chart', [ChartsController::class, 'index'])->name('order_chart');
 
     //Prospect states
     Route::put('prospect_states/update_via_table', [ProspectStateController::class, 'updateAll'])->name('prospect_states.update_via_table');
