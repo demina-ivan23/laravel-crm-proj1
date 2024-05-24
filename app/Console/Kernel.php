@@ -16,7 +16,7 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')->hourly();
         // $schedule->job(OrderCreationJob::class)->withoutOverlapping()->onOneServer();
-        $schedule->job(OrderExpirationCheckJob::class)->everyMinute();
+        $schedule->job(OrderExpirationCheckJob::class)->everyTenSeconds();
         
     }
     /**

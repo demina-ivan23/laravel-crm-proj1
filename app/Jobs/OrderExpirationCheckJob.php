@@ -34,18 +34,19 @@ class OrderExpirationCheckJob implements ShouldQueue
     {
         foreach(Order::all() as $order) 
         {
-            if(!empty($order) && $order->expiresAt <= Carbon::now())
+            if($order->expiresAt != null && $order->expiresAt <= Carbon::now())
             {
                 try{
                     if($order->defaultStatusTransition != null)
                     {
                         $defaultStatus = OrderStatus::findOrFail($order->defaultStatusTransition);
-                        $order->statuses()->attach($defaultStatus->id, ['explanation' => 'order expired']);
+                        $order->statuses()->attach($defaultStatus->id, ['explanation' => 'the previous status expired for this order']);
                         $order->update(['updated_at' => $order->latestStatus->pivot->updated_at]);
                         $message = new Message([
                             'text' => 'Order automatically transited to a status of ' . $defaultStatus->title
                         ]);
                         $order->messages()->save($message);
+                        Log::info("Order transited to a status of {$order->latestStatus->title}");
                     } else {
                         $order->delete();
                         // later, with soft-deletes enabeled, I'll use the code below:
@@ -53,8 +54,8 @@ class OrderExpirationCheckJob implements ShouldQueue
                         //     'text' => 'Order trashed upon reaching it\'s expiery date'
                         // ]);
                         // $order->messages()->save($message);
+                        Log::info("Order {$order->id} trashed successfully.");
                     }
-                    Log::info("Order {$order->id} trashed successfully.");
                 } catch(Exception $e) {
                     Log::error("Error deleting order {$order->id}: {$e->getMessage()}");
                 }

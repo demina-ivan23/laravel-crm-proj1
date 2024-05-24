@@ -35,7 +35,7 @@ class Order extends Model
     public function getLatestStatusAttribute(){
         return $this->statuses()->latest()->first();
     }
-    public function getExiresAtAttribute(){
+    public function getExpiresAtAttribute(){
         return $this->latestStatus->pivot->expires_at;
     }
     public function getDefaultStatusTransitionAttribute(){
