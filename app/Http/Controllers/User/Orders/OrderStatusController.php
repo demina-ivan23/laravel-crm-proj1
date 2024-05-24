@@ -6,8 +6,8 @@ use App\Models\OrderStatus;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Services\OrderStatusService;
-use App\Http\Requests\Admin\OrderStatus\UpdateOrderStatusRequest;
-use App\Http\Requests\Admin\OrderStatus\UpdateAllOrderStatusesRequest;
+use App\Http\Requests\OrderStatus\UpdateOrderStatusRequest;
+use App\Http\Requests\OrderStatus\UpdateAllOrderStatusesRequest;
 
 
 class OrderStatusController extends Controller
