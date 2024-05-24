@@ -20,7 +20,6 @@ class AdminSeeder extends Seeder
             'email' => 'admin@example.com',
             'password' => bcrypt('iamadmin1234'),
             'api_key' => Str::uuid(),
-            'api_access_level' => 'FULL_ACCESS',
             'is_admin' => true
         ]);
     }
