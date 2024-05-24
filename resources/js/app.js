@@ -33,14 +33,6 @@ const app = createApp({
                 this.showCustomCategoryInput = false;
             }
         },
-        handleProspectStateChange() {
-            let val = document.getElementById('prospect_state_select').value;
-            if (val === 'custom') {
-                this.showCustomProspectStateInput = true;
-            } else {
-                this.showCustomProspectStateInput = false;
-            }
-        },
         changeStatusIsFinal() {
             let val = document.getElementById('status_is_final').value;
             val == true ? this.statusIsFinal = true : this.statusIsFinal = false;
