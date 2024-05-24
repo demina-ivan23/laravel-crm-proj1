@@ -6,32 +6,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 
 class UserService {
-    static function findUser($id){
-        $user = User::find($id);
-        if(!$user)
-        {
-            abort(404);
-        }
-        return $user;
-    }
-    static function findTrashedUser($id)
-    {
-        $user = User::onlyTrashed()->find($id);
-        if(!$user)
-        {
-            abort(404);
-        }
-        return $user;
-    }
-    static function findUserWithTrashed($id){
-        $user = User::withTrashed()->find($id);
-        if(!$user)
-        {
-            abort(404);
-        }
-        return $user;
-    }
-    static function storeUser($data){
+    static function storeUser(array $data){
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -41,7 +16,7 @@ class UserService {
         return $user;
         
     }
-    static function updateUser($user, $data){
+    static function updateUser(User $user, array $data){
         try{
             $user->update($data);
             return true;

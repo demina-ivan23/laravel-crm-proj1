@@ -42,10 +42,6 @@ class ProspectService
     $prospect->messages()->save($message);
     return $prospect;
   }
-  static function deleteProspect(Prospect $prospect)
-  {
-    $prospect->delete();
-  }
   
   static function setProspectState(int $state, ?string $explanation, Prospect $prospect)
   {

@@ -24,14 +24,6 @@ class OrderStatusService
         }
         return 'Order status created successfully';
     }
-    static function findOrderStatus($id)
-    {
-        $orderStatus = OrderStatus::find($id);
-        if (!$orderStatus) {
-            abort(404);
-        }
-        return $orderStatus;
-    }
     static function updateOrderStatus(OrderStatus $orderStatus, array $data)
     {
         try {

@@ -46,11 +46,6 @@ class ProductService
         return $product;
     }
 
-    static function deleteProduct(Product $product)
-    {
-        $product->delete();
-    }
-
     static function getOrCreateCategory(?string $categoryTitle)
     {
         $category = ProductCategory::where('title', $categoryTitle)->first() ?? null;

@@ -7,7 +7,7 @@ use App\Models\ProspectState;
 
 class ProspectStateService
 {
-    static function storeProspectState($data)
+    static function storeProspectState(array $data)
     {
         $prospectState = ProspectState::create($data);
         if (!$prospectState) {
@@ -20,7 +20,7 @@ class ProspectStateService
         }
         return 'Prospect state created successfully';
     }
-    static function updateProspectState($data, $prospectState)
+    static function updateProspectState(array $data, ProspectState $prospectState)
     {
         try {
             $prospectState->update($data);
@@ -37,7 +37,7 @@ class ProspectStateService
             return 'Something went wrong, Exception message: ' . $e->getMessage();
         }
     }
-    static function updateProspectStatesViaTable($data)
+    static function updateProspectStatesViaTable(array $data)
     {
         try {
             foreach ($data as $key => $value) {
