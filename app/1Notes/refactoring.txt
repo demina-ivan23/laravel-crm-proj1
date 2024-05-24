@@ -1,0 +1,6 @@
+Routes: remove admin. and admin/ prefixes and group that routes under the user. and user/ prefixes;
+Migrations: use different approach for defining a foreign keys
+Services: declare types for the args received and remove unnecessary methods;
+Views: change everything from admin. to user.;
+Controllers: change everything from admin. to user.;
+Maybe something else

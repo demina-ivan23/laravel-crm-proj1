@@ -24,7 +24,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1/')->middleware(ApiKeyAuthMiddleware::class)->name('api.')->group(function () {
-    Route::prefix('admin/')->middleware(IsAdmin::class)->name('admin.')->group( function () {
+    Route::prefix('admin/')->middleware(IsAdmin::class)->name('user.')->group( function () {
         
     });
     Route::prefix('users/')->name('users.')->group(function () {

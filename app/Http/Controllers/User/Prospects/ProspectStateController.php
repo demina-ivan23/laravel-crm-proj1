@@ -16,7 +16,7 @@ class ProspectStateController extends Controller
      */
     public function index()
     {
-        return view('admin.prospect_states.index', ['prospectStates' => ProspectState::all()]);
+        return view('user.prospect_states.index', ['prospectStates' => ProspectState::all()]);
     }
 
     /**
@@ -24,7 +24,7 @@ class ProspectStateController extends Controller
      */
     public function create()
     {
-        return view('admin.prospect_states.create');
+        return view('user.prospect_states.create');
     }
 
     /**
@@ -34,9 +34,9 @@ class ProspectStateController extends Controller
     {
         $result = ProspectStateService::storeProspectState($request->all());
         if (str_contains($result, 'successfully')) {
-            return redirect()->route('admin.prospect_states.index')->with('success', $result);
+            return redirect()->route('user.prospect_states.index')->with('success', $result);
         } else {
-            return redirect()->route('admin.prospect_states.create')->with('error', $result);
+            return redirect()->route('user.prospect_states.create')->with('error', $result);
         }
     }
 
@@ -46,10 +46,10 @@ class ProspectStateController extends Controller
     public function edit(ProspectState $prospectState)
     {
         $routeName = request()->route()->getName();
-        if ($routeName == 'admin.prospect_states.edit') {
-            return view('admin.prospect_states.edit', compact('prospectState'));
-        } elseif ($routeName == 'admin.prospect_states.edit_via_table') {
-            return view('admin.prospect_states.edit_via_table', ['prospectStates' => ProspectState::all()]);
+        if ($routeName == 'user.prospect_states.edit') {
+            return view('user.prospect_states.edit', compact('prospectState'));
+        } elseif ($routeName == 'user.prospect_states.edit_via_table') {
+            return view('user.prospect_states.edit_via_table', ['prospectStates' => ProspectState::all()]);
         } else {
             dd($routeName);
         }
@@ -62,18 +62,18 @@ class ProspectStateController extends Controller
     {
         $result = ProspectStateService::updateProspectState($request->all(), $prospectState);
         if (str_contains($result, 'successfully')) {
-            return redirect()->route('admin.prospect_states.index')->with('success', $result);
+            return redirect()->route('user.prospect_states.index')->with('success', $result);
         } else {
-            return redirect()->route('admin.prospect_states.edit', compact('prospectState'))->with('error', $result);
+            return redirect()->route('user.prospect_states.edit', compact('prospectState'))->with('error', $result);
         }
     }
     public function updateAll(Request $request)
     {
         $result = ProspectStateService::updateProspectStatesViaTable($request->all());
         if (str_contains($result, 'successfully')) {
-            return redirect()->route('admin.prospect_states.index')->with('success', $result);
+            return redirect()->route('user.prospect_states.index')->with('success', $result);
         } else {
-            return redirect()->route('admin.prospect_states.edit_via_table')->with('error', $result);
+            return redirect()->route('user.prospect_states.edit_via_table')->with('error', $result);
         }
     }
 }

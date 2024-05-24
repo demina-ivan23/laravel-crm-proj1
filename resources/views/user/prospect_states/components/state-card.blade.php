@@ -27,7 +27,7 @@
             </div>
             <div class="col-sm-3 d-flex justify-content-between align-items-center">
                 <a class="btn btn-primary "
-                    href="{{ route('admin.prospect_states.edit', ['prospect_state' => $prospectState]) }}">
+                    href="{{ route('user.prospect_states.edit', ['prospect_state' => $prospectState]) }}">
                     Edit
                 </a>
             </div>

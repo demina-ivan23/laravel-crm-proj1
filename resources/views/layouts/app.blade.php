@@ -95,68 +95,63 @@
                                 <div class="collapse" id="userMenu">
                                     <ul class="navbar-nav">
                                         @if (auth()->user()->is_admin)
-                                            <li class="ml-7">
-                                                <a href="{{ route('admin.index') }}" class="dropdown-item"
-                                                    style="{{ request()->routeIs('admin.index') ? 'color:gray' : '' }}">Admin
-                                                    Dashboard</a>
-                                            </li>
                                             <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
                                                 <p>Chart Links</p>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('admin.order_chart') }}" class="dropdown-item"
-                                                    style="{{ request()->routeIs('admin.order_chart') ? 'color:gray' : '' }}">Order
+                                                <a href="{{ route('user.order_chart') }}" class="dropdown-item"
+                                                    style="{{ request()->routeIs('user.order_chart') ? 'color:gray' : '' }}">Order
                                                     info page</a>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('admin.order_product_chart') }}" class="dropdown-item"
-                                                    style="{{ request()->routeIs('admin.order_product_chart') ? 'color:gray' : '' }}">Order-Product
+                                                <a href="{{ route('user.order_product_chart') }}" class="dropdown-item"
+                                                    style="{{ request()->routeIs('user.order_product_chart') ? 'color:gray' : '' }}">Order-Product
                                                     info page</a>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('admin.order_prospect_chart') }}" class="dropdown-item"
-                                                    style="{{ request()->routeIs('admin.order_prospect_chart') ? 'color:gray' : '' }}">Order-Prospect
+                                                <a href="{{ route('user.order_prospect_chart') }}" class="dropdown-item"
+                                                    style="{{ request()->routeIs('user.order_prospect_chart') ? 'color:gray' : '' }}">Order-Prospect
                                                     info page</a>
                                             </li>
                                             <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
                                                 <p>Order Status Links</p>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('admin.order_statuses.index') }}" class="dropdown-item"
-                                                    style="{{ request()->routeIs('admin.order_statuses.index') ? 'color:gray' : '' }}">All
+                                                <a href="{{ route('user.order_statuses.index') }}" class="dropdown-item"
+                                                    style="{{ request()->routeIs('user.order_statuses.index') ? 'color:gray' : '' }}">All
                                                     Order Statuses</a>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('admin.order_statuses.create') }}"
+                                                <a href="{{ route('user.order_statuses.create') }}"
                                                     class="dropdown-item"
-                                                    style="{{ request()->routeIs('admin.order_statuses.create') ? 'color:gray' : '' }}">Create
+                                                    style="{{ request()->routeIs('user.order_statuses.create') ? 'color:gray' : '' }}">Create
                                                     An Order Status</a>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('admin.order_statuses.edit_via_table') }}"
+                                                <a href="{{ route('user.order_statuses.edit_via_table') }}"
                                                     class="dropdown-item"
-                                                    style="{{ request()->routeIs('admin.order_statuses.edit_via_table') ? 'color:gray' : '' }}">Edit
+                                                    style="{{ request()->routeIs('user.order_statuses.edit_via_table') ? 'color:gray' : '' }}">Edit
                                                     Order Statuses Via Table</a>
                                             </li>
                                             <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
                                                 <p>Prospect State Links</p>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('admin.prospect_states.index') }}"
+                                                <a href="{{ route('user.prospect_states.index') }}"
                                                     class="dropdown-item"
-                                                    style="{{ request()->routeIs('admin.prospect_states.index') ? 'color:gray' : '' }}">All
+                                                    style="{{ request()->routeIs('user.prospect_states.index') ? 'color:gray' : '' }}">All
                                                     Prospect States</a>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('admin.prospect_states.create') }}"
+                                                <a href="{{ route('user.prospect_states.create') }}"
                                                     class="dropdown-item"
-                                                    style="{{ request()->routeIs('admin.prospect_states.create') ? 'color:gray' : '' }}">Create
+                                                    style="{{ request()->routeIs('user.prospect_states.create') ? 'color:gray' : '' }}">Create
                                                     A Prospect State</a>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('admin.prospect_states.edit_via_table') }}"
+                                                <a href="{{ route('user.prospect_states.edit_via_table') }}"
                                                     class="dropdown-item"
-                                                    style="{{ request()->routeIs('admin.prospect_states.edit_via_table') ? 'color:gray' : '' }}">Edit
+                                                    style="{{ request()->routeIs('user.prospect_states.edit_via_table') ? 'color:gray' : '' }}">Edit
                                                     Prospect States Via Table</a>
                                             </li>
                                         @endif

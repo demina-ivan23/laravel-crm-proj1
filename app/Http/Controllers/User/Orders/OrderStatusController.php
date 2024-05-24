@@ -14,28 +14,28 @@ class OrderStatusController extends Controller
 {
     public function index()
     {
-        return view('admin.order_statuses.index', ['order_statuses' => OrderStatusService::getAllOrderStatuses()]);
+        return view('user.order_statuses.index', ['order_statuses' => OrderStatusService::getAllOrderStatuses()]);
     }
     public function create()
     {
-        return view('admin.order_statuses.create');
+        return view('user.order_statuses.create');
     }
     public function store(Request $request)
     {
         $result = OrderStatusService::storeOrderStatus($request->all());
         if (str_contains($result, 'successfully')) {
-            return redirect()->route('admin.order_statuses.index')->with('success', $result);
+            return redirect()->route('user.order_statuses.index')->with('success', $result);
         } else {
-            return redirect()->route('admin.order_statuses.create')->with('error', $result);
+            return redirect()->route('user.order_statuses.create')->with('error', $result);
         }
     }
     public function edit(OrderStatus $orderStatus)
     {
         $routeName = request()->route()->getName();
-        if ($routeName == 'admin.order_statuses.edit') {
-            return view('admin.order_statuses.edit', compact('orderStatus'));
-        } elseif ($routeName == 'admin.order_statuses.edit_via_table') {
-            return view('admin.order_statuses.edit_via_table', ['orderStatuses' => OrderStatus::all()]);
+        if ($routeName == 'user.order_statuses.edit') {
+            return view('user.order_statuses.edit', compact('orderStatus'));
+        } elseif ($routeName == 'user.order_statuses.edit_via_table') {
+            return view('user.order_statuses.edit_via_table', ['orderStatuses' => OrderStatus::all()]);
         } else {
             dd($routeName);
         }
@@ -44,9 +44,9 @@ class OrderStatusController extends Controller
     {
         $result = OrderStatusService::updateOrderStatus($orderStatus, $request->all());
         if (str_contains($result, 'successfully')) {
-            return redirect()->route('admin.order_statuses.index')->with('success', $result);
+            return redirect()->route('user.order_statuses.index')->with('success', $result);
         } else {
-            return redirect()->route('admin.order_statuses.edit', ['order_status' => $orderStatus])->with('error', $result);
+            return redirect()->route('user.order_statuses.edit', ['order_status' => $orderStatus])->with('error', $result);
         }
     }
 
@@ -54,9 +54,9 @@ class OrderStatusController extends Controller
     {
         $result = OrderStatusService::updateOrderStatusesViaTable($request->all());
         if (str_contains($result, 'successfully')) {
-            return redirect()->route('admin.order_statuses.index')->with('success', $result);
+            return redirect()->route('user.order_statuses.index')->with('success', $result);
         } else {
-            return redirect()->route('admin.order_statuses.edit_via_table')->with('error', $result);
+            return redirect()->route('user.order_statuses.edit_via_table')->with('error', $result);
         }
     }
 }

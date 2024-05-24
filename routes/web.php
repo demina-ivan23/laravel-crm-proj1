@@ -32,56 +32,46 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::redirect('/', '/home');
 
-//Admin routes
-Route::prefix('admin/')->middleware(['auth', 'admin'])->group(function () {
-    // User routes that are listed under the 'Admin' middleware are the routes created for 
-    // Admins to manage CRM's users' data
-    Route::resource('users', UserController::class)->except('show');
-    
-    Route::resource('admin', AdminController::class)->except(['create', 'store', 'destroy']);
-    // Admin routes are the routes which allow Admins to manage their data
 
-    // All Admin charts are drawn by the index method, thus the code is cleaner  
-    Route::get('order_product_chart', [AdminController::class, 'index'])->name('admin.order_product_chart');
-    Route::get('order_prospect_chart', [AdminController::class, 'index'])->name('admin.order_prospect_chart');
-    Route::get('order_chart', [AdminController::class, 'index'])->name('admin.order_chart');
+//User management routes
+Route::resource('users', UserController::class)->middleware('auth');
 
-    // Order status is the almost the same thing as prospect state or product category, it's difference 
-    //from the upper mentioned two is that process of it's creation and modification requires admin access
-    Route::name('admin.')->group(function () {
-        Route::put('prospect_states/update_via_table', [ProspectStateController::class, 'updateAll'])->name('prospect_states.update_via_table');
-        Route::resource('prospect_states', ProspectStateController::class)->except(['show', 'destroy']);
-        Route::get('prospect_states/edit_via_table', [ProspectStateController::class, 'edit'])->name('prospect_states.edit_via_table');
-        
-        Route::put('order_statuses/update_via_table', [OrderStatusController::class, 'updateAll'])->name('order_statuses.update_via_table');
-        Route::resource('order_statuses', OrderStatusController::class)->except(['show', 'destroy']);
-        Route::get('order_statuses/edit_via_table', [OrderStatusController::class, 'edit'])->name('order_statuses.edit_via_table');
-    });
-});
+//User-managed routes
+Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
+    //Charts
+    Route::get('order_product_chart', [AdminController::class, 'index'])->name('order_product_chart');
+    Route::get('order_prospect_chart', [AdminController::class, 'index'])->name('order_prospect_chart');
+    Route::get('order_chart', [AdminController::class, 'index'])->name('order_chart');
 
-Route::get('users/show/{id}', [UserController::class, 'show'])->middleware('auth')->name('users.show');
+    //Prospect states
+    Route::put('prospect_states/update_via_table', [ProspectStateController::class, 'updateAll'])->name('prospect_states.update_via_table');
+    Route::resource('prospect_states', ProspectStateController::class)->except(['show', 'destroy']);
+    Route::get('prospect_states/edit_via_table', [ProspectStateController::class, 'edit'])->name('prospect_states.edit_via_table');
 
+    //Order statuses
+    Route::put('order_statuses/update_via_table', [OrderStatusController::class, 'updateAll'])->name('order_statuses.update_via_table');
+    Route::resource('order_statuses', OrderStatusController::class)->except(['show', 'destroy']);
+    Route::get('order_statuses/edit_via_table', [OrderStatusController::class, 'edit'])->name('order_statuses.edit_via_table');
 
-//General CRM routes (accessed by any user who has proper permissions) 
-Route::prefix('users/')->middleware('auth')->name('user.')->group(function () {
+    //Prospects
     Route::resource('prospects', ProspectsController::class)->names(['index' => 'prospects.dashboard']);
     Route::get('{prospect}/orders', [ProspectsController::class, 'show'])->name('prospects.show-orders')->where('prospect', '[0-9]+');
 
+    //Products
     Route::resource('products', ProductsController::class)->names(['index' => 'products.dashboard']);
 
+    //Orders
     Route::resource('orders', OrdersController::class)->names(['index' => 'orders.dashboard'])->except(['create', 'store']);
     Route::prefix('orders/')->name('orders.')->group(function () {
         Route::get('{prospect}/create/select_products', [OrdersController::class, 'create'])->name('create.select_products');
         Route::get('{prospect}/create', [OrdersController::class, 'create'])->name('create');
         Route::post('{prospect}', [OrdersController::class, 'store'])->name('store');
     });
+
+    //Messages
     Route::prefix('messages/')->name('messages.')->group(function () {
         Route::get('{id}/{messagable}/view_all', [MessageController::class, 'index'])->name('index');
         Route::get('show/{message}', [MessageController::class, 'show'])->name('show');
     });
 });
 
-
-//Graph route is for a page that measures prospects creation, 
-// product creation and order creation speed via testing
-// Route::get('/graphs', [GraphController::class, 'index'])->name('graphs.index');

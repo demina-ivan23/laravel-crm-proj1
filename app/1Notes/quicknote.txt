@@ -1,1 +1,0 @@
-remember to edit the app.js file.

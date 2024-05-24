@@ -15,7 +15,7 @@
         <div class="row">
             @if ($order_statuses->count())
                 @foreach ($order_statuses as $order_status)
-                    @include('admin.order_statuses.components.status-card')
+                    @include('user.order_statuses.components.status-card')
                 @endforeach
             @endif
         </div>

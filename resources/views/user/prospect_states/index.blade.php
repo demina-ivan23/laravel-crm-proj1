@@ -15,7 +15,7 @@
         <div class="row">
             @if ($prospectStates->count())
                 @foreach ($prospectStates as $prospectState)
-                    @include('admin.prospect_states.components.state-card')
+                    @include('user.prospect_states.components.state-card')
                 @endforeach
             @endif
         </div>

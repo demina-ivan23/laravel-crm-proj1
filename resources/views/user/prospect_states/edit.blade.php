@@ -6,7 +6,7 @@
                 <h2>Edit The "{{ $prospectState->title }}" Prospect State</h2>
             </div>
 
-            <form action="{{ route('admin.prospect_states.update', ['prospect_state' => $prospectState]) }}" method="POST">
+            <form action="{{ route('user.prospect_states.update', ['prospect_state' => $prospectState]) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="p-3">

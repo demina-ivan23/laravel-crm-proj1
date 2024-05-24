@@ -15,7 +15,7 @@
             <div class="card-body d-flex justify-content-center">
                 <h2 class="float-center">Edit Prospect States Via Table</h2>
             </div>
-            <form action="{{ route('admin.prospect_states.update_via_table') }}" method="POST">
+            <form action="{{ route('user.prospect_states.update_via_table') }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="table-responsive">

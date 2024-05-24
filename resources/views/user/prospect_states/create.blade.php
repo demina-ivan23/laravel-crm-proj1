@@ -14,7 +14,7 @@
                             Actions
                         </button>
                         <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="{{ route('admin.prospect_states.index') }}">All Prospect
+                            <li><a class="dropdown-item" href="{{ route('user.prospect_states.index') }}">All Prospect
                                     States</a></li>
                             <li><a class="dropdown-item" href="#">Something else here</a></li>
                         </ul>
@@ -25,7 +25,7 @@
 
         <hr>
 
-        <form action="{{route('admin.prospect_states.store')}}" method="POST">
+        <form action="{{route('user.prospect_states.store')}}" method="POST">
             @csrf
             <div class="p-3">
                 <div class="mb-3">

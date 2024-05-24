@@ -14,10 +14,10 @@
             </div>
             <div class="col-sm-3 d-flex justify-content-between align-items-center">
                 <a class="btn btn-primary "
-                    href="{{ route('admin.order_statuses.edit', ['order_status' => $order_status]) }}">
+                    href="{{ route('user.order_statuses.edit', ['order_status' => $order_status]) }}">
                     Edit
                 </a>
-                <form action="{{route('admin.order_statuses.update', ['order_status' => $order_status])}}" method="POST">
+                <form action="{{route('user.order_statuses.update', ['order_status' => $order_status])}}" method="POST">
                     @csrf
                     @method('PUT')
                     @if ($order_status->first_step_status)

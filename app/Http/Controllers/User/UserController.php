@@ -13,7 +13,7 @@ class UserController extends Controller
 
     public function index()
     {
-        return view('users.dashboard', ['users' => User::latest()->get()]);
+        return view('users.dashboard', User::latest()->get());
     }
 
     public function create()
@@ -30,21 +30,20 @@ class UserController extends Controller
         return redirect()->route('superuser.users.dashboard')->with('success', 'User created successfully');
     }
 
-    public function show(string $id)
+    public function show(User $user)
     {
-        return view('users.show', ['user' => UserService::findUser($id)]);
+        return view('users.show', compact('user'));
     }
 
-    public function edit(string $id)
+    public function edit(User $user)
     {
-        return view('users.edit', ['user' => UserService::findUser($id)]);
+        return view('users.edit', compact('user'));
     }
     
-    public function update(Request $request, string $id)
+    public function update(Request $request, User $user)
     {
         $data = $request->all();
-        $data['user_id'] = $id;
-        $success = UserService::updateUser($data);
+        $success = UserService::updateUser($user, $data);
         if(!$success)
         {
             return redirect()->route('superuser.users.dashboard')->with('error', 'Something went wrong');
@@ -53,18 +52,16 @@ class UserController extends Controller
         }
     }
 
-    public function delete(string $id)
+    public function delete(User $user)
     {
         //Only soft-deleting should be in action here
-        $user = UserService::findUser($id);
         $user->delete();
         return redirect()->route('users.dashboard')->with('success', 'User trashed successfully');
     }
 
     //Because we use soft deletes we need one more method for restoing the user
-    public function restore(string $id)
+    public function restore(User $user)
     {
-        $user = UserService::findTrashedUser($id);
         //In this case $user is searched only amongst trashed users, so if this user exists but is not trashed, 
         // an action will be aborted with 404 code;
         $user->restore();
@@ -74,7 +71,7 @@ class UserController extends Controller
     //Additionaly, if we need to delete the user permanently, we have to declare a destroy method
     //But, I think that it's unwise to implement such a feature as the team that will be working with this
     //CRM will not be big and they will barely have 100 user accounts throughout their entire usage of the app.
-    // public function destroy(string $id)
+    // public function destroy(User $user)
     // {
     //     //Only hard-deleting should be in action here
     //     $user = UserService::findUserWithTrashed($id);
