@@ -5,13 +5,12 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\{
     UserController,
     Orders\OrdersController,
+    Orders\OrderStatusController,
     Prospects\ProspectsController,
+    Prospects\ProspectStateController,
     Products\ProductsController,
-    AdminController,
-    OrderStatusController,
-    ProspectStateController
+    Messages\MessageController
 };
-use App\Http\Controllers\User\MessageController;
 
 /*
 |--------------------------------------------------------------------------

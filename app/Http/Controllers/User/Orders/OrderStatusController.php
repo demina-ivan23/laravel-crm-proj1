@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\User\Orders;
 
 use App\Models\OrderStatus;
 use Illuminate\Http\Request;

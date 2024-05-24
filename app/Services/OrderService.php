@@ -3,7 +3,6 @@
 namespace App\Services;
 
 use Exception;
-use Carbon\Carbon;
 use App\Models\{
    Order,
    Message,
@@ -50,8 +49,7 @@ class OrderService
   }
   static function updateOrder(array $data, Order $order)
   {
-    unset($data['order_id']);
-    $currentStatus = $order->statuses()->latest()->first();
+    $currentStatus = $order->latestStatus;
     $status = OrderStatus::findOrFail($data['order_status']);
     if ($status->id == $currentStatus->id) {
       $pivot = $currentStatus->pivot;
@@ -62,10 +60,12 @@ class OrderService
     } else {
       return 'Invalid status provided';
     }
-    $order->update(['updated_at' => $order->statuses()->latest()->first()->pivot->updated_at]);
-    $statusIsFinal = $order->statuses()->latest()->first()->is_final ? 'Status is final.' : 'Status is not final';
+    $order->update(['updated_at' => $order->latestStatus->pivot->updated_at]);
+    $statusIsFinal = $order->latestStatus->is_final ? 'Status is final.' : 'Status is not final';
+    $defaultTransition = OrderStatus::find($order->defaultStatusTransition) ?? null;
+    $defaultTransitionTitle = $defaultTransition !=null ? $defaultTransition->title : 'no default transition';
     $message = new Message([
-      'text' => "Order updated. Status: {$order->statuses()->latest()->first()->title}; Explanation: {$order->statuses()->latest()->first()->pivot->explanation}; Expires at: " . ($order->statuses()->latest()->first()->pivot->expires_at . "; " ?? "no expiration date; ") . "By default transits to: " . (OrderStatus::find($order->statuses()->latest()->first()->pivot->default_order_transition)->title . "; " ?? 'no default transition') . $statusIsFinal,
+      'text' => "Order updated. Status: {$order->latestStatus->title}; Explanation: {$order->latestStatus->pivot->explanation}; Expires at: " . ($order->expiresAt . "; " ?? "no expiration date; ") . "By default transits to: " . "{$defaultTransitionTitle}; " . $statusIsFinal,
     ]);
     $order->messages()->save($message);
     $productsStr = '';

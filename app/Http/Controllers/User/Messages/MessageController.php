@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\User\Messages;
 
 use App\Models\Message;
 use App\Http\Controllers\Controller;

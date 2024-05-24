@@ -24,8 +24,8 @@ class UpdateOrderRequest extends FormRequest
         return [
             'order_status' => 'int:order_statuses|required',
             'order_status_explanation' => 'string',
-            'default_order_transition' => 'int:order_statuses',
-            'expires_at' => 'datetime'
+            'default_order_transition' => 'int:order_statuses|nullable',
+            'expires_at' => 'date'
         ];
     }
 }

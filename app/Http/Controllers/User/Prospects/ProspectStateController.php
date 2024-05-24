@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\User;
+namespace App\Http\Controllers\User\Prospects;
 
 use Illuminate\Http\Request;
 use App\Models\ProspectState;
