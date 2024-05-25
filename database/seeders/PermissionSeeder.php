@@ -147,6 +147,45 @@ class PermissionSeeder extends Seeder
         ]);
         Permission::create([
             'title' => 'user-edit-all-api'
-        ]);        
+        ]);
+        //User role permissions:
+        Permission::create([
+            'title' => 'user-give-role-web'
+        ]);
+        Permission::create([
+            'title' => 'user-give-role-api'
+        ]);
+        Permission::create([
+            'title' => 'user-remove-role-web'
+        ]); 
+        Permission::create([
+            'title' => 'user-remove-role-api'
+        ]);
+        //Role management permissions:
+        Permission::create([
+            'title' => 'role-read-web'
+        ]);
+        Permission::create([
+            'title' => 'role-read-api'
+        ]); 
+        Permission::create([
+            'title' => 'role-write-web'
+        ]);
+        Permission::create([
+            'title' => 'role-write-api'
+        ]);
+        Permission::create([
+            'title' => 'role-edit-web'
+        ]);
+        Permission::create([
+            'title' => 'role-edit-api'
+        ]);
+        //Untouchability for the superadmin
+        //Which means this users cant be edited by other users, 
+        //given or taken from roles 
+        //neither via web nor via api
+        Permission::create([
+            'title' => 'be_untouchable'
+        ]);
     }
 }
