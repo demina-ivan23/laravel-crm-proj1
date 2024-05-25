@@ -1,6 +1,5 @@
-- refactor the code (migrations, views, services, controllers and routes);
 - User Permissions: create roles table and permissions table, add user-roles relationship;
-- User views; 
+- User views and actions with users; 
 - Set users' timezone;
 - dashboard for admins (app's performance data, total number of prospects/orders created, types of products bought etc.);
 - create tests;
