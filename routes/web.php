@@ -10,7 +10,8 @@ use App\Http\Controllers\User\{
     Prospects\ProspectStateController,
     Products\ProductsController,
     Messages\MessageController,
-    Charts\ChartsController
+    Charts\ChartsController,
+    Roles\RolesController
 };
 
 /*
@@ -33,11 +34,16 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 Route::redirect('/', '/home');
 
 
+
+
 //User management routes
 Route::resource('users', UserController::class)->middleware('auth');
 
 //User-managed routes
 Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
+    //Roles
+    Route::resource('roles', RolesController::class);
+
     //Charts
     Route::get('order_product_chart', [ChartsController::class, 'index'])->name('order_product_chart');
     Route::get('order_prospect_chart', [ChartsController::class, 'index'])->name('order_prospect_chart');
