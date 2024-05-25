@@ -48,4 +48,10 @@ class User extends Authenticatable
     {
         return $this->morphMany(Message::class, 'messagable');
     }
+    public function role(){
+        return $this->belongsTo(Role::class);
+    }
+    public function scopeFilter($query){
+        return $query;
+    }
 }

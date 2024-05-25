@@ -20,7 +20,7 @@ class AdminSeeder extends Seeder
             'email' => 'admin@example.com',
             'password' => bcrypt('iamadmin1234'),
             'api_key' => Str::uuid(),
-            'is_admin' => true
+            'role_id' => 1
         ]);
     }
 }
