@@ -4,9 +4,10 @@ namespace App\Http\Controllers\User\Roles;
 
 use App\Http\Controllers\Controller;
 use App\Models\Role;
+use App\Services\RoleService;
 use Illuminate\Http\Request;
 
-class RolesController extends Controller
+class RoleController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -29,7 +30,9 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
-        
+        $result = RoleService::storeRole($request->all());
+        $session = str_contains($result, 'successful') ? 'success' : 'error';
+        return redirect()->route('user.roles.dashboard')->with($session, $result);
     }
 
     /**
