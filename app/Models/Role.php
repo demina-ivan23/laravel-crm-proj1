@@ -10,9 +10,13 @@ class Role extends Model
     use HasFactory;
 
     protected $guarded = ['id'];
-    
+
     public function permissions()
     {
         return $this->belongsToMany(Permission::class);
+    }
+    public function scopeFilter($query)
+    {   
+        return $query;
     }
 }
