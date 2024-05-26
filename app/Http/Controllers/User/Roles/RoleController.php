@@ -63,6 +63,7 @@ class RoleController extends Controller
 
     public function delete(Role $role)
     {
-        //
+        $role->delete();
+        return redirect()->route('user.roles.dashboard')->with('success', 'Role Trashed Successfully');
     }
 }

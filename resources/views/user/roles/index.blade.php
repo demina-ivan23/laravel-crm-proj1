@@ -59,6 +59,11 @@
                                             href="{{ route('user.roles.show', ['role' => $role]) }}">View</a>
                                         <a class="btn btn-primary mr-4 pt-1 pb-1"
                                             href="{{ route('user.roles.edit', ['role' => $role]) }}">Edit</a>
+                                        <form action="{{route('user.roles.delete', ['role' => $role])}}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <input class="btn btn-danger" type="submit" value="Delete">
+                                        </form>
                                     </div>
                                 </th>
                             </tr>
