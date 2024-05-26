@@ -45,7 +45,7 @@ class RolesController extends Controller
      */
     public function edit(Role $role)
     {
-        //
+        return view('user.roles.edit', compact('role'));
     }
 
     /**
