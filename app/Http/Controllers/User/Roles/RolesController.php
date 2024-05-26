@@ -37,7 +37,7 @@ class RolesController extends Controller
      */
     public function show(Role $role)
     {
-        //
+        return view('user.roles.show', compact('role'));
     }
 
     /**
