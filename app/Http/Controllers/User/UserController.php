@@ -13,7 +13,7 @@ class UserController extends Controller
 
     public function index()
     {
-        return view('users.dashboard', User::latest()->filter()->paginate()->get());
+        return view('users.dashboard', User::latest()->filter()->paginate(10));
     }
 
     public function create()
