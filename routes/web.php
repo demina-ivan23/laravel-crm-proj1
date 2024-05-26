@@ -11,7 +11,7 @@ use App\Http\Controllers\User\{
     Products\ProductsController,
     Messages\MessageController,
     Charts\ChartsController,
-    Roles\RolesController
+    Roles\RoleController
 };
 
 /*
@@ -42,7 +42,7 @@ Route::resource('users', UserController::class)->middleware('auth');
 //User-managed routes
 Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     //Roles
-    Route::resource('roles', RolesController::class)->names(['index' => 'roles.dashboard']);
+    Route::resource('roles', RoleController::class)->names(['index' => 'roles.dashboard']);
 
     //Charts
     Route::get('order_product_chart', [ChartsController::class, 'index'])->name('order_product_chart');
