@@ -21,5 +21,9 @@ class RoleSeeder extends Seeder
             'title' => 'role 2',
             'description' => 'a second placeholder role'
         ]);
+        Role::create([
+            'title' => 'role 3',
+            'description' => 'a third placeholder role'
+        ]);
     }
 }
