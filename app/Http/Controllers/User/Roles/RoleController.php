@@ -56,7 +56,9 @@ class RoleController extends Controller
      */
     public function update(Request $request, Role $role)
     {
-        //
+        $result = RoleService::updateRole($role, $request->all());
+        $session = str_contains($result, 'successful') ? 'success' : 'error';
+        return redirect()->route('user.roles.dashboard')->with($session, $result);
     }
 
     public function delete(Role $role)
