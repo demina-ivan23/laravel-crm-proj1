@@ -15,7 +15,7 @@ class UserService
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => bcrypt($data['password']),
-            'api_key' => $data['api_key'] ?? Str::uuid(),
+            'api_key' => Str::uuid()->toString(),
             'role_id' => $data['role_id']
         ]);
         return $user;
@@ -27,7 +27,7 @@ class UserService
                 'name' => $data['name'] ?? $user->name,
                 'email' => $data['email'] ?? $user->email,
                 'password' => bcrypt($data['password'] ?? null) ?? $user->password,
-                'api_key' => $data['api_key'] ?? $user->api_key,
+                'api_key' => $data['regenerate_api_key'] ? Str::uuid()->toString() : $user->api_key,
                 'role_id' => $data['role_id']
             ]);
             return true;
