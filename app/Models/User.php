@@ -3,6 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Carbon\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -53,5 +54,21 @@ class User extends Authenticatable
     }
     public function scopeFilter($query){
         return $query;
+    }
+    public function getLastSeenOnlineAttribute()
+    {
+        if($this->last_activity_at > Carbon::now()->subSeconds(10)){
+            return 'online';
+        } elseif($this->last_activity_at > Carbon::now()->subMinute()) {
+            return 'Last seen just now';
+        } elseif($this->last_activity_at > Carbon::now()->subHours(24)) {
+           return 'Last seen at ' . date('D h:m',  strtotime($this->last_activity_at)); 
+        } elseif($this->last_activity_at > Carbon::now()->subDays(2)) {
+            return 'Last seen today';
+        } elseif ($this->last_activity_at > Carbon::now()->subDays(30)){
+            return 'Last seen ' . date('M d, h:m',  strtotime($this->last_activity_at));
+        } else {
+            return 'Last seen longer than 30 days ago';
+        }
     }
 }

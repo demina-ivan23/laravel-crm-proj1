@@ -19,9 +19,10 @@ return new class extends Migration
             $table->string('password');
             $table->string('api_key')->unique();
             $table->foreignId('role_id')->constrained();
+            $table->timestamp('last_activity_at')->nullable();
             $table->rememberToken();
             $table->timestamps();
-            $table->softDeletes();
+            $table->softDeletes(); 
         });
     }
 
