@@ -24,9 +24,9 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $user = UserService::storeUser($request->all());
-        if(!$user){
+        if (!$user) {
             return redirect()->route('users.dashboard')->with('error', 'Something went wrong');
-        } 
+        }
         return redirect()->route('users.dashboard')->with('success', 'User created successfully');
     }
 
@@ -39,13 +39,12 @@ class UserController extends Controller
     {
         return view('users.edit', compact('user'));
     }
-    
+
     public function update(Request $request, User $user)
     {
         $data = $request->all();
         $success = UserService::updateUser($user, $data);
-        if(!$success)
-        {
+        if (!$success) {
             return redirect()->route('users.dashboard')->with('error', 'Something went wrong');
         } else {
             return redirect()->route('users.dashboard')->with('success', 'User updated successfully');
@@ -67,14 +66,14 @@ class UserController extends Controller
         return redirect()->route('users.dashboard')->with('success', 'User restored successfully');
     }
 
-    //Additionaly, if we need to delete the user permanently, we have to declare a destroy method
-    //But, I think that it's unwise to implement such a feature as the team that will be working with this
-    //CRM will not be big and they will barely have 100 user accounts throughout their entire usage of the app.
-    // public function destroy(User $user)
-    // {
-    //     //Only hard-deleting should be in action here
-    //     $user = UserService::findUserWithTrashed($id);
-    //     $user->forceDelete();
-    //     return redirect()->route('users.dashboard')->with('success', 'User deleted permanently');
-    // }
+    // Because we have separate permissions for users to perform actions
+    // on themselves and on others, we have to define these separate methods
+    public function showSelf()
+    {
+        return view('users.show', ['user' => auth()->user()]);
+    }
+    public function editSelf()
+    {
+        return view('users.edit', ['user' => auth()->user()]);
+    }
 }

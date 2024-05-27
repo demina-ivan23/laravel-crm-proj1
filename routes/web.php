@@ -37,9 +37,13 @@ Route::redirect('/', '/home');
 
 
 //User management routes
-Route::resource('users', UserController::class)->names(['index' => 'users.dashboard'])->except(['destroy'])->middleware('auth');
-Route::delete('users/{user}', [UserController::class, 'delete'])->name('users.delete');
-Route::put('user/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
+Route::middleware('auth')->group(function () {
+    Route::delete('users/{user}', [UserController::class, 'delete'])->name('users.delete')->where('user', '[0-9]+');
+    Route::put('user/{user}/restore', [UserController::class, 'restore'])->name('users.restore')->where('user', '[0-9]+');
+    Route::get('users/show-self', [UserController::class, 'showSelf'])->name('users.show-self');
+    Route::get('users/edit-self', [UserController::class, 'editSelf'])->name('users.edit-self');
+    Route::resource('users', UserController::class)->names(['index' => 'users.dashboard'])->except(['destroy']);
+});
 //User-managed routes
 Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     //Roles
@@ -83,4 +87,3 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
         Route::get('show/{message}', [MessageController::class, 'show'])->name('show');
     });
 });
-
