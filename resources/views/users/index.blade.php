@@ -65,6 +65,13 @@
                             </th>
                             <th>
                                 <div class="d-flex justify-content-evenly">
+                                    @if ($user->deleted_at)
+                                    <form action="{{ route('users.restore', ['user' => $user]) }}" method="POST">
+                                        @csrf
+                                        @method('PUT')
+                                        <input type="submit" class="btn btn-success" value="Restore">
+                                    </form>
+                                    @else 
                                     <a href="{{ route('users.show', ['user' => $user]) }}" class="btn btn-secondary">View</a>
                                     <a href="{{ route('users.edit', ['user' => $user]) }}" class="btn btn-primary">Edit</a>
                                     <form action="{{ route('users.delete', ['user' => $user]) }}" method="POST">
@@ -72,6 +79,7 @@
                                         @method('DELETE')
                                         <input type="submit" class="btn btn-danger" value="Delete">
                                     </form>
+                                    @endif
                                 </div>
                             </th>
                         </tr>

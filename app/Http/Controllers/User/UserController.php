@@ -13,7 +13,7 @@ class UserController extends Controller
 
     public function index()
     {
-        return view('users.index', ['users' => User::latest()->filter()->paginate(10)]);
+        return view('users.index', ['users' => User::withTrashed()->latest()->filter()->paginate(10)]);
     }
 
     public function create()
@@ -60,10 +60,9 @@ class UserController extends Controller
     }
 
     //Because we use soft deletes we need one more method for restoing the user
-    public function restore(User $user)
+    public function restore(string $id)
     {
-        //In this case $user is searched only amongst trashed users, so if this user exists but is not trashed, 
-        // an action will be aborted with 404 code;
+        $user = User::withTrashed()->findOrFail($id);
         $user->restore();
         return redirect()->route('users.dashboard')->with('success', 'User restored successfully');
     }

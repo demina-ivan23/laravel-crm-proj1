@@ -37,8 +37,9 @@ Route::redirect('/', '/home');
 
 
 //User management routes
-Route::resource('users', UserController::class)->names(['index' => 'users.dashboard', 'destroy' => 'users.delete'])->middleware('auth');
-
+Route::resource('users', UserController::class)->names(['index' => 'users.dashboard'])->except(['destroy'])->middleware('auth');
+Route::delete('users/{user}', [UserController::class, 'delete'])->name('users.delete');
+Route::put('user/{user}/restore', [UserController::class, 'restore'])->name('users.restore');
 //User-managed routes
 Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     //Roles
