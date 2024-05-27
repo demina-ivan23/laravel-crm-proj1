@@ -25,9 +25,9 @@ class UserController extends Controller
     {
         $user = UserService::storeUser($request->all());
         if(!$user){
-            return redirect()->route('superuser.users.dashboard')->with('error', 'Something went wrong');
+            return redirect()->route('users.dashboard')->with('error', 'Something went wrong');
         } 
-        return redirect()->route('superuser.users.dashboard')->with('success', 'User created successfully');
+        return redirect()->route('users.dashboard')->with('success', 'User created successfully');
     }
 
     public function show(User $user)
@@ -46,9 +46,9 @@ class UserController extends Controller
         $success = UserService::updateUser($user, $data);
         if(!$success)
         {
-            return redirect()->route('superuser.users.dashboard')->with('error', 'Something went wrong');
+            return redirect()->route('users.dashboard')->with('error', 'Something went wrong');
         } else {
-            return redirect()->route('superuser.users.dashboard')->with('success', 'User updated successfully');
+            return redirect()->route('users.dashboard')->with('success', 'User updated successfully');
         }
     }
 
@@ -76,6 +76,6 @@ class UserController extends Controller
     //     //Only hard-deleting should be in action here
     //     $user = UserService::findUserWithTrashed($id);
     //     $user->forceDelete();
-    //     return redirect()->route('superuser.users.dashboard')->with('success', 'User deleted permanently');
+    //     return redirect()->route('users.dashboard')->with('success', 'User deleted permanently');
     // }
 }
