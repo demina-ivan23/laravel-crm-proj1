@@ -43,7 +43,9 @@ Route::resource('users', UserController::class)->middleware('auth');
 Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     //Roles
     Route::resource('roles', RoleController::class)->except(['destroy'])->names(['index' => 'roles.dashboard']);
-    Route::delete('roles/{role}', [RoleController::class, 'delete'])->name('roles.delete');
+    Route::delete('roles/{role}', [RoleController::class, 'delete'])->name('roles.delete')->where('role', '[0-9]+');
+    Route::put('roles/{role}/restore', [RoleController::class, 'restore'])->name('roles.restore')->where('role', '[0-9]+');
+
     //Charts
     Route::get('order_product_chart', [ChartsController::class, 'index'])->name('order_product_chart');
     Route::get('order_prospect_chart', [ChartsController::class, 'index'])->name('order_prospect_chart');

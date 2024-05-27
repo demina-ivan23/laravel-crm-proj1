@@ -54,17 +54,26 @@
                                     @endif
                                 </th>
                                 <th>
-                                    <div class="d-flex justify-content-evenly">
-                                        <a class="btn btn-secondary mr-4 pt-1 pb-1"
-                                            href="{{ route('user.roles.show', ['role' => $role]) }}">View</a>
-                                        <a class="btn btn-primary mr-4 pt-1 pb-1"
-                                            href="{{ route('user.roles.edit', ['role' => $role]) }}">Edit</a>
-                                        <form action="{{route('user.roles.delete', ['role' => $role])}}" method="POST">
-                                        @csrf
-                                        @method('DELETE')
-                                        <input class="btn btn-danger" type="submit" value="Delete">
+                                    @if (!\App\Models\Role::onlyTrashed()->find($role->id))
+                                        <div class="d-flex justify-content-evenly">
+                                            <a class="btn btn-secondary mr-4 pt-1 pb-1"
+                                                href="{{ route('user.roles.show', ['role' => $role]) }}">View</a>
+                                            <a class="btn btn-primary mr-4 pt-1 pb-1"
+                                                href="{{ route('user.roles.edit', ['role' => $role]) }}">Edit</a>
+                                            <form action="{{ route('user.roles.delete', ['role' => $role]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <input class="btn btn-danger" type="submit" value="Delete">
+                                            </form>
+                                        </div>
+                                    @else
+                                        <form action="{{ route('user.roles.restore', ['role' => $role]) }}" method="POST">
+                                            @csrf
+                                            @method('put')
+                                            <input class="btn btn-success" type="submit" value="Restore">
                                         </form>
-                                    </div>
+                                    @endif
                                 </th>
                             </tr>
                         @endforeach

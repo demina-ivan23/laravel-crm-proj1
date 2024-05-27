@@ -14,7 +14,7 @@ class RoleController extends Controller
      */
     public function index()
     {
-        return view('user.roles.index', ['roles' => Role::latest()->filter()->paginate(20)]);
+        return view('user.roles.index', ['roles' => Role::withTrashed()->latest()->filter()->paginate(20)]);
     }
 
     /**
@@ -65,5 +65,11 @@ class RoleController extends Controller
     {
         $role->delete();
         return redirect()->route('user.roles.dashboard')->with('success', 'Role Trashed Successfully');
+    }
+    public function restore(string $id)
+    {
+        $role = Role::onlyTrashed()->find($id);
+        
+        return redirect()->route('user.roles.dashboard')->with('success', 'Role Restored Successfully');
     }
 }
