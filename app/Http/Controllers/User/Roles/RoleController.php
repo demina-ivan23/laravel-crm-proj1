@@ -68,8 +68,11 @@ class RoleController extends Controller
     }
     public function restore(string $id)
     {
-        $role = Role::onlyTrashed()->find($id);
-        
+        $role = Role::withTrashed()->find($id);
+        $result = $role != null ? $role->restore() : false;
+        if(!$result){
+            return redirect()->route('user.roles.dashboard')->with('error', 'Role not found');
+        }
         return redirect()->route('user.roles.dashboard')->with('success', 'Role Restored Successfully');
     }
 }
