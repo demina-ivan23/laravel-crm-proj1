@@ -26,7 +26,7 @@ class UserService
             $user->update([
                 'name' => $data['name'] ?? $user->name,
                 'email' => $data['email'] ?? $user->email,
-                'password' => bcrypt($data['password'] ?? null) ?? $user->password,
+                'password' => $data['password'] != null ? bcrypt($data['password']) : $user->password,
                 'api_key' => $data['regenerate_api_key'] ? Str::uuid()->toString() : $user->api_key,
                 'role_id' => $data['role_id']
             ]);
