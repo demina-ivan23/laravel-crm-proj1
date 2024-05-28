@@ -1,6 +1,9 @@
 @extends('layouts.app')
 
 @section('content')
+    @php
+        $timezone = session('timezone') ?? 'UTC';
+    @endphp
     <div class="container">
         @if (session('error'))
             <div class="alert alert-danger">
@@ -53,15 +56,15 @@
                         @php
                             use App\Services\OrderStatusService;
                             $statuses = OrderStatusService::getAllOrderStatuses();
-                            $current_status = $order->statuses()->latest()->first();
+                            $currentStatus = $order->statuses()->latest()->first();
                         @endphp
                         <label class="form-label" for="order_status">Choose the status of the order</label>
                         <p>In edit mode you can choose only from statuses the status that your order is currently in can
                             allow transition into</p>
                         <select name="order_status" id="order_status" class="form-control">
-                            @foreach ($statuses as $order_status)
-                                @if ($current_status->statuses->contains($order_status) || $current_status->id === $order_status->id)
-                                    <option value="{{ $order_status->id }}">{{ $order_status->title }}</option>
+                            @foreach ($statuses as $orderStatus)
+                                @if ($currentStatus->statuses->contains($orderStatus) || $currentStatus->id === $orderStatus->id)
+                                    <option value="{{ $orderStatus->id }}">{{ $orderStatus->title }}</option>
                                 @endif
                             @endforeach
                         </select>
@@ -70,17 +73,17 @@
                         <label class="form-label" for="explanation">Why this status?</label>
                         <input class="form-control" type="text" name="order_status_explanation"
                             id="order_status_explanation" placeholder="Write a short description"
-                            value="{{ $current_status->pivot->explanation }}">
+                            value="{{ $currentStatus->pivot->explanation }}">
                     </div>
-                    @if (!$current_status->is_final)
+                    @if (!$currentStatus->is_final)
                         <div class="mb-3">
                             <label for="default_order_transition" class="form-label">Choose a default order transition
                                 status</label>
                             <select name="default_order_transition" id="default_order_transition" class="form-control">
                                 <option value="{{ null }}">No status</option>
-                                @foreach ($statuses as $order_status)
-                                    @if ($current_status->statuses->contains($order_status) || $current_status->id === $order_status->id)
-                                        <option value="{{ $order_status->id }}">{{ $order_status->title }}</option>
+                                @foreach ($statuses as $orderStatus)
+                                    @if ($currentStatus->statuses->contains($orderStatus) || $currentStatus->id === $orderStatus->id)
+                                        <option value="{{ $orderStatus->id }}">{{ $orderStatus->title }}</option>
                                     @endif
                                 @endforeach
                             </select>
@@ -92,13 +95,16 @@
                                 soft-deleted.</p>
                         </div>
                         <div class="mb-3">
-                            <label for="expires_at" class="form-label">Expires at (by default it's not set; if you want to set it, please type in date and time like this: YYYY-MM-DD hh:mm:ss) </label>
+                            <label for="expires_at" class="form-label">Expires at (by default it's not set; if you want to
+                                set it, please type in date and time like this: YYYY-MM-DD hh:mm:ss) </label>
                             <input class="form-control" type="datetime" name="expires_at" id="expires_at"
-                                value="{{ $current_status->pivot->expires_at }}">
+                                value="{{ $currentStatus->pivot->expires_at }}">
                         </div>
                     @else
-                        <p>The status is final. The order is already closed with a status of "{{ $current_status->title }}"
-                            at {{ $current_status->pivot->updated_at }} by UTC 0.</p>
+                        <p>The status is final. The order is already closed with a status of "{{ $currentStatus->title }}"
+                            at
+                            {{ \Carbon\Carbon::parse($currentStatus->pivot->created_at)->setTimezone($timezone)->format('M d, Y, H:i:s') }}
+                        </p>
                     @endif
                     <div class="d-flex justify-content-end">
                         <input type="submit" class="btn btn-primary" value="Submit">

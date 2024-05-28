@@ -1,5 +1,8 @@
 @extends('layouts.app')
 @section('content')
+    @php
+        $timezone = session('timezone') ?? 'UTC';
+    @endphp
     <div class="container">
 
         @if (session('error'))
@@ -24,7 +27,7 @@
                 {{-- Orders Id, Order created at, Customer's name, email; last transittion's description; current status, whether tis' final or not, expires_at if not; Order closed at; Order's history of transitions; --}}
 
                 <div class="mb-3 form-control">Order's Id: {{ $order->id }}</div>
-                <div class="mb-3 form-control">Order created at: {{ $order->created_at }} (GMT +0)</div>
+                <div class="mb-3 form-control">Order created at: {{ \Carbon\Carbon::parse($order->created_at)->setTimezone($timezone)->format('M d, Y, H:i:s') }}</div>
                 <div class="mb-3 form-control">Prospect's name: {{ $order->customer->name }}</div>
                 <div class="mb-3 form-control">Prospect's email: {{ $order->customer->email }}</div>
                 @if ($order->statuses()->latest()->first()->pivot->explanation)
@@ -34,14 +37,15 @@
                 <div class="mb-3 form-control">Current status: {{ $order->statuses()->latest()->first()->title }}</div>
                 @if ($order->statuses()->latest()->first()->is_final)
                     <div class="mb-3 form-control">The status of the order is final, the order is closed at:
-                        <p class="card-text">{{ $order->statuses()->latest()->first()->pivot->created_at }} by
-                            GMT+0
+                        <p class="card-text">
+                            {{ \Carbon\Carbon::parse($order->latestStatus->created_at)->setTimezone($timezone)->format('M d, Y, H:i:s') }}
                         </p>
                     </div>
                 @else
                     <div class="mb-3 form-control">The status transition of the order is not final
-                        @if ($order->statuses()->latest()->first()->pivot->expires_at)
-                            , it expires at {{ $order->statuses()->latest()->first()->pivot->expires_at }}
+                        @if ($order->expiresAt)
+                            , it expires at
+                            {{ \Carbon\Carbon::parse($order->expiresAt)->setTimezone($timezone)->format('M d, Y, H:i:s') }}
                         @endif
                     </div>
                 @endif
