@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\TimezoneController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\User\{
@@ -33,6 +34,8 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 Route::redirect('/', '/home');
 
+//Timezone 
+Route::post('/set-timezone', TimezoneController::class)->name('set-timezone');
 
 
 

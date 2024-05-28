@@ -384,11 +384,35 @@ const app = createApp({
             }
 
         },
+        getTimezone(){
+            return Intl.DateTimeFormat().resolvedOptions().timeZone;
+        }, 
+        sendTimezoneToBackend(){
+            const timezone = this.getTimezone();
+            fetch('/set-timezone', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ timezone: timezone })
+            })
+            .then(response => {
+                if (response.ok) {
+                    console.log('Timezone set successfully.');
+                } else {
+                    console.error('Failed to set timezone.');
+                }
+            })
+            .catch(error => {
+                console.error('Error occurred:', error);
+            });
+        }
     },
     mounted() {
         this.addListenersToFilterCheckboxes();
         this.drawAdminCharts();
         this.handleSelectedProductsReload();
+        this.sendTimezoneToBackend();
     }
 });
 
