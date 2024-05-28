@@ -71,11 +71,11 @@ class User extends Authenticatable
         } elseif($lastActivityAt > Carbon::now()->subMinute()) {
             return 'Last seen just now';
         } elseif($lastActivityAt > Carbon::now()->subHours(24)) {
-           return 'Last seen at ' . $lastActivityAt->setTimezone(session('timezone'))->format('D h:i'); 
+           return 'Last seen at ' . $lastActivityAt->setTimezone(session('timezone'))->format('D H:i'); 
         } elseif($lastActivityAt > Carbon::now()->subDays(2)) {
             return 'Last seen today';
         } elseif ($lastActivityAt > Carbon::now()->subDays(30)){
-            return 'Last seen ' . $lastActivityAt->setTimezone(session('timezone'))->format('M d, h:i');
+            return 'Last seen ' . $lastActivityAt->setTimezone(session('timezone'))->format('M d, H:i');
         } else {
             return 'Last seen longer than 30 days ago';
         }
