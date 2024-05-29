@@ -32,7 +32,9 @@ class RoleService
         try {
             $role->update($data);
             foreach ($role->permissions as $permission) {
-                $role->permissions()->detach($permission->id);
+                if ($permission->title !== 'be_untouchable') {
+                    $role->permissions()->detach($permission->id);
+                }
             }
             $i = 0;
             foreach ($data['permissions'] as $id) {
