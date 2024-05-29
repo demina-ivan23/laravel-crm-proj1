@@ -26,7 +26,9 @@
                         <label for="role_id">Role</label>
                         <select name="role_id" id="" class="form-control">
                             @foreach (\App\Models\Role::all() as $role)
-                                <option value="{{$role->id}}">{{$role->title}}</option>
+                            @if (!$role->permissions->contains(\App\Models\Permission::where('title', 'be_untouchable')->first()->id))
+                            <option value="{{$role->id}}">{{$role->title}}</option>
+                            @endif
                             @endforeach
                         </select>
                     </div>

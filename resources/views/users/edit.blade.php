@@ -26,8 +26,8 @@
                     <div>
                         <label for="regenerate_api_key">Regenerate API key?</label>
                         <select name="regenerate_api_key" id="" class="form-control">
-                            <option value="{{false}}">No</option>
-                            <option value="{{true}}">Yes</option>
+                            <option value="{{ false }}">No</option>
+                            <option value="{{ true }}">Yes</option>
                         </select>
                     </div>
                     <div class="mb-3">
@@ -36,7 +36,9 @@
                             <option value="{{ $user->role->id }}">{{ $user->role->title }}</option>
                             @foreach (\App\Models\Role::all() as $role)
                                 @if ($role->id !== $user->role->id)
-                                    <option value="{{ $role->id }}">{{ $role->title }}</option>
+                                    @if (!$role->permissions->contains(\App\Models\Permission::where('title', 'be_untouchable')->first()->id))
+                                        <option value="{{ $role->id }}">{{ $role->title }}</option>
+                                    @endif
                                 @endif
                             @endforeach
                         </select>
