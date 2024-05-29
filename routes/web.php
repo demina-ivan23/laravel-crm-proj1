@@ -14,6 +14,7 @@ use App\Http\Controllers\User\{
     Charts\ChartsController,
     Roles\RoleController
 };
+use App\Services\UserService;
 
 /*
 |--------------------------------------------------------------------------
@@ -41,11 +42,21 @@ Route::post('/set-timezone', TimezoneController::class)->name('set-timezone');
 
 //User management routes
 Route::middleware('auth')->group(function () {
-    Route::delete('users/{user}', [UserController::class, 'delete'])->name('users.delete')->where('user', '[0-9]+');
-    Route::put('user/{user}/restore', [UserController::class, 'restore'])->name('users.restore')->where('user', '[0-9]+');
-    Route::get('users/show-self', [UserController::class, 'showSelf'])->name('users.show-self');
-    Route::get('users/edit-self', [UserController::class, 'editSelf'])->name('users.edit-self');
-    Route::resource('users', UserController::class)->names(['index' => 'users.dashboard'])->except(['destroy']);
+    Route::get('users', [UserController::class, 'index'])->middleware('permissions:user-read-all-web')->name('users.dashboard');
+    Route::get('users/{user}', [UserController::class, 'show'])->middleware('permissions:user-read-all-web')->name('users.show');
+    Route::get('users/create', [UserController::class, 'create'])->middleware('permissions:user-write-web')->name('users.create');
+    Route::get('users/{user}/edit', [UserController::class, 'edit'])->middleware('permissions:user-edit-all-web')->name('users.edit');
+
+    Route::post('users', [UserController::class, 'store'])->middleware('permissions:user-write-web')->name('users.store');
+    Route::put('users/{user}', [UserController::class, 'update'])->middleware('permissions:user-edit-all-web')->name('users.update');
+
+    Route::delete('users/{user}', [UserController::class, 'delete'])->name('users.delete')->middleware('permissions:user-edit-all-web')->where('user', '[0-9]+');
+    Route::put('user/{user}/restore', [UserController::class, 'restore'])->name('users.restore')->middleware('permissions:user-edit-all-web')->where('user', '[0-9]+');
+
+    Route::get('users/show-self', [UserController::class, 'showSelf'])->middleware('permissions:user-read-self-web')->name('users.show-self');
+    Route::get('users/edit-self', [UserController::class, 'editSelf'])->middleware('permissions:user-edit-self-web')->name('users.edit-self');
+    Route::put('users/update-self', [UserController::class, 'updateSelf'])->middleware('permissions:user-edit-self-web')->name('users.update-self');
+    
 });
 //User-managed routes
 Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
