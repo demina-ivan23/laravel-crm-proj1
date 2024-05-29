@@ -16,7 +16,7 @@
                     {{ \Carbon\Carbon::parse($order->created_at)->setTimezone($timezone)->format('M d, Y, H:i:s') }}</p>
                 @if ($order->statuses()->latest()->first()->is_final)
                     <p class="card-text">Order closed at:
-                        {{ \Carbon\Carbon::parse($order->latestStatus->created_at)->setTimezone($timezone)->format('M d, Y, H:i:s') }}
+                        {{ \Carbon\Carbon::parse($order->latestStatus->pivot->created_at)->setTimezone($timezone)->format('M d, Y, H:i:s') }}
                     </p>
                 @endif
             </div>

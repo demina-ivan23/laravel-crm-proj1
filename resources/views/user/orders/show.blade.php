@@ -35,10 +35,10 @@
                         {{ $order->statuses()->latest()->first()->pivot->explanation }}</div>
                 @endif
                 <div class="mb-3 form-control">Current status: {{ $order->statuses()->latest()->first()->title }}</div>
-                @if ($order->statuses()->latest()->first()->is_final)
+                @if ($order->latestStatus->is_final)
                     <div class="mb-3 form-control">The status of the order is final, the order is closed at:
                         <p class="card-text">
-                            {{ \Carbon\Carbon::parse($order->latestStatus->created_at)->setTimezone($timezone)->format('M d, Y, H:i:s') }}
+                            {{ \Carbon\Carbon::parse($order->latestStatus->pivot->created_at)->setTimezone($timezone)->format('M d, Y, H:i:s') }}
                         </p>
                     </div>
                 @else
@@ -50,64 +50,12 @@
                     </div>
                 @endif
                 <div class="mb-3 form-control">
-                    {{-- <label for="order_history_table" class="form-label d-flex justify-content-center"><h4>Order's Status Transition History</h4></label> --}}
-                    {{-- <div class="relative overflow-x-auto" name="order_history_table"> --}}
-                    {{-- <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-                            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3">
-                                        #
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Status title
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Explanation
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Created at/Updated at
-                                    </th>
-                                    <th scope="col" class="px-6 py-3">
-                                        Expire(-s/-d) at
-                                    </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @php
-                                    $i = 1;
-                                @endphp
-                                @foreach ($order->statuses as $status)
-                                    <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                                        <th scope="row"
-                                            class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
-                                            {{$i}}
-                                        </th>
-                                        <td class="px-6 py-4">
-                                            {{ $status->title }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            {{ $status->pivot->explanation }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            {{ $status->pivot->created_at }} / {{ $status->pivot->updated_at }}
-                                        </td>
-                                        <td class="px-6 py-4">
-                                            {{ $status->pivot->expires_at ?? 'without an expiration date' }}
-                                        </td>
-                                    </tr>
-                                    @php
-                                        $i++;
-                                    @endphp
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div> --}}
                     @if ($order->messages->count())
                         <h4 class="d-flex justify-content-center mb-5">Order's history</h4>
                         @foreach ($order->messages()->latest()->get() as $message)
                             <div class="mb-2 card p-2">
                                 <div class="d-flex justify-content-end mb-1">
-                                    {{ $message->createdAtHumanized }}
+                                    {{ \Carbon\Carbon::parse($message->created_at)->setTimezone($timezone)->format('M d, Y, H:i:s') }}
                                 </div>
                                 <div class="mb-1">{{ $message->text }}</div>
                                 <div class="d-flex justify-content-end">
