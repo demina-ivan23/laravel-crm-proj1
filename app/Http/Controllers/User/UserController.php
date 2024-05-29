@@ -76,4 +76,13 @@ class UserController extends Controller
     {
         return view('users.edit', ['user' => auth()->user()]);
     }
+    public function updateSelf(Request $request){
+        $data = $request->all();
+        $success = UserService::updateUser(auth()->user(), $data);
+        if (!$success) {
+            return redirect()->route('users.dashboard')->with('error', 'Something went wrong');
+        } else {
+            return redirect()->route('users.dashboard')->with('success', 'User updated successfully');
+        }
+    }
 }

@@ -20,7 +20,7 @@ class AdminSeeder extends Seeder
             'email' => 'admin@example.com',
             'password' => bcrypt('iamadmin1234'),
             'api_key' => Str::uuid(),
-            'role_id' => 1
+            'role_id' => \App\Models\Role::where('title', 'Superadmin')->first()->id
         ]);
     }
 }
