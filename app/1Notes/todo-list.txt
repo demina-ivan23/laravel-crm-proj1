@@ -1,5 +1,7 @@
-- Set middleware to each route to check if the user is permitted to perform an action;
-- dashboard for admins (app's performance data, total number of prospects/orders created, types of products bought etc.);
+- Use Tailwind to make tabulation and mergre few dashboard pages into one;
+- Apply middleware in blade templates using @can;
+- Use Tailwind to style tables and other page elements;  
 - create tests;
+- automate api creation (but if you will be able to set middleware to the routes);
 - write documentation: web and api;
-                                         Remember to do small separate commits.
+                                         Remember to do small separate commits. 
