@@ -106,13 +106,15 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     Route::delete('products/{product}', [ProductsController::class, 'destroy'])->name('products.destroy');
 
     //Orders
-    Route::resource('orders', OrdersController::class)->names(['index' => 'orders.dashboard'])->except(['create', 'store']);
-    Route::prefix('orders/')->name('orders.')->group(function () {
+    Route::prefix('orders/')->middleware('permissions:order-write-web')->name('orders.')->group(function () {
         Route::get('{prospect}/create/select_products', [OrdersController::class, 'create'])->name('create.select_products');
         Route::get('{prospect}/create', [OrdersController::class, 'create'])->name('create');
         Route::post('{prospect}', [OrdersController::class, 'store'])->name('store');
     });
-
+    
+    Route::resource('orders', OrdersController::class)->only(['index', 'show'])->middleware('permissions:order-read-web')->names(['index' => 'orders.dashboard']);
+    Route::resource('orders', OrdersController::class)->only(['edit', 'update'])->middleware('permissions:order-edit-web');
+    
     //Messages
     Route::prefix('messages/')->name('messages.')->group(function () {
         Route::get('{id}/{messagable}/view_all', [MessageController::class, 'index'])->name('index');
