@@ -42,7 +42,7 @@ Route::post('/set-timezone', TimezoneController::class)->name('set-timezone');
 
 //User management routes
 Route::middleware('auth')->group(function () {
-    Route::resource('users', UserController::class)->only(['create', 'store'])->middleware('permissions:user-write-web');    
+    Route::resource('users', UserController::class)->only(['create', 'store'])->middleware('permissions:user-write-web');
     Route::resource('users', UserController::class)->only(['index', 'show'])->middleware('permissions:user-read-all-web')->names(['index' => 'users.dashboard']);
     Route::resource('users', UserController::class)->only(['edit', 'update'])->middleware('permissions:user-edit-all-web');
 
@@ -53,7 +53,6 @@ Route::middleware('auth')->group(function () {
 
     Route::get('users/edit-self', [UserController::class, 'editSelf'])->middleware('permissions:user-edit-self-web')->name('users.edit-self');
     Route::put('users/update-self', [UserController::class, 'updateSelf'])->middleware('permissions:user-edit-self-web')->name('users.update-self');
-    
 });
 //User-managed routes
 Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
@@ -71,14 +70,24 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     Route::get('order_chart', [ChartsController::class, 'index'])->middleware('permissions:order-chart-read-web')->name('order_chart');
 
     //Prospect states
-    Route::put('prospect_states/update_via_table', [ProspectStateController::class, 'updateAll'])->name('prospect_states.update_via_table');
-    Route::resource('prospect_states', ProspectStateController::class)->except(['show', 'destroy']);
-    Route::get('prospect_states/edit_via_table', [ProspectStateController::class, 'edit'])->name('prospect_states.edit_via_table');
+    Route::middleware('permissions:prospect_state-edit-web')->group(function () {
+        Route::get('prospect_states/edit_via_table', [ProspectStateController::class, 'edit'])->name('prospect_states.edit_via_table');
+        Route::put('prospect_states/update_via_table', [ProspectStateController::class, 'updateAll'])->name('prospect_states.update_via_table');
+        Route::resource('prospect_states', ProspectStateController::class)->only(['edit', 'update']);
+    });
+
+    Route::resource('prospect_states', ProspectStateController::class)->only(['create', 'store'])->middleware('permissions:prospect_state-write-web');
+    Route::get('index', [ProspectStateController::class, 'index'])->middleware('permissions:prospect_state-read-web')->name('prospect_states.index');
 
     //Order statuses
-    Route::put('order_statuses/update_via_table', [OrderStatusController::class, 'updateAll'])->name('order_statuses.update_via_table');
-    Route::resource('order_statuses', OrderStatusController::class)->except(['show', 'destroy']);
-    Route::get('order_statuses/edit_via_table', [OrderStatusController::class, 'edit'])->name('order_statuses.edit_via_table');
+    Route::middleware('permissions:order_status-edit-web')->group(function () {
+        Route::get('order_statuses/edit_via_table', [OrderStatusController::class, 'edit'])->name('order_statuses.edit_via_table');
+        Route::put('order_statuses/update_via_table', [OrderStatusController::class, 'updateAll'])->name('order_statuses.update_via_table');
+        Route::resource('order_statuses', OrderStatusController::class)->only(['edit', 'update']);
+    });
+
+    Route::resource('order_statuses', OrderStatusController::class)->only(['create', 'store'])->middleware('permissions:order_status-write-web');
+    Route::get('index', [OrderStatusController::class, 'index'])->middleware('permissions:order_status-read-web')->name('order_statuses.index');
 
     //Prospects
     Route::resource('prospects', ProspectsController::class)->names(['index' => 'prospects.dashboard']);
