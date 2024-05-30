@@ -14,14 +14,20 @@
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
                 <li>
-                    <button
-                        class="p-4 border-b-2 hover:text-blue-600 hover:border-blue-400 tab-button"
-                        @click="togglePageTabs('users', 'usersTabToggle')" id="usersTabToggle">Users</button>
+                    <button class="p-4 border-b-2 hover:text-blue-600 hover:border-blue-400 tab-button"
+                        @click="togglePageTabs('users', 'usersTabToggle')" id="usersTabToggle">
+                        <h5>
+                            Users
+                        </h5>
+                    </button>
                 </li>
                 <li>
-                    <button
-                        class="p-4 border-b-2 hover:text-blue-600 hover:border-blue-400 tab-button"
-                        @click="togglePageTabs('roles', 'rolesTabToggle' )" id="rolesTabToggle">Roles</button>
+                    <button class="p-4 border-b-2 hover:text-blue-600 hover:border-blue-400 tab-button"
+                        @click="togglePageTabs('roles', 'rolesTabToggle' )" id="rolesTabToggle">
+                        <h5>
+                            Roles
+                        </h5>
+                    </button>
                 </li>
             </ul>
         </div>
