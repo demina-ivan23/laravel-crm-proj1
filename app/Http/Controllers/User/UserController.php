@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Services\UserService;
@@ -13,7 +14,7 @@ class UserController extends Controller
 
     public function index()
     {
-        return view('users.index', ['users' => User::withTrashed()->latest()->filter()->paginate(10)]);
+        return view('users.index', ['users' => User::withTrashed()->latest()->filter()->paginate(10), 'roles' => Role::withTrashed()->latest()->filter()->paginate(10)]);
     }
 
     public function create()

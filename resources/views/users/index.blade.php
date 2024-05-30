@@ -12,27 +12,21 @@
             </div>
         @endif
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
-            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center" id="-tab"
-                data-tabs-toggle="#default-tab-content" role="tablist">
-                <li class="me-2" role="presentation">
-                    <button class="inline-block p-4 border-b-2 rounded-t-lg" id="roles-tab" data-tabs-target="#roles"
-                        type="button" role="tab" aria-controls="roles" aria-selected="false">Roles</button>
-                </li>
-                <li class="me-2" role="presentation">
+            <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
+                <li>
                     <button
-                        class="inline-block p-4 border-b-2 rounded-t-lg hover:text-gray-600 hover:border-gray-300 dark:hover:text-gray-300"
-                        id="users-tab" data-tabs-target="#users" type="button" role="tab" aria-controls="users"
-                        aria-selected="false">Users</button>
+                        class="p-4 border-b-2 hover:text-blue-600 hover:border-blue-400 tab-button"
+                        @click="togglePageTabs('users', 'usersTabToggle')" id="usersTabToggle">Users</button>
+                </li>
+                <li>
+                    <button
+                        class="p-4 border-b-2 hover:text-blue-600 hover:border-blue-400 tab-button"
+                        @click="togglePageTabs('roles', 'rolesTabToggle' )" id="rolesTabToggle">Roles</button>
                 </li>
             </ul>
         </div>
-        <div id="default-tab-content">
-        </div>
-        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="roles" role="tabpanel"
-            aria-labelledby="roles-tab">
-        </div>
-        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800" id="users" role="tabpanel"
-            aria-labelledby="users-tab">
+
+        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="users">
             <table class="table">
                 <thead>
                     <tr>
@@ -109,6 +103,86 @@
                     @endforeach
                 </tbody>
             </table>
+        </div>
+        <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="roles">
+            <div class="row">
+                @if ($roles->count())
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    <h4>
+                                        <strong>Title</strong>
+                                    </h4>
+                                </th>
+                                <th>
+                                    <h4>
+                                        <strong>Permissions</strong>
+                                    </h4>
+                                </th>
+                                <th>
+                                    <h4>
+                                        <strong>Actions</strong>
+                                    </h4>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($roles as $role)
+                                <tr>
+                                    <th>
+                                        <h5>
+                                            {{ $role->title }}
+                                        </h5>
+                                    </th>
+                                    <th>
+                                        <h5>
+                                            @if ($role->permissions->count())
+                                                @foreach ($role->permissions()->limit(3)->get() as $permission)
+                                                    {{ $permission->title . ', ' }}
+                                                @endforeach
+                                                @if ($role->permissions->count() > 3)
+                                                    and more
+                                                @endif
+                                            @else
+                                                No permissions yet
+                                            @endif
+                                        </h5>
+                                    </th>
+                                    <th>
+                                        @if (!\App\Models\Role::onlyTrashed()->find($role->id))
+                                            <div class="d-flex justify-content-evenly">
+                                                <a class="btn btn-secondary mr-4 pt-1 pb-1"
+                                                    href="{{ route('user.roles.show', ['role' => $role]) }}">View</a>
+                                                <a class="btn btn-primary mr-4 pt-1 pb-1"
+                                                    href="{{ route('user.roles.edit', ['role' => $role]) }}">Edit</a>
+                                                <form action="{{ route('user.roles.delete', ['role' => $role]) }}"
+                                                    method="POST">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <input class="btn btn-danger" type="submit" value="Delete">
+                                                </form>
+                                            </div>
+                                        @else
+                                            <form action="{{ route('user.roles.restore', ['role' => $role]) }}"
+                                                method="POST">
+                                                @csrf
+                                                @method('put')
+                                                <input class="btn btn-success" type="submit" value="Restore">
+                                            </form>
+                                        @endif
+                                    </th>
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                @else
+                    <h2 class="d-flex justify-content-center">
+                        No roles that would fulfill the requirements of the applied filters yet. Create new roles or ask a
+                        person with a proper permissions to do it
+                    </h2>
+                @endif
+            </div>
         </div>
     </div>
     </div>

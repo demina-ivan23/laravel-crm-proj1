@@ -384,10 +384,10 @@ const app = createApp({
             }
 
         },
-        getTimezone(){
+        getTimezone() {
             return Intl.DateTimeFormat().resolvedOptions().timeZone;
-        }, 
-        sendTimezoneToBackend(){
+        },
+        sendTimezoneToBackend() {
             const timezone = this.getTimezone();
             fetch('/set-timezone', {
                 method: 'POST',
@@ -396,22 +396,58 @@ const app = createApp({
                 },
                 body: JSON.stringify({ timezone: timezone })
             })
-            .then(response => {
-                if (response.ok) {
-                    console.log('Timezone set successfully.');
-                } else {
-                    console.error('Failed to set timezone.');
+                .then(response => {
+                    if (response.ok) {
+                        console.log('Timezone set successfully.');
+                    } else {
+                        console.error('Failed to set timezone.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error occurred:', error);
+                });
+        },
+        togglePageTabs(id, buttonId) {
+            let element = document.getElementById(id);
+            if (element) {
+                let elements = document.querySelectorAll('.tablink');
+                elements.forEach(el => {
+                    el.classList.add('hidden');
+                });
+                element.classList.remove('hidden');
+
+                let buttons = document.querySelectorAll('.tab-button');
+                buttons.forEach(btn => {
+                    btn.classList.remove('border-blue-300', 'text-blue-500');
+                });
+
+                let button = document.getElementById(buttonId);
+                if (button) {
+                    button.classList.add('border-blue-300');
+                    button.classList.add('text-blue-500');
                 }
-            })
-            .catch(error => {
-                console.error('Error occurred:', error);
-            });
+
+                window.history.replaceState({}, document.title, `?tablink=${id}&tab-button=${buttonId}`);
+            }
+        },
+        rememberSelectedTab() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const selectedTab = urlParams.get('tablink');
+            const tabButton = urlParams.get('tab-button');
+            
+            if (selectedTab && (document.getElementById(selectedTab) ?? false)) {
+                this.togglePageTabs(selectedTab, tabButton);
+            } else {
+                let elements = document.querySelectorAll('.tablink');
+                elements[0].classList.remove('hidden');
+            }
         }
     },
     mounted() {
-        this.addListenersToFilterCheckboxes();
+        this.rememberSelectedTab();
         this.drawAdminCharts();
         this.handleSelectedProductsReload();
+        this.addListenersToFilterCheckboxes();
         this.sendTimezoneToBackend();
     }
 });
