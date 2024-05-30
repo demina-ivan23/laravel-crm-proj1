@@ -46,8 +46,8 @@ Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class)->only(['index', 'show'])->middleware('permissions:user-read-all-web')->names(['index' => 'users.dashboard']);
     Route::resource('users', UserController::class)->only(['edit', 'update'])->middleware('permissions:user-edit-all-web');
 
-    Route::delete('users/{user}', [UserController::class, 'delete'])->name('users.delete')->middleware('permissions:user-edit-all-web')->where('user', '[0-9]+');
-    Route::put('user/{user}/restore', [UserController::class, 'restore'])->name('users.restore')->middleware('permissions:user-edit-all-web')->where('user', '[0-9]+');
+    Route::delete('users/{user}', [UserController::class, 'delete'])->middleware('permissions:user-edit-all-web')->name('users.delete')->where('user', '[0-9]+');
+    Route::put('user/{user}/restore', [UserController::class, 'restore'])->middleware('permissions:user-edit-all-web')->name('users.restore')->where('user', '[0-9]+');
 
     Route::get('users/show-self', [UserController::class, 'showSelf'])->middleware('permissions:user-read-self-web')->name('users.show-self');
 
@@ -58,14 +58,17 @@ Route::middleware('auth')->group(function () {
 //User-managed routes
 Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     //Roles
-    Route::resource('roles', RoleController::class)->except(['destroy'])->names(['index' => 'roles.dashboard']);
-    Route::delete('roles/{role}', [RoleController::class, 'delete'])->name('roles.delete')->where('role', '[0-9]+');
-    Route::put('roles/{role}/restore', [RoleController::class, 'restore'])->name('roles.restore')->where('role', '[0-9]+');
+    Route::resource('roles', RoleController::class)->only(['create', 'store'])->middleware('permissions:role-write-web');
+    Route::resource('roles', RoleController::class)->only(['index', 'show'])->middleware('permissions:role-read-web')->names(['index' => 'roles.dashboard']);
+    Route::resource('roles', RoleController::class)->only(['edit', 'update'])->middleware('permissions:role-edit-web');
+
+    Route::delete('roles/{role}', [RoleController::class, 'delete'])->middleware('permissions:role-edit-web')->name('roles.delete')->where('role', '[0-9]+');
+    Route::put('roles/{role}/restore', [RoleController::class, 'restore'])->middleware('permissions:role-edit-web')->name('roles.restore')->where('role', '[0-9]+');
 
     //Charts
-    Route::get('order_product_chart', [ChartsController::class, 'index'])->name('order_product_chart');
-    Route::get('order_prospect_chart', [ChartsController::class, 'index'])->name('order_prospect_chart');
-    Route::get('order_chart', [ChartsController::class, 'index'])->name('order_chart');
+    Route::get('order_product_chart', [ChartsController::class, 'index'])->middleware('permissions:order-chart-read-web')->name('order_product_chart');
+    Route::get('order_prospect_chart', [ChartsController::class, 'index'])->middleware('permissions:order-chart-read-web')->name('order_prospect_chart');
+    Route::get('order_chart', [ChartsController::class, 'index'])->middleware('permissions:order-chart-read-web')->name('order_chart');
 
     //Prospect states
     Route::put('prospect_states/update_via_table', [ProspectStateController::class, 'updateAll'])->name('prospect_states.update_via_table');
