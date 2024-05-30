@@ -19,6 +19,6 @@ class CheckPermissions
         if(auth()->check() && auth()->user()->role->permissions->contains(Permission::where('title', $permission)->first()->id)){
             return $next($request);
         }
-        return response('you are not permitted to perform this action', 403);
+        abort(403, 'You dont have the proper permissions to access this route');
     }
 }
