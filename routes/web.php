@@ -90,8 +90,8 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     Route::get('index', [OrderStatusController::class, 'index'])->middleware('permissions:order_status-read-web')->name('order_statuses.index');
 
     //Prospects
-    Route::resource('prospects', ProspectsController::class)->only(['index', 'show'])->middleware('permissions:prospect-read-web')->names(['index' => 'prospects.dashboard']);
     Route::resource('prospects', ProspectsController::class)->only(['create', 'store'])->middleware('permissions:prospect-write-web');
+    Route::resource('prospects', ProspectsController::class)->only(['index', 'show'])->middleware('permissions:prospect-read-web')->names(['index' => 'prospects.dashboard']);
     Route::resource('prospects', ProspectsController::class)->only(['edit', 'update'])->middleware('permissions:prospect-edit-web');
     
     Route::delete('prospects/{prospect}', [ProspectsController::class, 'destroy'])->name('prospects.destroy');
@@ -99,7 +99,11 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     Route::get('prospects/{prospect}/orders', [ProspectsController::class, 'show'])->middleware('permissions:order-read-web')->name('prospects.show-orders')->where('prospect', '[0-9]+');
 
     //Products
-    Route::resource('products', ProductsController::class)->names(['index' => 'products.dashboard']);
+    Route::resource('products', ProductsController::class)->only(['create', 'store'])->middleware('permissions:product-write-web');
+    Route::resource('products', ProductsController::class)->only(['index', 'show'])->middleware('permissions:product-read-web')->names(['index' => 'products.dashboard']);
+    Route::resource('products', ProductsController::class)->only(['edit', 'update'])->middleware('permissions:product-edit-web');
+
+    Route::delete('products/{product}', [ProductsController::class, 'destroy'])->name('products.destroy');
 
     //Orders
     Route::resource('orders', OrdersController::class)->names(['index' => 'orders.dashboard'])->except(['create', 'store']);
