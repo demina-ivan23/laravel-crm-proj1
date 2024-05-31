@@ -435,12 +435,13 @@ const app = createApp({
             const urlParams = new URLSearchParams(window.location.search);
             const selectedTab = urlParams.get('tablink');
             const tabButton = urlParams.get('tab-button');
-
             if (selectedTab && (document.getElementById(selectedTab) ?? false)) {
-                this.togglePageTabs(selectedTab, tabButton);
+                let buttonId = tabButton == null ? selectedTab + 'TabToggle' : tabButton;   
+                this.togglePageTabs(selectedTab, buttonId);
             } else {
-                let elements = document.querySelectorAll('.tablink');
-                elements[0].classList.remove('hidden');
+                let element = document.querySelector('.tablink');
+                let buttonId = tabButton == null ? element.id + 'TabToggle' : tabButton;   
+                this.togglePageTabs(element.id, buttonId);
             }
         }
     },
