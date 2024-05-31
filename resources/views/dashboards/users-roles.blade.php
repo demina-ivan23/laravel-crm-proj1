@@ -112,6 +112,7 @@
                     @endforeach
                 </tbody>
             </table>
+            {{ $users->appends(request()->except('page'))->links() }}
         </div>
         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="roles">
             <div class="row">
@@ -198,7 +199,7 @@
                     </h2>
                 @endif
             </div>
+            {{ $roles->appends(request()->except('page'))->links() }}
         </div>
-    </div>
     </div>
 @endsection
