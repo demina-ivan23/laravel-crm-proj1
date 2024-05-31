@@ -187,13 +187,15 @@ class PermissionSeeder extends Seeder
         Permission::create([
             'title' => 'be_untouchable'
         ]);
-
         //Dashboard permissions
         Permission::create([
             'title' => 'states-dashboard'
         ]);
         Permission::create([
             'title' => 'users-roles-dashboard'
+        ]);
+        Permission::create([
+            'title' => 'prospects-products-orders-dashboard'
         ]);
     }
 }
