@@ -162,7 +162,7 @@
                                 <div class="collapse" id="productsMenu">
                                     <ul class="navbar-nav">
                                         <li class="nav-item ml-5">
-                                            <a href="{{ route('dashboards.prospects-products-orders', ['pagelink' => 'products']) }}" class="nav-link">Manage</a>
+                                            <a href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'products']) }}" class="nav-link">Manage</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -176,7 +176,7 @@
                                 <div class="collapse" id="prospectsMenu">
                                     <ul class="navbar-nav">
                                         <li class="nav-item ml-5">
-                                            <a href="{{ route('dashboards.prospects-products-orders', ['pagelink' => 'prospects']) }}" class="nav-link">Manage</a>
+                                            <a href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'prospects']) }}" class="nav-link">Manage</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -190,7 +190,7 @@
                                 <div class="collapse" id="ordersMenu">
                                     <ul class="navbar-nav">
                                         <li class="nav-item ml-5">
-                                            <a href="{{ route('dashboards.prospects-products-orders', ['pagelink' => 'orders']) }}" class="nav-link">Manage</a>
+                                            <a href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'orders']) }}" class="nav-link">Manage</a>
                                         </li>
                                     </ul>
                                 </div>
