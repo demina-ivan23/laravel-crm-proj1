@@ -8,6 +8,11 @@
                 {{ session('success') }}
             </div>
         @endif
+        @if (session('danger'))
+            <div class="alert alert-danger">
+                {{ session('danger') }}
+            </div>
+        @endif
         @php
             $timezone = session('timezone') ?? 'UTC';
         @endphp
@@ -192,12 +197,6 @@
                     <button class="input-group-text" type="submit">Search</button>
                 </div>
             </form>
-
-            @if (session('success'))
-                <div class="alert alert-success">
-                    {{ session('success') }}
-                </div>
-            @endif
             <div class="card mt-4">
                 <div class="card-body">
                     <div class="d-flex">
@@ -317,7 +316,7 @@
         </div>
         {{ $products->appends(request()->except('page'))->links() }}
     </div>
-    
+
     <div class="hidden tablink" id="orders">
         <form method="GET" action="#">
             <div class="input-group mb-3">
@@ -325,12 +324,6 @@
                 <button class="input-group-text" type="submit">Search</button>
             </div>
         </form>
-
-        @if (session('success'))
-            <div class="alert alert-success">
-                {{ session('success') }}
-            </div>
-        @endif
 
         <div class="card mt-4">
             <div class="card-body">
@@ -346,21 +339,21 @@
         @if ($orders->count())
             <table class="p-4 table mt-5 mb-5">
                 <thead>
-                  <th>
-                    <h4><strong>Id</strong></h4>
-                  </th>
-                  <th>
-                    <h4><strong>Customer</strong></h4>
-                  </th>
-                  <th>
-                    <h4><strong>Products</strong></h4>
-                  </th>
-                  <th>
-                    <h4><strong>Order</strong></h4>
-                  </th>
-                  <th>
-                    <h4><strong>Actions</strong></h4>
-                  </th>
+                    <th>
+                        <h4><strong>Id</strong></h4>
+                    </th>
+                    <th>
+                        <h4><strong>Customer</strong></h4>
+                    </th>
+                    <th>
+                        <h4><strong>Products</strong></h4>
+                    </th>
+                    <th>
+                        <h4><strong>Order</strong></h4>
+                    </th>
+                    <th>
+                        <h4><strong>Actions</strong></h4>
+                    </th>
                 </thead>
                 <tbody>
                     @foreach ($orders as $order)
@@ -374,15 +367,15 @@
                             </th>
                             <th>
                                 <p>
-                                  @php
-                                      $productsString = '';
-                                  @endphp
+                                    @php
+                                        $productsString = '';
+                                    @endphp
                                     @foreach ($order->products()->limit(3)->get() as $product)
                                         @php
-                                            $productsString .= $product->title . ', ';    
+                                            $productsString .= $product->title . ', ';
                                         @endphp
                                     @endforeach
-                                    {{substr($productsString, 0, strlen($productsString) - 2) . ' '}}
+                                    {{ substr($productsString, 0, strlen($productsString) - 2) . ' ' }}
                                     @if ($order->products->count() > 3)
                                         and more
                                     @endif
