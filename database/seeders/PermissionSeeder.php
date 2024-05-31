@@ -180,12 +180,20 @@ class PermissionSeeder extends Seeder
         Permission::create([
             'title' => 'role-edit-api'
         ]);
-        //Untouchability for the superadmin
-        //Which means this users cant be edited by other users, 
+        //Untouchability for superadmins,
+        //which means this users cant be edited by other users, 
         //given or taken from roles 
         //neither via web nor via api
         Permission::create([
             'title' => 'be_untouchable'
+        ]);
+
+        //Dashboard permissions
+        Permission::create([
+            'title' => 'states-dashboard'
+        ]);
+        Permission::create([
+            'title' => 'users-roles-dashboard'
         ]);
     }
 }
