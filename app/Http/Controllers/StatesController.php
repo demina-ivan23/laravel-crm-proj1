@@ -14,8 +14,8 @@ class StatesController extends Controller
     public function __invoke()
     {
         return view('dashboards.states', [
-            'order_statuses' => OrderStatus::latest()->filter()->paginate(15),
-            'prospect_state' => ProspectState::latest()->filter()->paginate(15)
+            'orderStatuses' => OrderStatus::paginate(15),
+            'prospectStates' => ProspectState::paginate(15)
         ]);
     }
 }
