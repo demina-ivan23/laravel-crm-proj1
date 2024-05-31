@@ -15,7 +15,6 @@ use App\Http\Controllers\User\{
     Charts\ChartsController,
     Roles\RoleController
 };
-use App\Services\UserService;
 
 /*
 |--------------------------------------------------------------------------
