@@ -9,6 +9,7 @@ use App\Models\{
     Product,
     Order,
     OrderStatus,
+    ProductCategory,
     ProspectState
 };
 
@@ -23,6 +24,7 @@ class ProspectsProductsOrdersController extends Controller
             'prospects' => Prospect::latest()->filter()->paginate(15),
             'states' => ProspectState::all(),
             'products' => Product::latest()->filter()->paginate(15),
+            'categories' => ProductCategory::all(),
             'orders' => Order::latest()->filter()->paginate(15),
             'statuses' => OrderStatus::all()
         ]);
