@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Dashboards\StatesController;
+use App\Http\Controllers\Dashboards\UsersRolesController;
 use App\Http\Controllers\TimezoneController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -40,12 +41,15 @@ Route::post('/set-timezone', TimezoneController::class)->name('set-timezone');
 
 
 //Dashboards
-Route::get('/dashboards/states', StatesController::class)->name('dashboards.states');
+Route::prefix('dashboards/')->name('dashboards.')->group(function () {
+    Route::get('states', StatesController::class)->name('states')->middleware('permissions:states-dashboard');
+    Route::get('users-roles', UsersRolesController::class)->name('users-roles')->middleware('permissions:users-roles-dashboard');
+});
 
 //User management routes
 Route::middleware('auth')->group(function () {
     Route::resource('users', UserController::class)->only(['create', 'store'])->middleware('permissions:user-write-web');
-    Route::resource('users', UserController::class)->only(['index', 'show'])->middleware('permissions:user-read-all-web')->names(['index' => 'users.dashboard']);
+    Route::get('users/{user}', [UserController::class, 'show'])->middleware('permissions:user-read-all-web')->name('users.show');
     Route::resource('users', UserController::class)->only(['edit', 'update'])->middleware('permissions:user-edit-all-web');
 
     Route::delete('users/{user}', [UserController::class, 'delete'])->middleware('permissions:user-edit-all-web')->name('users.delete')->where('user', '[0-9]+');
@@ -60,7 +64,7 @@ Route::middleware('auth')->group(function () {
 Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     //Roles
     Route::resource('roles', RoleController::class)->only(['create', 'store'])->middleware('permissions:role-write-web');
-    Route::resource('roles', RoleController::class)->only(['index', 'show'])->middleware('permissions:role-read-web')->names(['index' => 'roles.dashboard']);
+    Route::get('roles/{role}', [RoleController::class, 'show'])->middleware('permissions:role-read-web')->name('roles.show');
     Route::resource('roles', RoleController::class)->only(['edit', 'update'])->middleware('permissions:role-edit-web');
 
     Route::delete('roles/{role}', [RoleController::class, 'delete'])->middleware('permissions:role-edit-web')->name('roles.delete')->where('role', '[0-9]+');
