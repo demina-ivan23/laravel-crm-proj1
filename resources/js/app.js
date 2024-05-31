@@ -49,12 +49,13 @@ const app = createApp({
                 selectedFilters[filterName].push(filterValue);
             });
 
-            var currentUrl = window.location.href.split('?')[0];
+            var currentUrl = window.location.href
+            var separator = currentUrl.indexOf('?') !== -1 ? '&' : '?';
             var queryParams = [];
             for (var key in selectedFilters) {
                 queryParams.push(key + '=' + selectedFilters[key].join(','));
             }
-            var newUrl = currentUrl + '?' + queryParams.join('&');
+            var newUrl = currentUrl + separator + queryParams.join('&');
 
             window.location.href = newUrl;
 
@@ -434,7 +435,7 @@ const app = createApp({
             const urlParams = new URLSearchParams(window.location.search);
             const selectedTab = urlParams.get('tablink');
             const tabButton = urlParams.get('tab-button');
-            
+
             if (selectedTab && (document.getElementById(selectedTab) ?? false)) {
                 this.togglePageTabs(selectedTab, tabButton);
             } else {
