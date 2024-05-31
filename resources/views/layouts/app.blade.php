@@ -117,11 +117,6 @@
                                                 <p>Order Status Links</p>
                                             </li>
                                             <li class="ml-7">
-                                                <a href="{{ route('user.order_statuses.index') }}" class="dropdown-item"
-                                                    style="{{ request()->routeIs('user.order_statuses.index') ? 'color:gray' : '' }}">All
-                                                    Order Statuses</a>
-                                            </li>
-                                            <li class="ml-7">
                                                 <a href="{{ route('user.order_statuses.create') }}"
                                                     class="dropdown-item"
                                                     style="{{ request()->routeIs('user.order_statuses.create') ? 'color:gray' : '' }}">Create
@@ -135,12 +130,6 @@
                                             </li>
                                             <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
                                                 <p>Prospect State Links</p>
-                                            </li>
-                                            <li class="ml-7">
-                                                <a href="{{ route('user.prospect_states.index') }}"
-                                                    class="dropdown-item"
-                                                    style="{{ request()->routeIs('user.prospect_states.index') ? 'color:gray' : '' }}">All
-                                                    Prospect States</a>
                                             </li>
                                             <li class="ml-7">
                                                 <a href="{{ route('user.prospect_states.create') }}"
@@ -173,7 +162,7 @@
                                 <div class="collapse" id="productsMenu">
                                     <ul class="navbar-nav">
                                         <li class="nav-item ml-5">
-                                            <a href="{{ route('user.products.dashboard') }}" class="nav-link">Manage</a>
+                                            <a href="{{ route('dashboards.prospects-products-orders', ['pagelink' => 'products']) }}" class="nav-link">Manage</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -187,7 +176,7 @@
                                 <div class="collapse" id="prospectsMenu">
                                     <ul class="navbar-nav">
                                         <li class="nav-item ml-5">
-                                            <a href="{{ route('user.prospects.dashboard') }}" class="nav-link">Manage</a>
+                                            <a href="{{ route('dashboards.prospects-products-orders', ['pagelink' => 'prospects']) }}" class="nav-link">Manage</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -201,7 +190,7 @@
                                 <div class="collapse" id="ordersMenu">
                                     <ul class="navbar-nav">
                                         <li class="nav-item ml-5">
-                                            <a href="{{ route('user.orders.dashboard') }}" class="nav-link">Manage</a>
+                                            <a href="{{ route('dashboards.prospects-products-orders', ['pagelink' => 'orders']) }}" class="nav-link">Manage</a>
                                         </li>
                                     </ul>
                                 </div>
