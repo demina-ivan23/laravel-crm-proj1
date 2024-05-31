@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Dashboards\ProspectsProductsOrdersController;
 use App\Http\Controllers\Dashboards\StatesController;
 use App\Http\Controllers\Dashboards\UsersRolesController;
 use App\Http\Controllers\TimezoneController;
@@ -42,8 +43,9 @@ Route::post('/set-timezone', TimezoneController::class)->name('set-timezone');
 
 //Dashboards
 Route::prefix('dashboards/')->name('dashboards.')->group(function () {
-    Route::get('states', StatesController::class)->name('states')->middleware('permissions:states-dashboard');
-    Route::get('users-roles', UsersRolesController::class)->name('users-roles')->middleware('permissions:users-roles-dashboard');
+    Route::get('states', StatesController::class)->middleware('permissions:states-dashboard')->name('states');
+    Route::get('users-roles', UsersRolesController::class)->middleware('permissions:users-roles-dashboard')->name('users-roles');
+    Route::get('prospects-products-orders', ProspectsProductsOrdersController::class)->middleware('permissions:prospects-products-orders-dashboard')->name('prospects-products-orders');
 });
 
 //User management routes
@@ -95,7 +97,7 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
 
     //Prospects
     Route::resource('prospects', ProspectsController::class)->only(['create', 'store'])->middleware('permissions:prospect-write-web');
-    Route::resource('prospects', ProspectsController::class)->only(['index', 'show'])->middleware('permissions:prospect-read-web')->names(['index' => 'prospects.dashboard']);
+    Route::get('prospects/{prospect}', [ProspectController::class, 'show'])->middleware('permissions:prospect-read-web')->name('prospects.show');
     Route::resource('prospects', ProspectsController::class)->only(['edit', 'update'])->middleware('permissions:prospect-edit-web');
     
     Route::delete('prospects/{prospect}', [ProspectsController::class, 'destroy'])->name('prospects.destroy');
@@ -104,7 +106,7 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
 
     //Products
     Route::resource('products', ProductsController::class)->only(['create', 'store'])->middleware('permissions:product-write-web');
-    Route::resource('products', ProductsController::class)->only(['index', 'show'])->middleware('permissions:product-read-web')->names(['index' => 'products.dashboard']);
+    Route::get('products/{product}', [ProductsController::class, 'show'])->middleware('permissions:product-read-web')->name('products.show');
     Route::resource('products', ProductsController::class)->only(['edit', 'update'])->middleware('permissions:product-edit-web');
 
     Route::delete('products/{product}', [ProductsController::class, 'destroy'])->name('products.destroy');
@@ -116,9 +118,9 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
         Route::post('{prospect}', [OrdersController::class, 'store'])->name('store');
     });
     
-    Route::resource('orders', OrdersController::class)->only(['index', 'show'])->middleware('permissions:order-read-web')->names(['index' => 'orders.dashboard']);
+    Route::get('orders/{order}', [ProspectController::class, 'show'])->middleware('permissions:order-read-web')->name('orders.show');
     Route::resource('orders', OrdersController::class)->only(['edit', 'update'])->middleware('permissions:order-edit-web');
-    
+   
     //Messages
     Route::prefix('messages/')->name('messages.')->group(function () {
         Route::get('{id}/{messagable}/view_all', [MessageController::class, 'index'])->name('index');
