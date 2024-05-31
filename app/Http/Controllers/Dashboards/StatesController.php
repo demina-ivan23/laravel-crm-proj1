@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Dashboards;
 
 use App\Models\OrderStatus;
-use App\Models\ProspectState;
 use Illuminate\Http\Request;
+use App\Models\ProspectState;
+use App\Http\Controllers\Controller;
 
 class StatesController extends Controller
 {
