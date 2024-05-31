@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StatesController;
 use App\Http\Controllers\TimezoneController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,8 @@ Route::redirect('/', '/home');
 Route::post('/set-timezone', TimezoneController::class)->name('set-timezone');
 
 
+//Dashboards
+Route::get('/dashboards/states', StatesController::class)->name('dashboards.states');
 
 //User management routes
 Route::middleware('auth')->group(function () {
@@ -77,7 +80,6 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     });
 
     Route::resource('prospect_states', ProspectStateController::class)->only(['create', 'store'])->middleware('permissions:prospect_state-write-web');
-    Route::get('index', [ProspectStateController::class, 'index'])->middleware('permissions:prospect_state-read-web')->name('prospect_states.index');
 
     //Order statuses
     Route::middleware('permissions:order_status-edit-web')->group(function () {
@@ -87,7 +89,6 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     });
 
     Route::resource('order_statuses', OrderStatusController::class)->only(['create', 'store'])->middleware('permissions:order_status-write-web');
-    Route::get('index', [OrderStatusController::class, 'index'])->middleware('permissions:order_status-read-web')->name('order_statuses.index');
 
     //Prospects
     Route::resource('prospects', ProspectsController::class)->only(['create', 'store'])->middleware('permissions:prospect-write-web');
