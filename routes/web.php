@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\StatesController;
+use App\Http\Controllers\Dashboards\StatesController;
 use App\Http\Controllers\TimezoneController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
