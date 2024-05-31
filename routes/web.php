@@ -97,7 +97,7 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
 
     //Prospects
     Route::resource('prospects', ProspectsController::class)->only(['create', 'store'])->middleware('permissions:prospect-write-web');
-    Route::get('prospects/{prospect}', [ProspectController::class, 'show'])->middleware('permissions:prospect-read-web')->name('prospects.show');
+    Route::get('prospects/{prospect}', [ProspectsController::class, 'show'])->middleware('permissions:prospect-read-web')->name('prospects.show');
     Route::resource('prospects', ProspectsController::class)->only(['edit', 'update'])->middleware('permissions:prospect-edit-web');
     
     Route::delete('prospects/{prospect}', [ProspectsController::class, 'destroy'])->name('prospects.destroy');
@@ -118,7 +118,7 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
         Route::post('{prospect}', [OrdersController::class, 'store'])->name('store');
     });
     
-    Route::get('orders/{order}', [ProspectController::class, 'show'])->middleware('permissions:order-read-web')->name('orders.show');
+    Route::get('orders/{order}', [ProspectsController::class, 'show'])->middleware('permissions:order-read-web')->name('orders.show');
     Route::resource('orders', OrdersController::class)->only(['edit', 'update'])->middleware('permissions:order-edit-web');
    
     //Messages
