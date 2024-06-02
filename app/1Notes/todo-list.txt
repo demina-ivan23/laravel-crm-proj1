@@ -1,4 +1,3 @@
-- Change Order Charts logic due to the changes in orders and prospects storing;
 - Apply middleware in blade templates using @can;
 - Add delete and restore methods for prospects, products and orders, and add a destroy method to each model's routes;
 - Add more filtering, and fix some filtering-related issues;
