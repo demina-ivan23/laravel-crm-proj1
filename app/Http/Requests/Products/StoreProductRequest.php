@@ -11,7 +11,10 @@ class StoreProductRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        if(auth()->check() && auth()->user()->role->permissions->contains('product-write-web')){
+            return true;
+        }
+        return false;
     }
 
     /**
