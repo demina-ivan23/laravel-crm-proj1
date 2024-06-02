@@ -38,17 +38,16 @@ const app = createApp({
             val == true ? this.statusIsFinal = true : this.statusIsFinal = false;
         },
         applyFilters() {
-            var selectedFilters = {};
-            var checkboxes = document.querySelectorAll('.filter-checkbox:checked');
+            let selectedFilters = {};
+            let checkboxes = document.querySelectorAll('.filter-checkbox:checked');
             checkboxes.forEach(function (checkbox) {
-                var filterName = checkbox.getAttribute('name');
-                var filterValue = checkbox.value;
+                const filterName = checkbox.getAttribute('name');
+                const filterValue = checkbox.value;
                 if (!selectedFilters.hasOwnProperty(filterName)) {
                     selectedFilters[filterName] = [];
                 }
                 selectedFilters[filterName].push(filterValue);
             });
-
             var currentUrl = window.location.href
             var separator = currentUrl.indexOf('?') !== -1 ? '&' : '?';
             var queryParams = [];
@@ -69,10 +68,10 @@ const app = createApp({
             });
         },
         addListenersToFilterCheckboxes() {
-            var checkboxes = document.querySelectorAll('.filter-checkbox');
+            let checkboxes = document.querySelectorAll('.filter-checkbox');
 
             checkboxes.forEach(function (checkbox) {
-                var isChecked = sessionStorage.getItem(checkbox.value);
+                let isChecked = sessionStorage.getItem(checkbox.value);
                 if (isChecked === 'true') {
                     checkbox.checked = true;
                 } else {
@@ -95,23 +94,18 @@ const app = createApp({
 
             return days;
         },
-        drawAdminCharts() {
+        drawCharts() {
             const queryVars = this.getQueryVars();
             let days = [];
             let el = '';
             if (queryVars['order_product_chart_to'] != null && queryVars['order_product_chart_from'] != null) {
                 days = this.getDaysBetweenDates(queryVars['order_product_chart_from'], queryVars['order_product_chart_to']);
-                this.drawAdminProductOrderChart(days, document.getElementById('order_product_data').value ?? []);
+                this.drawProductOrderChart(days, document.getElementById('order_product_data').value ?? []);
                 document.getElementById('product_category').value = queryVars['product_category'] || 'all';
                 el = 'product';
-            } else if (queryVars['order_prospect_chart_to'] != null && queryVars['order_prospect_chart_from'] != null) {
-                days = this.getDaysBetweenDates(queryVars['order_prospect_chart_from'], queryVars['order_prospect_chart_to']);
-                this.drawAdminProspectOrderChart(days, document.getElementById('order_prospect_data').value ?? [])
-                el = 'prospect';
-                document.getElementById('prospect_state').value = queryVars['prospect_state'] || 'all';
             } else if (queryVars['order_chart_to'] != null && queryVars['order_chart_from'] != null) {
                 days = this.getDaysBetweenDates(queryVars['order_chart_from'], queryVars['order_chart_to']);
-                this.drawAdminOrderChart(days, document.getElementById('order_data').value ?? []);
+                this.drawOrderChart(days, document.getElementById('order_data').value ?? []);
                 document.getElementById('order_status').value = queryVars['order_status'] || 'all';
             }
             if (el != '') {
@@ -138,7 +132,7 @@ const app = createApp({
         rand(min, max) {
             return Math.floor(Math.random() * (max - min + 1)) + min;
         },
-        drawAdminProductOrderChart(days, jsonedProducts) {
+        drawProductOrderChart(days, jsonedProducts) {
             const orderProductsArray = JSON.parse(jsonedProducts);
             const daysCount = days.length;
             if (daysCount == 0) {
@@ -212,81 +206,7 @@ const app = createApp({
             const productOrderCanvas = document.getElementById('productOrderChartCanvas');
             const productOrderChart = new Chart(productOrderCanvas, config);
         },
-        drawAdminProspectOrderChart(days, jsonedProspects) {
-            const orderProspectsArray = JSON.parse(jsonedProspects);
-            const daysCount = days.length;
-            if (daysCount == 0) {
-                console.log('hi');
-                return;
-            }
-            const labels = days;
-            const datasets = [];
-            for (let orderProspectArray of orderProspectsArray) {
-                console.log(orderProspectArray);
-                let footerInfo = [];
-                for (let i = 0; i < orderProspectArray.customer.length; i++) {
-                    let orderStatuses = orderProspectArray.order_statuses[i];
-                    let statusInfo = {};
-                    for (let status in orderStatuses) {
-                        statusInfo[status] = orderStatuses[status];
-                    }
-                    footerInfo.push(statusInfo);
-                }
-                console.log(footerInfo);
-                datasets.push({
-                    label: orderProspectArray.state,
-                    data: orderProspectArray.customer,
-                    footer: footerInfo,
-                    backgroundColor: `rgba(${this.rand(10, 100)}, ${this.rand(20, 200)}, ${this.rand(20, 200)}, 0.6)`,
-                });
-            }
-            const data = {
-                labels: labels,
-                datasets: datasets
-            };
-            const config = {
-                type: 'bar',
-                data: data,
-                options: {
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: 'Prospect-related Chart'
-                        },
-                        tooltip: {
-                            callbacks: {
-                                footer: function (tooltipItems) {
-                                    const datasetIndex = tooltipItems[0].datasetIndex;
-                                    const day = tooltipItems[0].dataIndex;
-                                    const footerObject = tooltipItems[0].chart.data.datasets[datasetIndex].footer[day];
-                                    let footerString = 'Order statuses: ';
-                                    for (let status in footerObject) {
-                                        footerString += `${status}: ${footerObject[status]}, `;
-                                    }
-                                    footerString = footerString.slice(0, -2);
-                                    return footerString;
-                                }
-                            }
-                        }
-
-                    },
-                    responsive: true,
-                    scales: {
-                        x: {
-                            stacked: true,
-                        },
-                        y: {
-                            stacked: true
-                        }
-                    },
-
-                }
-            };
-
-            const prospectOrderCanvas = document.getElementById('prospectOrderChartCanvas');
-            const prospectOrderChart = new Chart(prospectOrderCanvas, config);
-        },
-        drawAdminOrderChart(days, jsonedOrders) {
+        drawOrderChart(days, jsonedOrders) {
             const ordersArray = JSON.parse(jsonedOrders);
             const daysCount = days.length;
             if (daysCount == 0) {
@@ -427,27 +347,42 @@ const app = createApp({
                     button.classList.add('border-blue-300');
                     button.classList.add('text-blue-500');
                 }
-
-                window.history.replaceState({}, document.title, `?tablink=${id}&tab-button=${buttonId}`);
+                const urlParams = new URLSearchParams(window.location.search);
+                const otherParams = {};
+                urlParams.forEach((value, key) => {
+                    if (key !== 'tablink' && key !== 'tab-button') {
+                        otherParams[key] = value;
+                    }
+                });
+                let newUrl = window.location.pathname;
+                newUrl += `?tablink=${id}&tab-button=${buttonId}&`;
+                if (Object.keys(otherParams).length > 0) {
+                    for (const [key, value] of Object.entries(otherParams)) {
+                        newUrl += `${key}=${value}&`;
+                    }
+                }
+                newUrl.slice(0, -1);
+                window.history.replaceState({}, document.title, newUrl);
             }
         },
         rememberSelectedTab() {
             const urlParams = new URLSearchParams(window.location.search);
             const selectedTab = urlParams.get('tablink');
             const tabButton = urlParams.get('tab-button');
+            console.log(urlParams, selectedTab, tabButton);
             if (selectedTab && (document.getElementById(selectedTab) ?? false)) {
-                let buttonId = tabButton == null ? selectedTab + 'TabToggle' : tabButton;   
+                let buttonId = tabButton == null ? selectedTab + 'TabToggle' : tabButton;
                 this.togglePageTabs(selectedTab, buttonId);
             } else {
                 let element = document.querySelector('.tablink');
-                let buttonId = tabButton == null ? element.id + 'TabToggle' : tabButton;   
+                let buttonId = tabButton == null ? element.id + 'TabToggle' : tabButton;
                 this.togglePageTabs(element.id, buttonId);
             }
         }
     },
     mounted() {
         this.rememberSelectedTab();
-        this.drawAdminCharts();
+        this.drawCharts();
         this.handleSelectedProductsReload();
         this.addListenersToFilterCheckboxes();
         this.sendTimezoneToBackend();

@@ -67,6 +67,8 @@
                                     </select>
                                 </div>
                                 <button class="btn btn-primary pt-0 pb-0" type="submit">Submit</button>
+                                <input type="text" class="hidden" value="orderChart" name="tablink">
+                                <input type="text" class="hidden" value="orderChartTabToggle" name="tab-button">
                             </form>
                         </div>
 
@@ -87,7 +89,7 @@
                     </div>
                 </div>
             </div>
-            <h5 class="d-flex justify-content-center mt-4">This chart shows how much orders where created with each status.</h5>
+            <h5 class="d-flex justify-content-center mt-4">This chart shows how much orders where created and with which status.</h5>
         </div>
         <div class="hidden tablink" id="productChart">
             <div class="card mt-4">
@@ -122,6 +124,8 @@
                                     </select>
                                 </div>
                                 <button class="btn btn-primary pt-0 pb-0" type="submit">Submit</button>
+                                <input type="text" class="hidden" value="productChart" name="tablink">
+                                <input type="text" class="hidden" value="productChartTabToggle" name="tab-button">
                             </form>
                         </div>
                         <div class="col-sm-9">
