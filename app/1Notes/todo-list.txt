@@ -1,6 +1,7 @@
 - Apply middleware in blade templates using @can;
 - Add delete and restore methods for prospects, products and orders, and add a destroy method to each model's routes;
 - Add more filtering, and fix some filtering-related issues;
+- Create a Profile route and profile-specific things;
 - Use Tailwind to style tables and other page elements;  
 - create tests;
 - automate api creation (but if you will be able to set middleware to the routes);
