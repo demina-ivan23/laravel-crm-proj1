@@ -3,6 +3,7 @@
 namespace App\Policies;
 
 use App\Models\User;
+use App\Models\Permission;
 use Illuminate\Auth\Access\Response;
 
 class OrderStatusPolicy
@@ -13,7 +14,7 @@ class OrderStatusPolicy
      */
     public function view(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('order_status-read-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'order_status-read-web')->first()->id)){
             return true;
         }
         return false;
@@ -24,7 +25,7 @@ class OrderStatusPolicy
      */
     public function create(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('order_status-write-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'order_status-write-web')->first()->id)){
             return true;
         }
         return false;
@@ -35,7 +36,7 @@ class OrderStatusPolicy
      */
     public function update(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('order_status-edit-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'order_status-edit-web')->first()->id)){
             return true;
         }
         return false;
@@ -46,7 +47,7 @@ class OrderStatusPolicy
      */
     public function delete(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('order_status-edit-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'order_status-edit-web')->first()->id)){
             return true;
         }
         return false;
@@ -57,7 +58,7 @@ class OrderStatusPolicy
      */
     public function restore(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('order_status-edit-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'order_status-edit-web')->first()->id)){
             return true;
         }
         return false;
@@ -68,7 +69,7 @@ class OrderStatusPolicy
      */
     public function forceDelete(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('order_status-destroy-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'order_status-destroy-web')->first()->id)){
             return true;
         }
         return false;

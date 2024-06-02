@@ -4,6 +4,7 @@ namespace App\Policies;
 
 use App\Models\Role;
 use App\Models\User;
+use App\Models\Permission;
 use Illuminate\Auth\Access\Response;
 
 class RolePolicy
@@ -13,7 +14,7 @@ class RolePolicy
      */
     public function view(User $user): bool
     {
-        if ($user->role && $user->role->permissions->contains('role-read-web')) {
+        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'role-read-web')->first()->id)) {
             return true;
         }
         return false;
@@ -24,7 +25,7 @@ class RolePolicy
      */
     public function create(User $user): bool
     {
-        if ($user->role && $user->role->permissions->contains('role-write-web')) {
+        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'role-write-web')->first()->id)) {
             return true;
         }
         return false;
@@ -35,7 +36,7 @@ class RolePolicy
      */
     public function update(User $user): bool
     {
-        if ($user->role && $user->role->permissions->contains('role-edit-web')) {
+        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'role-edit-web')->first()->id)) {
             return true;
         }
         return false;
@@ -46,7 +47,7 @@ class RolePolicy
      */
     public function delete(User $user): bool
     {
-        if ($user->role && $user->role->permissions->contains('role-edit-web')) {
+        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'role-edit-web')->first()->id)) {
             return true;
         }
         return false;
@@ -57,7 +58,7 @@ class RolePolicy
      */
     public function restore(User $user): bool
     {
-        if ($user->role && $user->role->permissions->contains('role-edit-web')) {
+        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'role-edit-web')->first()->id)) {
             return true;
         }
         return false;
@@ -68,7 +69,7 @@ class RolePolicy
      */
     public function forceDelete(User $user): bool
     {
-        if ($user->role && $user->role->permissions->contains('role-destroy-web')) {
+        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'role-destroy-web')->first()->id)) {
             return true;
         }
         return false;

@@ -2,8 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Product;
 use App\Models\User;
+use App\Models\Product;
+use App\Models\Permission;
 use Illuminate\Auth\Access\Response;
 
 class ProductPolicy
@@ -13,7 +14,7 @@ class ProductPolicy
      */
     public function view(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('product-read-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'product-read-web')->first()->id)){
             return true;
         }
         return false;
@@ -24,7 +25,7 @@ class ProductPolicy
      */
     public function create(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('product-write-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'product-write-web')->first()->id)){
             return true;
         }
         return false;
@@ -35,7 +36,7 @@ class ProductPolicy
      */
     public function update(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('product-edit-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'product-edit-web')->first()->id)){
             return true;
         }
         return false;
@@ -46,7 +47,7 @@ class ProductPolicy
      */
     public function delete(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('product-edit-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'product-edit-web')->first()->id)){
             return true;
         }
         return false;
@@ -57,7 +58,7 @@ class ProductPolicy
      */
     public function restore(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('product-edit-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'product-edit-web')->first()->id)){
             return true;
         }
         return false;
@@ -68,7 +69,7 @@ class ProductPolicy
      */
     public function forceDelete(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('product-destroy-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'product-destroy-web')->first()->id)){
             return true;
         }
         return false;

@@ -2,8 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Order;
 use App\Models\User;
+use App\Models\Order;
+use App\Models\Permission;
 use Illuminate\Auth\Access\Response;
 
 class OrderPolicy
@@ -13,7 +14,7 @@ class OrderPolicy
      */
     public function view(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('order-read-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'order-read-web')->first()->id)){
             return true;
         }
         return false;
@@ -24,7 +25,7 @@ class OrderPolicy
      */
     public function create(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('order-write-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'order-write-web')->first()->id)){
             return true;
         }
         return false;
@@ -35,7 +36,7 @@ class OrderPolicy
      */
     public function update(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('order-edit-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'order-edit-web')->first()->id)){
             return true;
         }
         return false;
@@ -46,7 +47,7 @@ class OrderPolicy
      */
     public function delete(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('order-edit-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'order-edit-web')->first()->id)){
             return true;
         }
         return false;
@@ -57,7 +58,7 @@ class OrderPolicy
      */
     public function restore(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('order-edit-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'order-edit-web')->first()->id)){
             return true;
         }
         return false;
@@ -68,7 +69,7 @@ class OrderPolicy
      */
     public function forceDelete(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('order-destroy-web')){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'order-destroy-web')->first()->id)){
             return true;
         }
         return false;

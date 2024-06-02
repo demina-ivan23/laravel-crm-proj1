@@ -2,8 +2,9 @@
 
 namespace App\Policies;
 
-use App\Models\Prospect;
 use App\Models\User;
+use App\Models\Prospect;
+use App\Models\Permission;
 use Illuminate\Auth\Access\Response;
 
 class ProspectPolicy
@@ -13,7 +14,7 @@ class ProspectPolicy
      */
     public function view(User $user): bool
     {
-        if ($user->role && $user->role->permissions->contains('prospect-read-web')) {
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'prospect-read-web')->first()->id)){
             return true;
         }
         return false;
@@ -25,7 +26,7 @@ class ProspectPolicy
      */
     public function create(User $user): bool
     {
-        if ($user->role && $user->role->permissions->contains('prospect-write-web')) {
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'prospect-write-web')->first()->id)){
             return true;
         }
         return false;
@@ -36,7 +37,7 @@ class ProspectPolicy
      */
     public function update(User $user): bool
     {
-        if ($user->role && $user->role->permissions->contains('prospect-edit-web')) {
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'prospect-edit-web')->first()->id)){
             return true;
         }
         return false;
@@ -47,7 +48,7 @@ class ProspectPolicy
      */
     public function delete(User $user): bool
     {
-        if ($user->role && $user->role->permissions->contains('prospect-edit-web')) {
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'prospect-edit-web')->first()->id)){
             return true;
         }
         return false;
@@ -58,7 +59,7 @@ class ProspectPolicy
      */
     public function restore(User $user): bool
     {
-        if ($user->role && $user->role->permissions->contains('prospect-edit-web')) {
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'prospect-edit-web')->first()->id)){
             return true;
         }
         return false;
@@ -69,7 +70,7 @@ class ProspectPolicy
      */
     public function forceDelete(User $user): bool
     {
-        if ($user->role && $user->role->permissions->contains('prospect-destroy-web')) {
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'prospect-destroy-web')->first()->id)){
             return true;
         }
         return false;
