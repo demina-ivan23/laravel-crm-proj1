@@ -11,7 +11,10 @@ class UpdateProspectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        if(auth()->check() && auth()->user()->role->permissions->contains('prospect-edit-web')){
+            return true;
+        }
+        return false;
     }
 
     /**
