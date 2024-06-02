@@ -8,6 +8,7 @@ use App\Policies\ProspectPolicy;
 use App\Policies\OrderStatusPolicy;
 use Illuminate\Support\Facades\Gate;
 use App\Enums\UserApiAccessLevelEnum;
+use App\Policies\ProspectStatePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -22,6 +23,8 @@ class AuthServiceProvider extends ServiceProvider
         OrderStatusPolicy::class,
         ProductPolicy::class,
         ProspectPolicy::class,
+        ProspectStatePolicy::class,
+        
     ];
 
     /**
