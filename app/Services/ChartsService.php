@@ -14,7 +14,6 @@ class ChartsService
     {
         $data = [
             'order_product_chart_info' => static::getOrderProductChartInfo($query) ?? [],
-            'order_prospect_chart_info' => static::getOrderProspectChartInfo($query) ?? [],
             'order_chart_info' => static::getOrderChartInfo($query) ?? [],
             
         ];
@@ -89,33 +88,6 @@ class ChartsService
             ->count();
     }
     
-    static function getOrderProspectChartInfo($query)
-    {
-        if ($query['order_prospect_chart_from'] ?? null && $query['order_prospect_chart_to'] ?? null) {
-            $order_statuses  = OrderStatus::all();
-            $array = [];
-            $days = static::getDaysCount($query['order_prospect_chart_from'], $query['order_prospect_chart_to']);
-            $daysCount = $days['days_count'];
-            $daysArray = $days['days_array'];
-            if ($query['prospect_state'] === 'all') {
-                $i = 0;
-                foreach (ProspectState::all() as $state) {
-                    $array[$i] = static::processByFilter('state', 'customer' , $state, $order_statuses, $daysCount, $daysArray);
-                    $i++;
-                }
-                $array[$i] = static::processByFilter('state', 'customer' , null, $order_statuses, $daysCount, $daysArray);
-            } elseif ($query['prospect_state'] != null) {
-                $state = ProspectState::find($query['prospect_state']);
-                if(!$state)
-                {
-                    return null;
-                }
-                $array[0] = static::processByFilter('state', 'customer' , $state , $order_statuses, $daysCount, $daysArray);
-            } 
-           return $array;
-        }
-        return null;
-    }
     static function getDaysCount($from, $to)
     {
         $fromDate = new DateTime($from);
