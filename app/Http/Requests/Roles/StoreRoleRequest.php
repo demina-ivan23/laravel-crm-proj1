@@ -11,6 +11,9 @@ class StoreRoleRequest extends FormRequest
      */
     public function authorize(): bool
     {
+        if(auth()->check() && auth()->user()->role->permissions->contains('role-write-web')){
+            return true;
+        }
         return false;
     }
 
