@@ -11,8 +11,7 @@ class UpdateOrderStatusRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(auth()->user()->is_admin)
-        {
+        if(auth()->check() && auth()->user()->role->permissions->contains('order_status-edit-web')){
             return true;
         }
         return false;
