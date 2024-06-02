@@ -68,7 +68,7 @@ class OrderStatusPolicy
      */
     public function forceDelete(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains('order_status-delete-web')){
+        if($user->role && $user->role->permissions->contains('order_status-destroy-web')){
             return true;
         }
         return false;
