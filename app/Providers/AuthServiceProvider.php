@@ -38,8 +38,17 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
-        Gate::define('view-charts', function() {
-           return auth()->check() && auth()->user()->role->permissions->contains(Permission::where('title', 'order-chart-read-web')->first()->id);
+        Gate::define('view-charts', function () {
+            return auth()->check() && auth()->user()->role->permissions->contains(Permission::where('title', 'order-chart-read-web')->first()->id);
         });
+        Gate::define('states-dashboard', function () {
+            return auth()->check() && auth()->user()->role->permissions->contains(Permission::where('title', 'states-dashboard')->first()->id);
+        });
+        Gate::define('users-roles-dashboard', function () {
+            return auth()->check() && auth()->user()->role->permissions->contains(Permission::where('title', 'users-roles-dashboard')->first()->id);
+        });
+        Gate::define('prospects-products-orders-dashboard', function() {
+            return auth()->check() && auth()->user()->role->permissions->contains(Permission::where('title', 'prospects-products-orders-dashboard')->first()->id);
+         });
     }
 }
