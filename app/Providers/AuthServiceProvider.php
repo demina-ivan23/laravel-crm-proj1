@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Gate;
 use App\Enums\UserApiAccessLevelEnum;
 use App\Policies\OrderPolicy;
 use App\Policies\OrderStatusPolicy;
+use App\Policies\ProductPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -18,6 +19,8 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         OrderPolicy::class,
         OrderStatusPolicy::class,
+        ProductPolicy::class,
+        
     ];
 
     /**
