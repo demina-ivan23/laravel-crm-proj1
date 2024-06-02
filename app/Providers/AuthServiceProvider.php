@@ -2,14 +2,16 @@
 
 namespace App\Providers;
 
-use App\Policies\OrderPolicy;
-use App\Policies\ProductPolicy;
-use App\Policies\ProspectPolicy;
-use App\Policies\OrderStatusPolicy;
+use App\Policies\{
+    OrderPolicy,
+    ProductPolicy,
+    ProspectPolicy,
+    OrderStatusPolicy,
+    ProspectStatePolicy,
+    RolePolicy,
+    UserPolicy,
+};
 use Illuminate\Support\Facades\Gate;
-use App\Enums\UserApiAccessLevelEnum;
-use App\Policies\ProspectStatePolicy;
-use App\Policies\RolePolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -26,7 +28,7 @@ class AuthServiceProvider extends ServiceProvider
         ProspectPolicy::class,
         ProspectStatePolicy::class,
         RolePolicy::class,
-        
+        UserPolicy::class
     ];
 
     /**
