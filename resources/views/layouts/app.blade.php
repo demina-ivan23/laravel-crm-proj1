@@ -71,7 +71,7 @@
         </nav>
         <main class="py-4">
             <div class="offcanvas offcanvas-start text-bg-dark" tabindex="-1" id="offcanvasExample"
-                aria-labelledby="offcanvasExampleLabel" style="width: 250px;">
+                aria-labelledby="offcanvasExampleLabel" style="width: 300px;">
                 <div class="offcanvas-header">
                     <h5 class="offcanvas-title" id="offcanvasExampleLabel">Laravel CRM Sidebar</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
@@ -94,57 +94,106 @@
                                 </a>
                                 <div class="collapse" id="userMenu">
                                     <ul class="navbar-nav">
-                                        @if (auth()->user()->is_admin)
+                                        <li class="mt-2 ml-3" style="font-weight: 700">
+                                            <p>Dashboards</p>
+                                        </li>
+
+                                        @can('view-charts')
                                             <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
-                                                <p>Chart Links</p>
+                                                <p>Charts</p>
                                             </li>
+
                                             <li class="ml-7">
-                                                <a href="{{ route('user.order_chart') }}" class="dropdown-item"
-                                                    style="{{ request()->routeIs('user.order_chart') ? 'color:gray' : '' }}">Order
-                                                    info page</a>
-                                            </li>
-                                            <li class="ml-7">
-                                                <a href="{{ route('user.order_product_chart') }}" class="dropdown-item"
-                                                    style="{{ request()->routeIs('user.order_product_chart') ? 'color:gray' : '' }}">Order-Product
-                                                    info page</a>
-                                            </li>
-                                            <li class="ml-7">
-                                                <a href="{{ route('user.order_prospect_chart') }}" class="dropdown-item"
-                                                    style="{{ request()->routeIs('user.order_prospect_chart') ? 'color:gray' : '' }}">Order-Prospect
-                                                    info page</a>
-                                            </li>
-                                            <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
-                                                <p>Order Status Links</p>
-                                            </li>
-                                            <li class="ml-7">
-                                                <a href="{{ route('user.order_statuses.create') }}"
+                                                <a href="{{ route('dashboards.order-charts', ['tablink' => 'orderChart', 'tab-button' => 'orderChartTabToggle']) }}"
                                                     class="dropdown-item"
+                                                    style="{{ request()->routeIs('dashboards.order-charts') && request()->query('tablink') == 'orderChart' ? 'color:gray' : '' }}">Order
+                                                    info page</a>
+                                            </li>
+                                            <li class="ml-7">
+                                                <a href="{{ route('dashboards.order-charts', ['tablink' => 'productChart', 'tab-button' => 'productChartTabToggle']) }}"
+                                                    class="dropdown-item"
+                                                    style="{{ request()->routeIs('dashboards.order-charts') && request()->query('tablink') == 'productChart' ? 'color:gray' : '' }}">Order-Product
+                                                    info page</a>
+                                            </li>
+                                        @endcan
+                                        @can('states-dashboard')
+                                            <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
+                                                <p>States</p>
+                                            </li>
+                                            @can('view', App\Models\OrderStatus::inRandomOrder()->first())
+                                                <li class="ml-7">
+                                                    <a href="{{ route('dashboards.states', ['tablink' => 'orderStatuses', 'tab-button' => 'orderStatusesTabToggle']) }}"
+                                                        class="dropdown-item"
+                                                        style="{{ request()->routeIs('dashboards.states') && request()->query('tablink') == 'orderStatuses' ? 'color:gray' : '' }}">Order
+                                                        Statuses</a>
+                                                </li>
+                                            @endcan
+                                            @can('view', App\Models\ProspectState::inRandomOrder()->first())
+                                                <li class="ml-7">
+                                                    <a href="{{ route('dashboards.states', ['tablink' => 'prospectStates', 'tab-button' => 'prospectStatesTabToggle']) }}"
+                                                        class="dropdown-item"
+                                                        style="{{ request()->routeIs('dashboards.states') && request()->query('tablink') == 'prospectStates' ? 'color:gray' : '' }}">Prospect
+                                                        States</a>
+                                                </li>
+                                            @endcan
+                                        @endcan
+                                        @can('users-roles-dashboard')
+                                            <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
+                                                <p>User-Role</p>
+                                            </li>
+                                            @can('view', App\Models\User::inRandomOrder()->first())
+                                                <li class="ml-7">
+                                                    <a href="{{ route('dashboards.users-roles', ['tablink' => 'users', 'tab-button' => 'usersTabToggle']) }}"
+                                                        class="dropdown-item"
+                                                        style="{{ request()->routeIs('dashboards.users-roles') && request()->query('tablink') == 'users' ? 'color:gray' : '' }}">Users</a>
+                                                </li>
+                                            @endcan
+                                            @can('view', App\Models\Role::inRandomOrder()->first())
+                                                <li class="ml-7">
+                                                    <a href="{{ route('dashboards.users-roles', ['tablink' => 'roles', 'tab-button' => 'rolesTabToggle']) }}"
+                                                        class="dropdown-item"
+                                                        style="{{ request()->routeIs('dashboards.users-roles') && request()->query('tablink') == 'roles' ? 'color:gray' : '' }}">Roles</a>
+                                                </li>
+                                            @endcan
+                                        @endcan
+                                        <li class="mt-2 ml-3" style="font-weight: 700">
+                                            <p>Order Status Links</p>
+                                        </li>
+                                        @can('create', App\Models\OrderStatus::inRandomOrder()->first())
+                                            <li class="ml-7">
+                                                <a href="{{ route('user.order_statuses.create') }}" class="dropdown-item"
                                                     style="{{ request()->routeIs('user.order_statuses.create') ? 'color:gray' : '' }}">Create
                                                     An Order Status</a>
                                             </li>
+                                        @endcan
+                                        @can('update', App\Models\OrderStatus::inRandomOrder()->first())
                                             <li class="ml-7">
                                                 <a href="{{ route('user.order_statuses.edit_via_table') }}"
                                                     class="dropdown-item"
                                                     style="{{ request()->routeIs('user.order_statuses.edit_via_table') ? 'color:gray' : '' }}">Edit
                                                     Order Statuses Via Table</a>
                                             </li>
-                                            <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
-                                                <p>Prospect State Links</p>
-                                            </li>
+                                        @endcan
+                                        <li class="mt-2 ml-3" style="font-weight: 700">
+                                            <p>Prospect State Links</p>
+                                        </li>
+                                        @can('create', App\Models\ProspectState::inRandomOrder()->first())
                                             <li class="ml-7">
-                                                <a href="{{ route('user.prospect_states.create') }}"
-                                                    class="dropdown-item"
+                                                <a href="{{ route('user.prospect_states.create') }}" class="dropdown-item"
                                                     style="{{ request()->routeIs('user.prospect_states.create') ? 'color:gray' : '' }}">Create
                                                     A Prospect State</a>
                                             </li>
+                                        @endcan
+                                        @can('update', App\Models\ProspectState::inRandomOrder()->first())
                                             <li class="ml-7">
                                                 <a href="{{ route('user.prospect_states.edit_via_table') }}"
                                                     class="dropdown-item"
                                                     style="{{ request()->routeIs('user.prospect_states.edit_via_table') ? 'color:gray' : '' }}">Edit
                                                     Prospect States Via Table</a>
                                             </li>
-                                        @endif
-                                        <li class="nav-item ml-5">
+                                        @endcan
+
+                                        <li class="nav-item ml-1">
                                             <a class="nav-link" href="{{ route('logout') }}"
                                                 onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
                                                 {{ __('Logout') }}
@@ -153,48 +202,58 @@
                                     </ul>
                                 </div>
                             </li>
+                            @can('prospects-products-orders-dashboard')
+                                @can('view', App\Models\Product::inRandomOrder()->first())
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="collapse" href="#productsMenu" role="button"
+                                            aria-expanded="false" aria-controls="productsMenu">
+                                            Products
+                                        </a>
+                                        <div class="collapse" id="productsMenu">
+                                            <ul class="navbar-nav">
+                                                <li class="nav-item ml-5">
+                                                    <a href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'products']) }}"
+                                                        class="nav-link">Manage</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                @endcan
 
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="collapse" href="#productsMenu" role="button"
-                                    aria-expanded="false" aria-controls="productsMenu">
-                                    Products
-                                </a>
-                                <div class="collapse" id="productsMenu">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-item ml-5">
-                                            <a href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'products']) }}" class="nav-link">Manage</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
+                                @can('view', App\Models\Prospect::inRandomOrder()->first())
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="collapse" href="#prospectsMenu" role="button"
+                                            aria-expanded="false" aria-controls="prospectsMenu">
+                                            Prospects
+                                        </a>
+                                        <div class="collapse" id="prospectsMenu">
+                                            <ul class="navbar-nav">
+                                                <li class="nav-item ml-5">
+                                                    <a href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'prospects']) }}"
+                                                        class="nav-link">Manage</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                @endcan
 
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="collapse" href="#prospectsMenu" role="button"
-                                    aria-expanded="false" aria-controls="prospectsMenu">
-                                    Prospects
-                                </a>
-                                <div class="collapse" id="prospectsMenu">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-item ml-5">
-                                            <a href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'prospects']) }}" class="nav-link">Manage</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
-
-                            <li class="nav-item">
-                                <a class="nav-link" data-bs-toggle="collapse" href="#ordersMenu" role="button"
-                                    aria-expanded="false" aria-controls="ordersMenu">
-                                    Orders
-                                </a>
-                                <div class="collapse" id="ordersMenu">
-                                    <ul class="navbar-nav">
-                                        <li class="nav-item ml-5">
-                                            <a href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'orders']) }}" class="nav-link">Manage</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </li>
+                                @can('view', App\Models\Order::inRandomOrder()->first())
+                                    <li class="nav-item">
+                                        <a class="nav-link" data-bs-toggle="collapse" href="#ordersMenu" role="button"
+                                            aria-expanded="false" aria-controls="ordersMenu">
+                                            Orders
+                                        </a>
+                                        <div class="collapse" id="ordersMenu">
+                                            <ul class="navbar-nav">
+                                                <li class="nav-item ml-5">
+                                                    <a href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'orders']) }}"
+                                                        class="nav-link">Manage</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </li>
+                                @endcan
+                            @endcan
                         @endguest
                     </ul>
 
