@@ -104,7 +104,6 @@ class ChartsService
     {
         if($query['order_chart_from'] ?? null && $query['order_chart_to'] ?? null)
         {
-            $order_statuses  = OrderStatus::all();
             $array = [];
             $days = static::getDaysCount($query['order_chart_from'], $query['order_chart_to']);
             $daysCount = $days['days_count'];
@@ -116,7 +115,6 @@ class ChartsService
                 $statuses = OrderStatus::all();
             } elseif($query['order_status'] != null) {
                 $statuses = OrderStatus::where('id', $query['order_status'])->get();
-                // dd($statuses);
             }
             foreach($statuses as $status){
                 $array[$i] = static::processForOrder($status->title, $status->id, $daysCount, $daysArray); 
