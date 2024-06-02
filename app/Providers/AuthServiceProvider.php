@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\Permission;
 use App\Policies\{
     OrderPolicy,
     ProductPolicy,
@@ -37,5 +38,8 @@ class AuthServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->registerPolicies();
+        Gate::define('view-charts', function() {
+           return auth()->check() && auth()->user()->role->permissions->contains(Permission::where('title', 'order-chart-read-web')->first()->id);
+        });
     }
 }
