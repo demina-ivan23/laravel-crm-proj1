@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Dashboards\ProspectsProductsOrdersController;
 use App\Http\Controllers\Dashboards\StatesController;
+use App\Http\Controllers\Dashboards\ChartsController;
 use App\Http\Controllers\Dashboards\UsersRolesController;
 use App\Http\Controllers\TimezoneController;
 use Illuminate\Support\Facades\Auth;
@@ -14,7 +15,7 @@ use App\Http\Controllers\User\{
     Prospects\ProspectStateController,
     Products\ProductsController,
     Messages\MessageController,
-    Charts\ChartsController,
+
     Roles\RoleController
 };
 
@@ -46,6 +47,7 @@ Route::prefix('dashboards/')->name('dashboards.')->group(function () {
     Route::get('states', StatesController::class)->middleware('permissions:states-dashboard')->name('states');
     Route::get('users-roles', UsersRolesController::class)->middleware('permissions:users-roles-dashboard')->name('users-roles');
     Route::get('prospects-products-orders', ProspectsProductsOrdersController::class)->middleware('permissions:prospects-products-orders-dashboard')->name('prospects-products-orders');
+    Route::get('order-charts', [ChartsController::class, 'index'])->middleware('permissions:order-chart-read-web')->name('order-charts');
 });
 
 //User management routes
@@ -71,11 +73,6 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
 
     Route::delete('roles/{role}', [RoleController::class, 'delete'])->middleware('permissions:role-edit-web')->name('roles.delete')->where('role', '[0-9]+');
     Route::put('roles/{role}/restore', [RoleController::class, 'restore'])->middleware('permissions:role-edit-web')->name('roles.restore')->where('role', '[0-9]+');
-
-    //Charts
-    Route::get('order_product_chart', [ChartsController::class, 'index'])->middleware('permissions:order-chart-read-web')->name('order_product_chart');
-    Route::get('order_prospect_chart', [ChartsController::class, 'index'])->middleware('permissions:order-chart-read-web')->name('order_prospect_chart');
-    Route::get('order_chart', [ChartsController::class, 'index'])->middleware('permissions:order-chart-read-web')->name('order_chart');
 
     //Prospect states
     Route::middleware('permissions:prospect_state-edit-web')->group(function () {
