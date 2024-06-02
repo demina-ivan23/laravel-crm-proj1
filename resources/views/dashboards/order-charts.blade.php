@@ -41,7 +41,7 @@
                         <h4 class="mb-3 d-flex justify-content-center">Order chart</h4>
 
                         <div class="col-sm-3">
-                            <form action="" method="GET">
+                            <form action="#" method="GET">
                                 <h5 class="mb-3">From/To period</h5>
                                 <div class="mb-2">
                                     <label for="order_chart_from">From</label>
@@ -96,7 +96,7 @@
                     <h4 class="mb-3 d-flex justify-content-center">Product-related chart</h4>
     
                         <div class="col-sm-3">
-                            <form action="" method="GET">
+                            <form action="#" method="GET">
                                 <h5 class="mb-3">From/To period</h5>
                                 <div class="mb-2">
                                     <label for="order_product_chart_from">From</label>
