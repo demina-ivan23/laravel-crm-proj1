@@ -11,7 +11,10 @@ class StoreProspectStateRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return true;
+        if(auth()->check() && auth()->user()->role->permissions->contains('prospect_state-write-web')){
+            return true;
+        }
+        return false;
     }
 
     /**
