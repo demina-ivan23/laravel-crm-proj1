@@ -1,9 +1,12 @@
 - Apply middleware in blade templates using @can;
 - Add delete and restore methods for prospects, products and orders, and add a destroy method to each model's routes;
 - Add more filtering, and fix some filtering-related issues;
+- !IMPORTANT! implement Laravel Livewire;
 - Create a Profile route and profile-specific things;
-- Use Tailwind to style tables and other page elements;  
+- Use Tailwind to style tables and other page elements;
 - create tests;
 - automate api creation (but if you will be able to set middleware to the routes);
+- !IMPORTANT! try in pair with React.js;
+- !IMPORTANT! try in pair with {SomethingElsePopular}.js;
 - write documentation: web and api;
                                          Remember to do small separate commits. 
