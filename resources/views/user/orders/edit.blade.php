@@ -28,8 +28,11 @@
                                 Actions
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('user.products.dashboard') }}">Dashboard</a>
-                                </li>
+                                @can('view', \App\Models\Order::class)
+                                    <li><a class="dropdown-item"
+                                            href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'orders', 'tab-button' => 'ordersTabButton']) }}">Dashboard</a>
+                                    </li>
+                                @endcan
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
                         </div>

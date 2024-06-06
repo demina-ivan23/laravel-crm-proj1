@@ -24,7 +24,6 @@
             </div>
             <hr>
             <div class="p-3">
-                {{-- Orders Id, Order created at, Customer's name, email; last transittion's description; current status, whether tis' final or not, expires_at if not; Order closed at; Order's history of transitions; --}}
 
                 <div class="mb-3 form-control">Order's Id: {{ $order->id }}</div>
                 <div class="mb-3 form-control">Order created at: {{ \Carbon\Carbon::parse($order->created_at)->setTimezone($timezone)->format('M d, Y, H:i:s') }}</div>
