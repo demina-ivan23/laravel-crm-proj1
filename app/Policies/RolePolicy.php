@@ -45,9 +45,9 @@ class RolePolicy
     /**
      * Determine whether the user can delete the model.
      */
-    public function delete(User $user): bool
+    public function delete(User $user, Role $role): bool
     {
-        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'role-edit-web')->first()->id)) {
+        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'role-edit-web')->first()->id) && !$role->permissions->contains(Permission::where('title' , 'be_untouchable')->first()->id)) {
             return true;
         }
         return false;
@@ -67,9 +67,9 @@ class RolePolicy
     /**
      * Determine whether the user can permanently delete the model.
      */
-    public function forceDelete(User $user): bool
+    public function forceDelete(User $user, Role $role): bool
     {
-        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'role-destroy-web')->first()->id)) {
+        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'role-destroy-web')->first()->id) && !$role->permissions->contains(Permission::where('title' , 'be_untouchable')->first()->id)) {
             return true;
         }
         return false;
