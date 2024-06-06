@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <a href="{{ route('user.order_statuses.index') }}" class="btn btn-light">Go Back To Dashboard</a>
+        <a href="{{ route('dashboards.states') }}" class="btn btn-light">Go Back To Dashboard</a>
         <div class="card mt-4">
             <div class="card-body">
                 <div class="d-flex">
@@ -17,7 +17,7 @@
                             </button>
                             <ul class="dropdown-menu">
                                 @can('view', \App\Models\OrderStatus::class)
-                                    <li><a class="dropdown-item" href="{{ route('user.order_statuses.index') }}">All Order
+                                    <li><a class="dropdown-item" href="{{ route('dashboards.states') }}">All Order
                                             Statuses</a></li>
                                 @endcan
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
