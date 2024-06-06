@@ -15,11 +15,13 @@
                                 Actions
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('user.prospects.dashboard') }}">Dashboard</a>
-                                </li>
-                                <li><a class="dropdown-item"
-                                        href="{{ route('user.prospects.show', ['prospect' => $prospect]) }}">View
-                                        "{{ $prospect->name }}"</a></li>
+                                @can('view', $prospect)
+                                    <li><a class="dropdown-item" href="{{ route('user.prospects.dashboard') }}">Dashboard</a>
+                                    </li>
+                                    <li><a class="dropdown-item"
+                                            href="{{ route('user.prospects.show', ['prospect' => $prospect]) }}">View
+                                            "{{ $prospect->name }}"</a></li>
+                                @endcan
                             </ul>
                         </div>
                     </div>
@@ -91,9 +93,9 @@
                         <div class="dropdown">
                             <select class="form-control" name="prospect_state" id="prospect_state_select">
                                 @foreach (App\Models\ProspectState::all() as $prospectState)
-                                @if ($prospect->latestState->states->contains($prospectState->id) || $prospect->latestState->id === $prospectState->id)
-                                <option value="{{ $prospectState->id }}">{{ $prospectState->title }}</option>
-                                @endif
+                                    @if ($prospect->latestState->states->contains($prospectState->id) || $prospect->latestState->id === $prospectState->id)
+                                        <option value="{{ $prospectState->id }}">{{ $prospectState->title }}</option>
+                                    @endif
                                 @endforeach
                             </select>
                         </div>
@@ -101,7 +103,8 @@
                     <div class="mb-3">
                         <label for="prospect_state_explanation">Why this state?</label>
                         <input class="form-control" type="text" name="prospect_state_explanation"
-                            placeholder="Your explanation here..." value="{{$prospect->latestState->pivot->explanation}}">
+                            placeholder="Your explanation here..."
+                            value="{{ $prospect->latestState->pivot->explanation }}">
                     </div>
 
                     <button class="btn btn-primary float-end mb-2" type="submit">

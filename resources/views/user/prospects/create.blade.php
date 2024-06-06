@@ -2,7 +2,7 @@
 
 @section('content')
     <div class="container">
-        <a href="{{ route('user.prospects.dashboard') }}" class="btn btn-light">Go Back To Prospects</a>
+        <a href="{{ route('dashboards.prospects-products-orders') }}" class="btn btn-light">Go Back To Prospects</a>
         <div class="card mt-4">
             <div class="card-body">
                 <div class="d-flex">
@@ -16,8 +16,10 @@
                                 Actions
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('user.prospects.dashboard') }}">Dashboard</a>
+                                @can('view', \App\Models\Prospect::class)
+                                <li><a class="dropdown-item" href="{{ route('dashboards.prospects-products-orders') }}">Dashboard</a>
                                 </li>
+                                @endcan
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
                         </div>
