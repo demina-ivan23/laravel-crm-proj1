@@ -15,31 +15,27 @@
 
         <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
-                @can('view', \App\Models\ProspectState::inRandomOrder()->first())
-                    <li>
-                        <button class="p-4 border-b-2 hover:text-blue-600 hover:border-blue-400 tab-button"
-                            @click="togglePageTabs('prospectStates', 'prospectStatesTabToggle')" id="prospectStatesTabToggle">
-                            <h5>
-                                Prospect States
-                            </h5>
-                        </button>
-                    </li>
-                @endcan
-                @can('view', \App\Models\OrderStatus::inRandomOrder()->first())
-                    <li>
-                        <button class="p-4 border-b-2 hover:text-blue-600 hover:border-blue-400 tab-button"
-                            @click="togglePageTabs('orderStatuses', 'orderStatusesTabToggle')" id="orderStatusesTabToggle">
-                            <h5>
-                                Order Statuses
-                            </h5>
-                        </button>
-                    </li>
-                @endcan
+                <li>
+                    <button class="p-4 border-b-2 hover:text-blue-600 hover:border-blue-400 tab-button"
+                        @click="togglePageTabs('prospectStates', 'prospectStatesTabToggle')" id="prospectStatesTabToggle">
+                        <h5>
+                            Prospect States
+                        </h5>
+                    </button>
+                </li>
+                <li>
+                    <button class="p-4 border-b-2 hover:text-blue-600 hover:border-blue-400 tab-button"
+                        @click="togglePageTabs('orderStatuses', 'orderStatusesTabToggle')" id="orderStatusesTabToggle">
+                        <h5>
+                            Order Statuses
+                        </h5>
+                    </button>
+                </li>
             </ul>
         </div>
-        @can('view', \App\Models\ProspectState::inRandomOrder()->first())
-            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="prospectStates">
-                @if ($prospectStates->count())
+        @if ($prospectStates->count())
+            @can('view', \App\Models\ProspectState::class)
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="prospectStates">
                     <table class="table">
                         <thead>
                             <th>
@@ -105,28 +101,39 @@
                                         </h5>
                                     </th>
                                     <th>
-                                        @can('update', \App\Models\ProspectState::inRandomOrder()->first())
+                                        @can('update', $prospectState)
                                             <a class="btn btn-primary"
                                                 href="{{ route('user.prospect_states.edit', ['prospect_state' => $prospectState]) }}">
                                                 Edit
                                             </a>
-                                        @else
+                                        @endcan
+                                        @cannot('update', $prospectState)
                                             <p class="d-flex justify-content-center">
                                                 You don't have enough rights
                                             </p>
-                                        @endcan
+                                        @endcannot
                                     </th>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                     {{ $prospectStates->appends(request()->except('page'))->links() }}
-                @endif
-            </div>
-        @endcan
-        @can('view', \App\Models\OrderStatus::inRandomOrder()->first())
-            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="orderStatuses">
-                @if ($orderStatuses->count())
+
+                </div>
+            @endcan
+            @cannot('view', \App\Models\ProspectState::class)
+                <p class="hidden d-flex justify-content-center tablink" id="prospectStates">
+                    You don't have enough rights to read prospect states
+                </p>
+            @endcannot
+        @else
+            <p class="hidden d-flex justify-content-center tablink" id="prospectStates">
+                There are no prospect states that correspond to the applied filters yet
+            </p>
+        @endif
+        @if ($orderStatuses->count())
+            @can('view', \App\Models\OrderStatus::class)
+                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="orderStatuses">
                     <table class="table">
                         <thead>
                             <th>
@@ -193,7 +200,7 @@
                                         </h5>
                                     </th>
                                     <th class="d-flex justify-content-evenly">
-                                        @can('update', \App\Models\OrderStatus::inRandomOrder()->first())
+                                        @can('update', $orderStatus)
                                             <a class="btn btn-primary "
                                                 href="{{ route('user.order_statuses.edit', ['order_status' => $orderStatus]) }}">
                                                 Edit
@@ -215,20 +222,28 @@
                                                         title="FSS - first step status (for order creation). You can have multiple FSSs">
                                                 @endif
                                             </form>
-                                        @else
-                                            <p class="d-flex-justify-content-center">
-                                                You don't have enough rights
-                                            </p>
                                         @endcan
+                                        @cannot('update', $orderStatus)
+                                            You can't update this order status
+                                        @endcannot
                                     </th>
                                 </tr>
                             @endforeach
                         </tbody>
                     </table>
                     {{ $orderStatuses->appends(request()->except('page'))->links() }}
-                @endif
-            </div>
-        @endcan
+                </div>
+            @endcan
+            @cannot('view', \App\Models\OrderStatus::class)
+                <p class="hidden d-flex justify-content-center tablink" id="orderStatuses">
+                    You don't have enough rights to read order statuses
+                </p>
+            @endcannot
+        @else
+            <p class="hidden d-flex justify-content-center tablink" id="orderStatuses">
+                There are no order statuses that correspond to the applied filters yet
+            </p>
+        @endif
     </div>
 
 @endsection

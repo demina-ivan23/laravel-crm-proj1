@@ -22,14 +22,15 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array<class-string, class-string>
      */
+
     protected $policies = [
-        OrderPolicy::class,
-        OrderStatusPolicy::class,
-        ProductPolicy::class,
-        ProspectPolicy::class,
-        ProspectStatePolicy::class,
-        RolePolicy::class,
-        UserPolicy::class
+        Order::class => OrderPolicy::class,
+        OrderStatus::class => OrderStatusPolicy::class,
+        Product::class => ProductPolicy::class,
+        Prospect::class => ProspectPolicy::class,
+        ProspectState::class => ProspectStatePolicy::class,
+        Role::class => RolePolicy::class,
+        User::class => UserPolicy::class,
     ];
 
     /**
@@ -47,8 +48,8 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('users-roles-dashboard', function () {
             return auth()->check() && auth()->user()->role->permissions->contains(Permission::where('title', 'users-roles-dashboard')->first()->id);
         });
-        Gate::define('prospects-products-orders-dashboard', function() {
+        Gate::define('prospects-products-orders-dashboard', function () {
             return auth()->check() && auth()->user()->role->permissions->contains(Permission::where('title', 'prospects-products-orders-dashboard')->first()->id);
-         });
+        });
     }
 }

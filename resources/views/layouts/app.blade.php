@@ -120,7 +120,7 @@
                                             <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
                                                 <p>States</p>
                                             </li>
-                                            @can('view', App\Models\OrderStatus::inRandomOrder()->first())
+                                            @can('view', App\Models\OrderStatus::class)
                                                 <li class="ml-7">
                                                     <a href="{{ route('dashboards.states', ['tablink' => 'orderStatuses', 'tab-button' => 'orderStatusesTabToggle']) }}"
                                                         class="dropdown-item"
@@ -128,7 +128,7 @@
                                                         Statuses</a>
                                                 </li>
                                             @endcan
-                                            @can('view', App\Models\ProspectState::inRandomOrder()->first())
+                                            @can('view', App\Models\ProspectState::class)
                                                 <li class="ml-7">
                                                     <a href="{{ route('dashboards.states', ['tablink' => 'prospectStates', 'tab-button' => 'prospectStatesTabToggle']) }}"
                                                         class="dropdown-item"
@@ -141,14 +141,14 @@
                                             <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
                                                 <p>User-Role</p>
                                             </li>
-                                            @can('view', App\Models\User::inRandomOrder()->first())
+                                            @can('view', App\Models\User::class)
                                                 <li class="ml-7">
                                                     <a href="{{ route('dashboards.users-roles', ['tablink' => 'users', 'tab-button' => 'usersTabToggle']) }}"
                                                         class="dropdown-item"
                                                         style="{{ request()->routeIs('dashboards.users-roles') && request()->query('tablink') == 'users' ? 'color:gray' : '' }}">Users</a>
                                                 </li>
                                             @endcan
-                                            @can('view', App\Models\Role::inRandomOrder()->first())
+                                            @can('view', App\Models\Role::class)
                                                 <li class="ml-7">
                                                     <a href="{{ route('dashboards.users-roles', ['tablink' => 'roles', 'tab-button' => 'rolesTabToggle']) }}"
                                                         class="dropdown-item"
@@ -159,14 +159,14 @@
                                         <li class="mt-2 ml-3" style="font-weight: 700">
                                             <p>Order Status Links</p>
                                         </li>
-                                        @can('create', App\Models\OrderStatus::inRandomOrder()->first())
+                                        @can('create', App\Models\OrderStatus::class)
                                             <li class="ml-7">
                                                 <a href="{{ route('user.order_statuses.create') }}" class="dropdown-item"
                                                     style="{{ request()->routeIs('user.order_statuses.create') ? 'color:gray' : '' }}">Create
                                                     An Order Status</a>
                                             </li>
                                         @endcan
-                                        @can('update', App\Models\OrderStatus::inRandomOrder()->first())
+                                        @can('update', App\Models\OrderStatus::class)
                                             <li class="ml-7">
                                                 <a href="{{ route('user.order_statuses.edit_via_table') }}"
                                                     class="dropdown-item"
@@ -177,14 +177,14 @@
                                         <li class="mt-2 ml-3" style="font-weight: 700">
                                             <p>Prospect State Links</p>
                                         </li>
-                                        @can('create', App\Models\ProspectState::inRandomOrder()->first())
+                                        @can('create', App\Models\ProspectState::class)
                                             <li class="ml-7">
                                                 <a href="{{ route('user.prospect_states.create') }}" class="dropdown-item"
                                                     style="{{ request()->routeIs('user.prospect_states.create') ? 'color:gray' : '' }}">Create
                                                     A Prospect State</a>
                                             </li>
                                         @endcan
-                                        @can('update', App\Models\ProspectState::inRandomOrder()->first())
+                                        @can('update', App\Models\ProspectState::class)
                                             <li class="ml-7">
                                                 <a href="{{ route('user.prospect_states.edit_via_table') }}"
                                                     class="dropdown-item"
@@ -203,7 +203,7 @@
                                 </div>
                             </li>
                             @can('prospects-products-orders-dashboard')
-                                @can('view', App\Models\Product::inRandomOrder()->first())
+                                @can('view', App\Models\Product::class)
                                     <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="collapse" href="#productsMenu" role="button"
                                             aria-expanded="false" aria-controls="productsMenu">
@@ -220,7 +220,7 @@
                                     </li>
                                 @endcan
 
-                                @can('view', App\Models\Prospect::inRandomOrder()->first())
+                                @can('view', App\Models\Prospect::class)
                                     <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="collapse" href="#prospectsMenu" role="button"
                                             aria-expanded="false" aria-controls="prospectsMenu">
@@ -237,7 +237,7 @@
                                     </li>
                                 @endcan
 
-                                @can('view', App\Models\Order::inRandomOrder()->first())
+                                @can('view', App\Models\Order::class)
                                     <li class="nav-item">
                                         <a class="nav-link" data-bs-toggle="collapse" href="#ordersMenu" role="button"
                                             aria-expanded="false" aria-controls="ordersMenu">
