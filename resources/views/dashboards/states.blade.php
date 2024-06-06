@@ -33,16 +33,16 @@
                 </li>
             </ul>
         </div>
-        @if ($prospectStates->count())
-            @can('view', \App\Models\ProspectState::class)
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="prospectStates">
-                    @can('create', \App\Models\ProspectState::class)
+        @can('view', \App\Models\ProspectState::class)
+            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="prospectStates">
+                @can('create', \App\Models\ProspectState::class)
                     <div class="d-flex justify-content-end mr-10 mb-4">
-                        <a href="{{route('user.prospect_states.create')}}">
-                        <img src="/web_icons/plus.png" alt="plus icon" width="20" height="20">
+                        <a href="{{ route('user.prospect_states.create') }}">
+                            <img src="/web_icons/plus.png" alt="plus icon" width="20" height="20">
                         </a>
                     </div>
-                    @endcan
+                @endcan
+                @if ($prospectStates->count())
                     <table class="table">
                         <thead>
                             <th>
@@ -124,30 +124,30 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $prospectStates->appends(request()->except('page'))->links() }}
+                @else
+                    <p class="hidden d-flex justify-content-center tablink" id="prospectStates">
+                        There are no prospect states that correspond to the applied filters yet
+                    </p>
+                @endif
+                {{ $prospectStates->appends(request()->except('page'))->links() }}
 
-                </div>
-            @endcan
-            @cannot('view', \App\Models\ProspectState::class)
-                <p class="hidden d-flex justify-content-center tablink" id="prospectStates">
-                    You don't have enough rights to read prospect states
-                </p>
-            @endcannot
-        @else
+            </div>
+        @endcan
+        @cannot('view', \App\Models\ProspectState::class)
             <p class="hidden d-flex justify-content-center tablink" id="prospectStates">
-                There are no prospect states that correspond to the applied filters yet
+                You don't have enough rights to read prospect states
             </p>
-        @endif
-        @if ($orderStatuses->count())
-            @can('view', \App\Models\OrderStatus::class)
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="orderStatuses">
-                    @can('create', \App\Models\OrderStatus::class)
+        @endcannot
+        @can('view', \App\Models\OrderStatus::class)
+            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="orderStatuses">
+                @can('create', \App\Models\OrderStatus::class)
                     <div class="d-flex justify-content-end mr-10 mb-4">
-                        <a href="{{route('user.order_statuses.create')}}">
-                        <img src="/web_icons/plus.png" alt="plus icon" width="20" height="20">
+                        <a href="{{ route('user.order_statuses.create') }}">
+                            <img src="/web_icons/plus.png" alt="plus icon" width="20" height="20">
                         </a>
                     </div>
-                    @endcan
+                @endcan
+                @if ($orderStatuses->count())
                     <table class="table">
                         <thead>
                             <th>
@@ -245,19 +245,19 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $orderStatuses->appends(request()->except('page'))->links() }}
-                </div>
-            @endcan
-            @cannot('view', \App\Models\OrderStatus::class)
-                <p class="hidden d-flex justify-content-center tablink" id="orderStatuses">
-                    You don't have enough rights to read order statuses
-                </p>
-            @endcannot
-        @else
+                @else
+                    <p class="hidden d-flex justify-content-center tablink" id="orderStatuses">
+                        There are no order statuses that correspond to the applied filters yet
+                    </p>
+                @endif
+                {{ $orderStatuses->appends(request()->except('page'))->links() }}
+            </div>
+        @endcan
+        @cannot('view', \App\Models\OrderStatus::class)
             <p class="hidden d-flex justify-content-center tablink" id="orderStatuses">
-                There are no order statuses that correspond to the applied filters yet
+                You don't have enough rights to read order statuses
             </p>
-        @endif
+        @endcannot
     </div>
 
 @endsection

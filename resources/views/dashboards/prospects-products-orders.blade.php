@@ -44,59 +44,57 @@
                 </li>
             </ul>
         </div>
-        @if ($prospects->count())
-            @can('view', \App\Models\Prospect::class)
-                <div class="hidden tablink" id="prospects">
-                    <form method="GET" action="#">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" name="prospects-search">
-                            <button class="input-group-text" type="submit">Search</button>
-                        </div>
-                    </form>
-                    <div class="card">
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <h2>Prospects <small class="text-muted">Showing All Prospects</small></h2>
-                                <div class="ml-auto" style="margin-left: auto">
-                                    <div class="dropdown">
-                                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            Filter By State
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            @foreach ($states as $state)
-                                                <form action="#" method="GET">
-                                                    <li><button class="dropdown-item" name="filter_state" id="filter_state"
-                                                            type="submit"
-                                                            value="{{ $state->id }}">{{ $state->title }}</button>
-                                                </form>
-                                            @endforeach
+        @can('view', \App\Models\Prospect::class)
+            <div class="hidden tablink" id="prospects">
+                <form method="GET" action="#">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="prospects-search">
+                        <button class="input-group-text" type="submit">Search</button>
+                    </div>
+                </form>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <h2>Prospects <small class="text-muted">Showing All Prospects</small></h2>
+                            <div class="ml-auto" style="margin-left: auto">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Filter By State
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        @foreach ($states as $state)
                                             <form action="#" method="GET">
                                                 <li><button class="dropdown-item" name="filter_state" id="filter_state"
-                                                        type="submit" value="all">All</button>
+                                                        type="submit" value="{{ $state->id }}">{{ $state->title }}</button>
                                             </form>
-                                        </ul>
-                                    </div>
+                                        @endforeach
+                                        <form action="#" method="GET">
+                                            <li><button class="dropdown-item" name="filter_state" id="filter_state"
+                                                    type="submit" value="all">All</button>
+                                        </form>
+                                    </ul>
                                 </div>
-                                <div class="ml-auto" style="margin-left: auto">
-                                    <div class="dropdown">
-                                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            Actions
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            @can('create', \App\Models\Prospect::class)
-                                                <li><a class="dropdown-item" href="{{ route('user.prospects.create') }}">Create New
-                                                        Prospect</a></li>
-                                            @endcan
-                                            <li><a class="dropdown-item" href="#">Something else here</a></li>
-                                        </ul>
-                                    </div>
+                            </div>
+                            <div class="ml-auto" style="margin-left: auto">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Actions
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        @can('create', \App\Models\Prospect::class)
+                                            <li><a class="dropdown-item" href="{{ route('user.prospects.create') }}">Create New
+                                                    Prospect</a></li>
+                                        @endcan
+                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                    </ul>
                                 </div>
                             </div>
                         </div>
                     </div>
-
+                </div>
+                @if ($prospects->count())
                     <table class="p-4 table mt-5 mb-5">
                         <thead>
                             <th>
@@ -197,186 +195,178 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $prospects->appends(request()->except('page'))->links() }}
-                </div>
-            @endcan
-            @cannot('view', \App\Models\Prospect::class)
-                <p class="d-flex justify-content-center">
-                    You don't have enough rights
-                </p>
-            @endcannot
-        @else
+                @else
+                    <p class="d-flex justify-content-center">
+                        There are no prospects that correspond to the applied filters yet
+                    </p>
+                @endif
+                {{ $prospects->appends(request()->except('page'))->links() }}
+            </div>
+        @endcan
+        @cannot('view', \App\Models\Prospect::class)
             <p class="d-flex justify-content-center">
-                There are no prospects that correspond to the applied filters yet
+                You don't have enough rights
             </p>
-        @endif
-        @if (\App\Models\Product::all()->count())
-            @can('view', \App\Models\Product::class)
-                <div class="hidden tablink" id="products">
-                    <form method="GET" action="#">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" name="products-search">
-                            <button class="input-group-text" type="submit">Search</button>
-                        </div>
-                    </form>
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <h2>Products <small class="text-muted">Showing All Products</small></h2>
-                                <div class="ml-auto" style="margin-left: auto">
+        @endcannot
+        @can('view', \App\Models\Product::class)
+            <div class="hidden tablink" id="products">
+                <form method="GET" action="#">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="products-search">
+                        <button class="input-group-text" type="submit">Search</button>
+                    </div>
+                </form>
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <h2>Products <small class="text-muted">Showing All Products</small></h2>
+                            <div class="ml-auto" style="margin-left: auto">
 
-                                    <div class="dropdown">
-                                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            Filter By Category
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            @foreach ($categories as $category)
-                                                <form action="#" method="GET">
-                                                    <li><button class="dropdown-item" name="filter_category"
-                                                            id="filter_category" type="submit"
-                                                            value="{{ $category->id }}">{{ $category->title }}</button>
-                                                </form>
-                                            @endforeach
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Filter By Category
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        @foreach ($categories as $category)
                                             <form action="#" method="GET">
                                                 <li><button class="dropdown-item" name="filter_category" id="filter_category"
-                                                        type="submit" value="all">All</button>
+                                                        type="submit"
+                                                        value="{{ $category->id }}">{{ $category->title }}</button>
                                             </form>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="ml-auto" style="margin-left: auto">
-
-                                    <div class="dropdown">
-                                        <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
-                                            data-bs-toggle="dropdown" aria-expanded="false">
-                                            Actions
-                                        </button>
-                                        <ul class="dropdown-menu">
-                                            @can('create', \App\Models\Product::class)
-                                                <li><a class="dropdown-item" href="{{ route('user.products.create') }}">Create
-                                                        New
-                                                        Product</a></li>
-                                            @endcan
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-sm-2">
-                            <div class="row" style="margin-top:60px; margin-right:5px">
-                                <div class="col-sm-12">
-                                    <h4 class="ml-5 mb-10">Filters:</h4>
-                                </div>
-                                <div class="ml-10 mb-10" id="price-filters">
-                                    <div class="col-sm-12">
-                                        <h5>Price filters:</h5>
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input type="checkbox" name="price_filter" class="filter-checkbox" value="<10">
-                                        Price
-                                        is less than $10
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input type="checkbox" name="price_filter" class="filter-checkbox" value="10-100">
-                                        Price
-                                        is $10 to $100
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input type="checkbox" name="price_filter" class="filter-checkbox" value="100-500">
-                                        Price is $100 to $500
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input type="checkbox" name="price_filter" class="filter-checkbox" value="500-1000">
-                                        Price is $500 to $1000
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input type="checkbox" name="price_filter" class="filter-checkbox"
-                                            value="1000-5000">
-                                        Price is $1000 to $5000
-                                    </div>
-                                    <div class="col-sm-12">
-                                        <input type="checkbox" name="price_filter" class="filter-checkbox" value=">5000">
-                                        Price
-                                        is higher than $5000
-                                    </div>
-                                </div>
-                                <div class="ml-10 mb-10" id="category-filters">
-                                    <div class="col-sm-12">
-                                        <h5>Category filters:</h5>
-                                    </div>
-                                    @foreach ($categories as $category)
-                                        <div class="col-sm-12">
-                                            <input type="checkbox" name="category_filter" value="{{ $category->id }}"
-                                                class="filter-checkbox"> {{ $category->title }}
-                                        </div>
-                                    @endforeach
-                                    <div class="col-sm-12">
-                                        <input type="checkbox" name="category_filter" value="none"
-                                            class="filter-checkbox"> No
-                                        category
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        @if ($products->count())
-                            <div class="col-sm-10">
-                                <div class="row">
-                                    <div class="pt-4 d-flex flex-wrap justify-content-evenly">
-                                        @foreach ($products as $product)
-                                            @include('user.products.components.product-card', [
-                                                'product' => $product,
-                                            ])
                                         @endforeach
-                                    </div>
-                                </div>
-                            @else
-                                <div class="d-flex justify-content-center mt-4">
-                                    <h3>
-                                        No products found by the filtering criterias
-                                    </h3>
+                                        <form action="#" method="GET">
+                                            <li><button class="dropdown-item" name="filter_category" id="filter_category"
+                                                    type="submit" value="all">All</button>
+                                        </form>
+                                    </ul>
                                 </div>
                             </div>
-                        @endif
+                            <div class="ml-auto" style="margin-left: auto">
+
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Actions
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        @can('create', \App\Models\Product::class)
+                                            <li><a class="dropdown-item" href="{{ route('user.products.create') }}">Create
+                                                    New
+                                                    Product</a></li>
+                                        @endcan
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    {{ $products->appends(request()->except('page'))->links() }}
                 </div>
-            @endcan
-            @cannot('view', \App\Models\Product::class)
-                <p class="hidden d-flex justify-content-center tablink" id="products">
-                    You don't have enough rights to read products
-                </p>
-            @endcannot
-        @else
-            <p class="hidden d-flex justify-content-center tablink" id="products">
-                There are no products yet
-            </p>
-        @endif
-        @if ($orders->count())
-            @can('view', \App\Models\Order::class)
-                <div class="hidden tablink" id="orders">
-                    <form method="GET" action="#">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" name="orders-search">
-                            <button class="input-group-text" type="submit">Search</button>
-                        </div>
-                    </form>
 
-                    <div class="card mt-4">
-                        <div class="card-body">
-                            <div class="d-flex">
-                                <h2>Orders <small class="text-muted">Showing All Orders</small></h2>
-                                <div class="ml-auto" style="margin-left: auto">
-
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="row" style="margin-top:60px; margin-right:5px">
+                            <div class="col-sm-12">
+                                <h4 class="ml-5 mb-10">Filters:</h4>
+                            </div>
+                            <div class="ml-10 mb-10" id="price-filters">
+                                <div class="col-sm-12">
+                                    <h5>Price filters:</h5>
+                                </div>
+                                <div class="col-sm-12">
+                                    <input type="checkbox" name="price_filter" class="filter-checkbox" value="<10">
+                                    Price
+                                    is less than $10
+                                </div>
+                                <div class="col-sm-12">
+                                    <input type="checkbox" name="price_filter" class="filter-checkbox" value="10-100">
+                                    Price
+                                    is $10 to $100
+                                </div>
+                                <div class="col-sm-12">
+                                    <input type="checkbox" name="price_filter" class="filter-checkbox" value="100-500">
+                                    Price is $100 to $500
+                                </div>
+                                <div class="col-sm-12">
+                                    <input type="checkbox" name="price_filter" class="filter-checkbox" value="500-1000">
+                                    Price is $500 to $1000
+                                </div>
+                                <div class="col-sm-12">
+                                    <input type="checkbox" name="price_filter" class="filter-checkbox" value="1000-5000">
+                                    Price is $1000 to $5000
+                                </div>
+                                <div class="col-sm-12">
+                                    <input type="checkbox" name="price_filter" class="filter-checkbox" value=">5000">
+                                    Price
+                                    is higher than $5000
+                                </div>
+                            </div>
+                            <div class="ml-10 mb-10" id="category-filters">
+                                <div class="col-sm-12">
+                                    <h5>Category filters:</h5>
+                                </div>
+                                @foreach ($categories as $category)
+                                    <div class="col-sm-12">
+                                        <input type="checkbox" name="category_filter" value="{{ $category->id }}"
+                                            class="filter-checkbox"> {{ $category->title }}
+                                    </div>
+                                @endforeach
+                                <div class="col-sm-12">
+                                    <input type="checkbox" name="category_filter" value="none" class="filter-checkbox"> No
+                                    category
                                 </div>
                             </div>
                         </div>
                     </div>
 
+                    @if ($products->count())
+                        <div class="col-sm-10">
+                            <div class="row">
+                                <div class="pt-4 d-flex flex-wrap justify-content-evenly">
+                                    @foreach ($products as $product)
+                                        @include('user.products.components.product-card', [
+                                            'product' => $product,
+                                        ])
+                                    @endforeach
+                                </div>
+                            </div>
+                        </div>
+                        @else
+                            <div class="d-flex justify-content-center mt-4">
+                                <h3>
+                                    No products found by the filtering criterias
+                                </h3>
+                            </div>
+                    @endif
+                </div>
+                {{ $products->appends(request()->except('page'))->links() }}
+            </div>
+        @endcan
+        @cannot('view', \App\Models\Product::class)
+            <p class="hidden d-flex justify-content-center tablink" id="products">
+                You don't have enough rights to read products
+            </p>
+        @endcannot
+        @can('view', \App\Models\Order::class)
+            <div class="hidden tablink" id="orders">
+                <form method="GET" action="#">
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="orders-search">
+                        <button class="input-group-text" type="submit">Search</button>
+                    </div>
+                </form>
+
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <div class="d-flex">
+                            <h2>Orders <small class="text-muted">Showing All Orders</small></h2>
+                            <div class="ml-auto" style="margin-left: auto">
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                @if ($orders->count())
                     <table class="p-4 table mt-5 mb-5">
                         <thead>
                             <th>
@@ -461,19 +451,19 @@
                             @endforeach
                         </tbody>
                     </table>
-                    {{ $orders->appends(request()->except('page'))->links() }}
-                </div>
-            @endcan
-            @cannot('view', \App\Models\Order::class)
-                <p class="d-flex justify-content-center">
-                    You don't have enough rights
-                </p>
-            @endcannot
-        @else
-            <p class="d-flex justify-content-center">
-                There are no orders that correspond to the applied filters yet
+                @else
+                    <p class="hiden d-flex justify-content-center tablink" id="orders">
+                        There are no orders that correspond to the applied filters yet
+                    </p>
+                @endif
+                {{ $orders->appends(request()->except('page'))->links() }}
+            </div>
+        @endcan
+        @cannot('view', \App\Models\Order::class)
+            <p class="hiden d-flex justify-content-center tablink" id="orders">
+                You don't have enough rights
             </p>
-        @endif
+        @endcannot
 
     </div>
 @endsection

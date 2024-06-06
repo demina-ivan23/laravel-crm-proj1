@@ -37,12 +37,12 @@
         @can('view', App\Models\User::where('id', '!=', auth()->user()->id)->first())
         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="users">
             @can('create', \App\Models\User::class)
-                    <div class="d-flex justify-content-end mr-10 mb-4">
-                        <a href="{{route('users.create')}}">
+                <div class="d-flex justify-content-end mr-10 mb-4">
+                    <a href="{{ route('users.create') }}">
                         <img src="/web_icons/plus.png" alt="plus icon" width="20" height="20">
-                        </a>
-                    </div>
-                    @endcan
+                    </a>
+                </div>
+            @endcan
             <table class="table">
                 <thead>
                     <tr>
@@ -134,17 +134,17 @@
             have enough rights to read users
         </p>
         @endcannot
-        @if ($roles->count())
-            @can('view', App\Models\Role::class)
-                <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="roles">
-                    @can('create', \App\Models\Role::class)
+        @can('view', App\Models\Role::class)
+            <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="roles">
+                @can('create', \App\Models\Role::class)
                     <div class="d-flex justify-content-end mr-10 mb-4">
-                        <a href="{{route('user.roles.create')}}">
-                        <img src="/web_icons/plus.png" alt="plus icon" width="20" height="20">
+                        <a href="{{ route('user.roles.create') }}">
+                            <img src="/web_icons/plus.png" alt="plus icon" width="20" height="20">
                         </a>
                     </div>
-                    @endcan
-                    <div class="row">
+                @endcan
+                <div class="row">
+                    @if ($roles->count())
                         <table class="table">
                             <thead>
                                 <tr>
@@ -226,20 +226,20 @@
                                 @endforeach
                             </tbody>
                         </table>
-                    </div>
-                    {{ $roles->appends(request()->except('page'))->links() }}
+                    @else
+                        <h2 class="d-flex justify-content-center">
+                            No roles that would fulfill the requirements of the applied filters yet. Create new roles or ask a
+                            person with a proper permissions to do it
+                        </h2>
+                    @endif
                 </div>
-            @endcan
-            @cannot('view', App\Models\Role::class)
-                <p class="hidden d-flex justify-content-center tablink" id="roles">
-                    You don't have enough rights to read roles
-                </p>
-            @endcannot
-        @else
-            <h2 class="d-flex justify-content-center">
-                No roles that would fulfill the requirements of the applied filters yet. Create new roles or ask a
-                person with a proper permissions to do it
-            </h2>
-        @endif
+                {{ $roles->appends(request()->except('page'))->links() }}
+            </div>
+        @endcan
+        @cannot('view', App\Models\Role::class)
+            <p class="hidden d-flex justify-content-center tablink" id="roles">
+                You don't have enough rights to read roles
+            </p>
+        @endcannot
     </div>
 @endsection
