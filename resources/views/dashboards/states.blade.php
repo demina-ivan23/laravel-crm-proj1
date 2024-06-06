@@ -13,7 +13,7 @@
         @endif
         <h2 class="d-flex justify-content-center mb-5">States Dashboard</h2>
 
-        <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+        <div class="mb-2 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
                 <li>
                     <button class="p-4 border-b-2 hover:text-blue-600 hover:border-blue-400 tab-button"
@@ -36,6 +36,13 @@
         @if ($prospectStates->count())
             @can('view', \App\Models\ProspectState::class)
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="prospectStates">
+                    @can('create', \App\Models\ProspectState::class)
+                    <div class="d-flex justify-content-end mr-10 mb-4">
+                        <a href="{{route('user.prospect_states.create')}}">
+                        <img src="/web_icons/plus.png" alt="plus icon" width="20" height="20">
+                        </a>
+                    </div>
+                    @endcan
                     <table class="table">
                         <thead>
                             <th>
@@ -134,6 +141,13 @@
         @if ($orderStatuses->count())
             @can('view', \App\Models\OrderStatus::class)
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="orderStatuses">
+                    @can('create', \App\Models\OrderStatus::class)
+                    <div class="d-flex justify-content-end mr-10 mb-4">
+                        <a href="{{route('user.order_statuses.create')}}">
+                        <img src="/web_icons/plus.png" alt="plus icon" width="20" height="20">
+                        </a>
+                    </div>
+                    @endcan
                     <table class="table">
                         <thead>
                             <th>
