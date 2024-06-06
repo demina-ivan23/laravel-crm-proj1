@@ -38,7 +38,7 @@ class ProspectsController extends Controller
     public function store(StoreProspectRequest $request)
     {
         $prospect = ProspectService::storeProspect($request->all());
-        return redirect()->route('user.prospects.dashboard')->with('success', 'Prospect created successfully');
+        return redirect()->route('dashboards.prospects-products-orders', ['tablink' => 'prospects', 'tab-button' => 'prospectsTabButton'])->with('success', 'Prospect created successfully');
     }
 
     /**
@@ -69,18 +69,28 @@ class ProspectsController extends Controller
     {
         $prospect = ProspectService::updateProspect($request->all(), $prospect);
         if ($prospect) {
-            return redirect()->route('user.prospects.dashboard')->with('success', 'Prospect "' . $prospect->name . '" updated successfully');
+            return redirect()->route('dashboards.prospects-products-orders', ['tablink' => 'prospects', 'tab-button' => 'prospectsTabButton'])->with('success', 'Prospect "' . $prospect->name . '" updated successfully');
         } else {
-            return redirect()->route('user.prospects.dashboard')->with('error', 'Sorry, something went wrong');
+            return redirect()->route('dashboards.prospects-products-orders', ['tablink' => 'prospects', 'tab-button' => 'prospectsTabButton'])->with('error', 'Sorry, something went wrong');
         }
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Prospect $prospect)
+    public function delete(Prospect $prospect){
+        $prospect->delete();
+        return redirect()->route('dashboards.prospects-products-orders', ['tablink' => 'prospects', 'tab-button' => 'prospectsTabButton'])->with('success', 'Prospect Trashed Successfully');
+    }
+    public function restore(string $id){
+        $prospect = Prospect::withTrashed()->find($id);
+        $prospect->restore();
+        return redirect()->route('dashboards.prospects-products-orders', ['tablink' => 'prospects', 'tab-button' => 'prospectsTabButton'])->with('success', 'Prospect Restored Successfully');
+    }
+    public function destroy(string $id)
     {
-        ProspectService::deleteProspect($prospect);
-        return redirect()->route('user.prospects.dashboard')->with('success', 'Prospect Trashed Successfully');
+        $prospect = Prospect::withTrashed()->find($id);
+        $prospect->forceDelete();
+        return redirect()->route('dashboards.prospects-products-orders', ['tablink' => 'prospects', 'tab-button' => 'prospectsTabButton'])->with('success', 'Prospect Deleted Permanently');
     }
 }
