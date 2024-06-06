@@ -330,12 +330,12 @@
                                 </div>
                             </div>
                         </div>
-                        @else
-                            <div class="d-flex justify-content-center mt-4">
-                                <h3>
-                                    No products found by the filtering criterias
-                                </h3>
-                            </div>
+                    @else
+                        <div class="d-flex justify-content-center mt-4">
+                            <h3>
+                                No products found by the filtering criterias
+                            </h3>
+                        </div>
                     @endif
                 </div>
                 {{ $products->appends(request()->except('page'))->links() }}
