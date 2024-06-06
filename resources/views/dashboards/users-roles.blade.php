@@ -14,7 +14,7 @@
         <h2 class="d-flex justify-content-center mb-5">
             Users And Roles Dashboard
         </h2>
-        <div class="mb-4 border-b border-gray-200 dark:border-gray-700">
+        <div class="mb-3 border-b border-gray-200 dark:border-gray-700">
             <ul class="flex flex-wrap -mb-px text-sm font-medium text-center">
                 <li>
                     <button class="p-4 border-b-2 hover:text-blue-600 hover:border-blue-400 tab-button"
