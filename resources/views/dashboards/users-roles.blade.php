@@ -36,6 +36,13 @@
         </div>
         @can('view', App\Models\User::where('id', '!=', auth()->user()->id)->first())
         <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="users">
+            @can('create', \App\Models\User::class)
+                    <div class="d-flex justify-content-end mr-10 mb-4">
+                        <a href="{{route('users.create')}}">
+                        <img src="/web_icons/plus.png" alt="plus icon" width="20" height="20">
+                        </a>
+                    </div>
+                    @endcan
             <table class="table">
                 <thead>
                     <tr>
@@ -130,6 +137,13 @@
         @if ($roles->count())
             @can('view', App\Models\Role::class)
                 <div class="hidden p-4 rounded-lg bg-gray-50 dark:bg-gray-800 tablink" id="roles">
+                    @can('create', \App\Models\Role::class)
+                    <div class="d-flex justify-content-end mr-10 mb-4">
+                        <a href="{{route('user.roles.create')}}">
+                        <img src="/web_icons/plus.png" alt="plus icon" width="20" height="20">
+                        </a>
+                    </div>
+                    @endcan
                     <div class="row">
                         <table class="table">
                             <thead>
