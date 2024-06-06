@@ -22,6 +22,7 @@
                         <label for="password">Password</label>
                         <input class="form-control" type="text" name="password">
                     </div>
+                    @can('giveRole', \App\Models\User::class)
                     <div class="mb-3">
                         <label for="role_id">Role</label>
                         <select name="role_id" id="" class="form-control">
@@ -32,6 +33,7 @@
                             @endforeach
                         </select>
                     </div>
+                    @endcan
                     <div class="mb-3 d-flex justify-content-end">
                         <input type="submit" class="btn btn-primary" value="Submit">
                     </div>

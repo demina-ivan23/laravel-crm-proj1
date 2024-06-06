@@ -30,19 +30,21 @@
                             <option value="{{ true }}">Yes</option>
                         </select>
                     </div>
-                    <div class="mb-3">
-                        <label for="role_id">Role</label>
-                        <select name="role_id" id="" class="form-control">
-                            <option value="{{ $user->role->id }}">{{ $user->role->title }}</option>
-                            @foreach (\App\Models\Role::all() as $role)
-                                @if ($role->id !== $user->role->id)
-                                    @if (!$role->permissions->contains(\App\Models\Permission::where('title', 'be_untouchable')->first()->id))
-                                        <option value="{{ $role->id }}">{{ $role->title }}</option>
+                    @can('removeRole', $user)
+                        <div class="mb-3">
+                            <label for="role_id">Role</label>
+                            <select name="role_id" id="" class="form-control">
+                                <option value="{{ $user->role->id }}">{{ $user->role->title }}</option>
+                                @foreach (\App\Models\Role::all() as $role)
+                                    @if ($role->id !== $user->role->id)
+                                        @if (!$role->permissions->contains(\App\Models\Permission::where('title', 'be_untouchable')->first()->id))
+                                            <option value="{{ $role->id }}">{{ $role->title }}</option>
+                                        @endif
                                     @endif
-                                @endif
-                            @endforeach
-                        </select>
-                    </div>
+                                @endforeach
+                            </select>
+                        </div>
+                    @endcan
                     <div class="mb-3 d-flex justify-content-end">
                         <input type="submit" class="btn btn-primary" value="Submit">
                     </div>

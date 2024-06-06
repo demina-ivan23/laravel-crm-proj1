@@ -83,9 +83,9 @@ class UserPolicy
     /**
      * Determine whether the user can give roles to other users
      */
-    public function giveRole(User $user, User $model)
+    public function giveRole(User $user)
     {
-        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'user-give-role-web')->first()->id)  && !$model->role->permissions->contains(Permission::where('title', 'be_untouchable')->first()->id)) {
+        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'user-give-role-web')->first()->id)) {
             return true;
         }
         return false;
