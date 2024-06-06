@@ -19,10 +19,14 @@
                                 Actions
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('user.order_statuses.index') }}">All Order
-                                        Statuses</a></li>
-                                <li><a class="dropdown-item" href="{{ route('user.order_statuses.create') }}">Create A
-                                        New Order Status</a></li>
+                                @can('view', \App\Models\OrderStatus::class)
+                                    <li><a class="dropdown-item" href="{{ route('user.order_statuses.index') }}">All Order
+                                            Statuses</a></li>
+                                @endcan
+                                @can('create', \App\Models\OrderStatus::class)
+                                    <li><a class="dropdown-item" href="{{ route('user.order_statuses.create') }}">Create A
+                                            New Order Status</a></li>
+                                @endcan
                             </ul>
                         </div>
                     </div>
@@ -39,8 +43,7 @@
                     </ul>
                 </div>
             @endif
-            <form action="{{ route('user.order_statuses.update', ['order_status' => $orderStatus]) }}"
-                method="POST">
+            <form action="{{ route('user.order_statuses.update', ['order_status' => $orderStatus]) }}" method="POST">
                 @csrf
                 @method('PUT')
                 <div class="p-3">

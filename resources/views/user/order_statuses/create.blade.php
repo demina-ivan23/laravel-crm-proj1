@@ -16,15 +16,16 @@
                                 Actions
                             </button>
                             <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="{{ route('user.order_statuses.index') }}">All Order
-                                        Statuses</a></li>
+                                @can('view', \App\Models\OrderStatus::class)
+                                    <li><a class="dropdown-item" href="{{ route('user.order_statuses.index') }}">All Order
+                                            Statuses</a></li>
+                                @endcan
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </div>
-
             <hr>
             @if ($errors->count())
                 <div class="alert alert-danger">
@@ -35,10 +36,8 @@
                     </ul>
                 </div>
             @endif
-
             <form action="{{ route('user.order_statuses.store') }}" method="POST">
                 @csrf
-
                 <div class="p-3">
                     <div class="mb-3">
                         <label class="form-label" for="title">Title</label>
@@ -51,12 +50,13 @@
                     <div class="mb-3" v-if="!statusIsFinal">
                         <label class="form-label" for="description">Can transit into</label>
                         @foreach (App\Models\OrderStatus::all() as $order_status)
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="{{$order_status->id}}" name="can_transit_into[]">
-                            <label class="form-check-label" for="flexCheckDefault">
-                                {{$order_status->title}}
-                            </label>
-                        </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" value="{{ $order_status->id }}"
+                                    name="can_transit_into[]">
+                                <label class="form-check-label" for="flexCheckDefault">
+                                    {{ $order_status->title }}
+                                </label>
+                            </div>
                         @endforeach
                     </div>
                     <div class="mb-3">
@@ -80,11 +80,8 @@
                     <button class="btn btn-primary float-end mb-2" type="submit">
                         Create
                     </button>
-
                 </div>
             </form>
-
-
         </div>
     </div>
 @endsection
