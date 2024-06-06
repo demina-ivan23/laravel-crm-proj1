@@ -141,7 +141,7 @@
                                             <li class="mt-2 d-flex justify-content-center" style="font-weight: 700">
                                                 <p>User-Role</p>
                                             </li>
-                                            @can('view', App\Models\User::class)
+                                            @can('view', App\Models\User::where('id','!=',auth()->id())->first())
                                                 <li class="ml-7">
                                                     <a href="{{ route('dashboards.users-roles', ['tablink' => 'users', 'tab-button' => 'usersTabToggle']) }}"
                                                         class="dropdown-item"
