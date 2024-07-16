@@ -1,7 +1,6 @@
 @extends('layouts.app')
 @section('content')
     <div class="container">
-        <a href="{{ route('user.prospects.dashboard') }}" class="btn btn-light">Go Back To Prospects</a>
         <div class="card mt-4">
             <div class="card-body">
                 <div class="d-flex">
@@ -16,7 +15,8 @@
                             </button>
                             <ul class="dropdown-menu">
                                 @can('view', $prospect)
-                                    <li><a class="dropdown-item" href="{{ route('user.prospects.dashboard') }}">Dashboard</a>
+                                    <li><a class="dropdown-item"
+                                            href="{{ route('dashboards.prospects-products-orders') }}">Dashboard</a>
                                     </li>
                                     <li><a class="dropdown-item"
                                             href="{{ route('user.prospects.show', ['prospect' => $prospect]) }}">View
