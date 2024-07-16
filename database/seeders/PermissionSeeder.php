@@ -32,6 +32,12 @@ class PermissionSeeder extends Seeder
         Permission::create([
             'title' => 'prospect-edit-api'
         ]);
+        Permission::create([
+            'title' => 'prospect-delete-web'
+        ]);
+        Permission::create([
+            'title' => 'prospect-delete-api'
+        ]);
         //ProspectState management permissions
         Permission::create([
             'title' => 'prospect_state-read-web'
