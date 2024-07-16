@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Prospects;
 
+use App\Models\Permission;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateProspectRequest extends FormRequest
@@ -11,7 +12,7 @@ class UpdateProspectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(auth()->check() && auth()->user()->role->permissions->contains('prospect-edit-web')){
+        if(auth()->check() && auth()->user()->role->permissions->contains(Permission::where('title', 'prospect-edit-web')->first()->id)){
             return true;
         }
         return false;

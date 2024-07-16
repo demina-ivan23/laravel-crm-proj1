@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Prospects;
 
+use App\Models\Permission;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreProspectRequest extends FormRequest
@@ -11,7 +12,7 @@ class StoreProspectRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        if(auth()->check() && auth()->user()->role->permissions->contains('prospect-write-web')){
+        if(auth()->check() && auth()->user()->role->permissions->contains(Permission::where('title', 'prospect-write-web')->first()->id)){
             return true;
         }
         return false;
@@ -24,18 +25,18 @@ class StoreProspectRequest extends FormRequest
      */
     public function rules(): array
     {
-        $emailRule = 'max:225|unique:prospects,email,' . $this->route('prospect')->id;
-        $smalltext = 'string|max:225';
+        $emailRule = 'max:225|unique:prospects,email|nullable';
+        $smalltext = 'string|max:225|nullable';
         return [
             'name' => 'required|'.$smalltext,
             'email' => $emailRule,
-            'phone_number' => 'string|min:8|max:12',
+            'phone_number' => 'string|min:8|max:12|nullable',
             'facebook_account' => $smalltext,
             'instagram_account' => $smalltext,
             'address' => $smalltext,
-            'personal_info' => 'string',
+            'personal_info' => 'string|nullable',
             'prospect_state' => 'required|integer|exists:prospect_states,id',
-            'prospect_state_explanation' => 'string|max:1000'
+            'prospect_state_explanation' => 'string|max:1000|nullable'
         ];
     }
 }
