@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('prospect_state_transition', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('prospect_id')->constrained();
+            $table->foreignId('prospect_id')->constrained()->onDelete('cascade');
             $table->foreignId('prospect_state_id')->constrained();
             $table->string('explanation')->nullable();
             $table->timestamps();
