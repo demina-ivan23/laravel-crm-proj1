@@ -58,7 +58,7 @@ class ProspectService
   {
     try {
       $state = ProspectState::findOrFail($state);
-      if ($prospect->latestState->id == $state->id) {
+      if ($prospect->latestState != null && $prospect->latestState->id == $state->id) {
         $prospect->states()->updateExistingPivot($state->id, ['explanation' => $explanation]);
       } else {
         $prospect->states()->attach($state, ['explanation' => $explanation]);
