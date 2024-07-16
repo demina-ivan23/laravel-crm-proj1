@@ -20,7 +20,7 @@ class Order extends Model
     }
     public function customer()
     {
-        return $this->belongsTo(Prospect::class);
+        return $this->belongsTo(Prospect::class)->withTrashed();
     }
     public function messages()
     {

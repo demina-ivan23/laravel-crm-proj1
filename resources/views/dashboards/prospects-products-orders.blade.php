@@ -87,9 +87,9 @@
                                             <li><a class="dropdown-item" href="{{ route('user.prospects.create') }}">Create New
                                                     Prospect</a></li>
                                         @endcan
-                                        {{-- <li><a class="dropdown-item" href="{{route('dashboards.prospect-product-order'), ['withTrashed' => true]}}">Show With Trashed</a></li>
-                                        <li><a class="dropdown-item" href="{{route('dashboards.prospect-product-order'), ['onlyTrashed' => true]}}">Show Only Trashed</a></li> --}}
-                                        {{-- <li><a class="dropdown-item" href="{{route('dashboards.prospect-product-order')}}">Show Without Trashed</a></li> --}}
+                                        <li><a class="dropdown-item" href="{{route('dashboards.prospects-products-orders', ['prospectsWithTrashed' => true])}}">Show With Trashed</a></li>
+                                        <li><a class="dropdown-item" href="{{route('dashboards.prospects-products-orders', ['prospectsOnlyTrashed' => true])}}">Show Only Trashed</a></li>
+                                        <li><a class="dropdown-item" href="{{route('dashboards.prospects-products-orders')}}">Show Without Trashed</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -199,7 +199,7 @@
                                                             action="{{ route('user.prospects.restore', ['prospect' => $prospect]) }}"
                                                             method="POST">
                                                             @csrf
-                                                            @method('DELETE')
+                                                            @method('PUT')
                                                             <button type="submit">
                                                                 Restore
                                                             </button>
