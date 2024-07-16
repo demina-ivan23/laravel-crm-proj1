@@ -87,7 +87,9 @@
                                             <li><a class="dropdown-item" href="{{ route('user.prospects.create') }}">Create New
                                                     Prospect</a></li>
                                         @endcan
-                                        <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                        {{-- <li><a class="dropdown-item" href="{{route('dashboards.prospect-product-order'), ['withTrashed' => true]}}">Show With Trashed</a></li>
+                                        <li><a class="dropdown-item" href="{{route('dashboards.prospect-product-order'), ['onlyTrashed' => true]}}">Show Only Trashed</a></li> --}}
+                                        {{-- <li><a class="dropdown-item" href="{{route('dashboards.prospect-product-order')}}">Show Without Trashed</a></li> --}}
                                     </ul>
                                 </div>
                             </div>
@@ -176,18 +178,48 @@
                                                             href="{{ route('user.prospects.show-orders', ['prospect' => $prospect]) }}">View
                                                             Orders Of "{{ $prospect->name }}"</a></li>
                                                 @endcan
-                                                {{-- @can('delete', $prospect)
+                                                @if (!$prospect->deleted_at)
+                                                    @can('update', $prospect)
+                                                        <li>
+                                                            <form class="dropdown-item"
+                                                                action="{{ route('user.prospects.delete', ['prospect' => $prospect]) }}"
+                                                                method="POST">
+                                                                @csrf
+                                                                @method('DELETE')
+                                                                <button type="submit">
+                                                                    Delete
+                                                                </button>
+                                                            </form>
+                                                        </li>
+                                                    @endcan
+                                                @else
+                                                    @can('update', $prospect)
+                                                    <li>
+                                                        <form class="dropdown-item"
+                                                            action="{{ route('user.prospects.restore', ['prospect' => $prospect]) }}"
+                                                            method="POST">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit">
+                                                                Restore
+                                                            </button>
+                                                        </form>
+                                                    </li>
+                                                    @endcan
+                                                @endif
+                                                @can('delete', $prospect)
                                                     <li>
                                                         <form
-                                                            action="{{ route('user.prospects.delete', ['prospect' => $prospect]) }}"
+                                                            action="{{ route('user.prospects.destroy', ['prospect' => $prospect]) }}"
                                                             method="POST">
                                                             @csrf
                                                             @method('DELETE')
                                                             <button type="submit" class="dropdown-item"
-                                                                onclick="return confirm('Are you sure you want to delete this prospect?')">Delete</button>
+                                                                onclick="return confirm('Are you sure you want to delete this prospect?')">Delete
+                                                                Permanently</button>
                                                         </form>
                                                     </li>
-                                                @endcan --}}
+                                                @endcan
                                             </ul>
                                         </div>
                                     </th>
