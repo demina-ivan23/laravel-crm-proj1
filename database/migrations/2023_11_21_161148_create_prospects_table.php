@@ -20,7 +20,8 @@ return new class extends Migration
             $table->string('instagram_account')->nullable();
             $table->string('address')->nullable();
             $table->string('personal_info')->nullable();
-            $table->timestamps();
+            $table->timestamps(); 
+            $table->softDeletes();
         });
     }
 

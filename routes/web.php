@@ -97,8 +97,8 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     Route::get('prospects/{prospect}', [ProspectsController::class, 'show'])->middleware('permissions:prospect-read-web')->name('prospects.show');
     Route::resource('prospects', ProspectsController::class)->only(['edit', 'update'])->middleware('permissions:prospect-edit-web');
 
-    Route::delete('prospects/{prospect}', [ProspectsController::class, 'delete'])->middleware('permissions:prospect-update-web')->name('prospects.delete');
-    Route::put('prospects/{prospect}/restore', [ProspectsController::class, 'restore'])->middleware('permissions:prospect-update-web')->name('prospects.restore');
+    Route::delete('prospects/{prospect}', [ProspectsController::class, 'delete'])->middleware('permissions:prospect-edit-web')->name('prospects.delete');
+    Route::put('prospects/{prospect}/restore', [ProspectsController::class, 'restore'])->middleware('permissions:prospect-edit-web')->name('prospects.restore');
 
     Route::delete('prospects/{prospect}/force_delete', [ProspectsController::class, 'destroy'])->middleware('permissions:prospect-delete-web')->name('prospects.destroy');
 
