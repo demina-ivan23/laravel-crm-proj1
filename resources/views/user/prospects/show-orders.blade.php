@@ -2,7 +2,9 @@
 
 @section('content')
     <div class="container">
-
+        @php
+            $timezone = session('timezone') ?? 'UTC';
+        @endphp
         @if (session('success'))
             <div class="alert alert-success">
                 {{ session('success') }}
