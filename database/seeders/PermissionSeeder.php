@@ -76,6 +76,12 @@ class PermissionSeeder extends Seeder
         Permission::create([
             'title' => 'product-edit-api'
         ]);
+        Permission::create([
+            'title' => 'product-delete-web'
+        ]);
+        Permission::create([
+            'title' => 'product-delete-api'
+        ]);
         //Order management permissions
         Permission::create([
             'title' => 'order-read-web'
