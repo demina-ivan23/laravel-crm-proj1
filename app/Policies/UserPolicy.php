@@ -75,7 +75,7 @@ class UserPolicy
      */
     public function forceDelete(User $user, User $model): bool
     {
-        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'user-destroy-web')->first()->id)  && !$model->role->permissions->contains(Permission::where('title', 'be_untouchable')->first()->id)) {
+        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'user-delete-web')->first()->id)  && !$model->role->permissions->contains(Permission::where('title', 'be_untouchable')->first()->id)) {
             return true;
         }
         return false;

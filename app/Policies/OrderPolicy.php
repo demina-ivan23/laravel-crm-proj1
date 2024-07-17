@@ -69,7 +69,7 @@ class OrderPolicy
      */
     public function forceDelete(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains(Permission::where('title', 'order-destroy-web')->first()->id)){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'order-delete-web')->first()->id)){
             return true;
         }
         return false;

@@ -69,7 +69,7 @@ class ProspectStatePolicy
      */
     public function forceDelete(User $user): bool
     {
-        if($user->role && $user->role->permissions->contains(Permission::where('title', 'prospect_state-destroy-web')->first()->id)){
+        if($user->role && $user->role->permissions->contains(Permission::where('title', 'prospect_state-delete-web')->first()->id)){
             return true;
         }
         return false;

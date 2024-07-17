@@ -69,7 +69,7 @@ class RolePolicy
      */
     public function forceDelete(User $user, Role $role): bool
     {
-        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'role-destroy-web')->first()->id) && !$role->permissions->contains(Permission::where('title' , 'be_untouchable')->first()->id)) {
+        if ($user->role && $user->role->permissions->contains(Permission::where('title', 'role-delete-web')->first()->id) && !$role->permissions->contains(Permission::where('title' , 'be_untouchable')->first()->id)) {
             return true;
         }
         return false;
