@@ -63,6 +63,7 @@ class ProspectService
       } else {
         $prospect->states()->attach($state, ['explanation' => $explanation]);
       }
+      dd($prospect->latestState->id);
       return true;
     } catch (Exception $e) {
       throw new Exception($e->getMessage());

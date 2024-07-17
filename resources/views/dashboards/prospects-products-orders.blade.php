@@ -46,9 +46,9 @@
         </div>
         @can('view', \App\Models\Prospect::class)
             <div class="hidden tablink" id="prospects">
-                <form method="GET" action="#">
+                <form method="GET" action="{{route('dashboards.prospects-products-orders', ['tablink' => 'prospects'])}}">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="prospects-search">
+                        <input type="text" class="form-control" name="prospects-search" value="{{request('prospects-search')}}">
                         <button class="input-group-text" type="submit">Search</button>
                     </div>
                 </form>
@@ -64,12 +64,12 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         @foreach ($states as $state)
-                                            <form action="#" method="GET">
+                                            <form action="{{route('dashboards.prospects-products-orders', ['tablink' => 'prospects'])}}" method="GET">
                                                 <li><button class="dropdown-item" name="filter_state" id="filter_state"
                                                         type="submit" value="{{ $state->id }}">{{ $state->title }}</button>
                                             </form>
                                         @endforeach
-                                        <form action="#" method="GET">
+                                        <form action="{{route('dashboards.prospects-products-orders', ['tablink' => 'prospects'])}}" method="GET">
                                             <li><button class="dropdown-item" name="filter_state" id="filter_state"
                                                     type="submit" value="all">All</button>
                                         </form>

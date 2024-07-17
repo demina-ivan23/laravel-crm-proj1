@@ -36,26 +36,26 @@ class Prospect extends Model
   }
   public function scopeFilter($query)
   {
-    if (request('search')) {
-
+    $search = request('prospects-search');
+    if ($search) {
       $query
-        ->where('name', 'like', '%' . request('search') . '%')
-        ->orWhere('email', 'like', '%' . request('search') . '%')
-        ->orWhere('state_id', 'like', '%' . request('search') . '%')
-        ->orWhere('phone_number', 'like', '%' . request('search') . '%')
-        ->orWhere('facebook_account', 'like', '%' . request('search') . '%')
-        ->orWhere('instagram_account', 'like', '%' . request('search') . '%')
-        ->orWhere('address', 'like', '%' . request('search') . '%');
+        ->where('name', 'like', '%' . $search . '%')
+        ->orWhere('email', 'like', '%' . $search . '%')
+        ->orWhere('phone_number', 'like', '%' . $search . '%')
+        ->orWhere('facebook_account', 'like', '%' . $search . '%')
+        ->orWhere('instagram_account', 'like', '%' . $search . '%')
+        ->orWhere('address', 'like', '%' . $search . '%')
+        ->orWhereHas('states', function ($subQuery) use ($search) {
+          $subQuery->latest()->take(1)->where('title', 'like', '%' . $search . '%');
+        });
     }
-    if (request('filter_state')) {
-      if (request('filter_state') === 'all') {
-        $query
-          ->where('name', 'like', '%' . '' . '%');
-      } else {
-        $query
-          ->where('state_id', 'like', request('filter_state'));
+    $filterState = request('filter_state');
+    if ($filterState && $filterState !== 'all'){
+        $query->whereHas('states', function ($subQuery) use ($filterState) {
+          $subQuery->latest()->take(1)->where('prospect_state_id', $filterState);
+        });
       }
-    }
+    return $query;
   }
   public function getLatestStateAttribute(){
     return $this->states()->latest()->first();
