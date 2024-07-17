@@ -24,6 +24,7 @@ return new class extends Migration
                 ->onDelete('SET NULL')->nullable(); 
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

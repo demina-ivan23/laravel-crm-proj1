@@ -109,8 +109,10 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     Route::get('products/{product}', [ProductsController::class, 'show'])->middleware('permissions:product-read-web')->name('products.show');
     Route::resource('products', ProductsController::class)->only(['edit', 'update'])->middleware('permissions:product-edit-web');
 
-    Route::delete('products/{product}', [ProductsController::class, 'destroy'])->name('products.destroy');
+    Route::delete('products/{product}', [ProductsController::class, 'delete'])->name('products.delete');
+    Route::put('products/{product}/restore', [ProductsController::class, 'restore'])->name('products.restore');
 
+    Route::delete('products/{product}/force_delete', [ProductsController::class, 'destroy'])->name('products.destroy');
     //Orders
     Route::prefix('orders/')->middleware('permissions:order-write-web')->name('orders.')->group(function () {
         Route::get('{prospect}/create/select_products', [OrdersController::class, 'create'])->name('create.select_products');

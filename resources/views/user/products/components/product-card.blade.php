@@ -27,12 +27,27 @@
         <li>
           <a href="{{ route('user.products.edit', ['product' => $product]) }}" class="dropdown-item">Edit </a>
         </li>
-        <li>  <form action="{{ route('user.products.destroy', ['product' => $product]) }}" method="POST">
+        @if (!$product->deleted_at)
+        <li>  <form action="{{ route('user.products.delete', ['product' => $product]) }}" method="POST">
           @csrf
           @method('DELETE')
-          <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this product?')">Delete</button>
+          <button type="submit" class="dropdown-item">Move To Trash</button>
         </form>
-      </li>
+      </li> 
+        @else
+        <li>  <form action="{{ route('user.products.restore', ['product' => $product]) }}" method="POST">
+          @csrf
+          @method('PUT')
+          <button type="submit" class="dropdown-item">Restore</button>
+        </form>
+      </li> 
+        @endif
+      <li>  <form action="{{ route('user.products.destroy', ['product' => $product]) }}" method="POST">
+        @csrf
+        @method('DELETE')
+        <button type="submit" class="dropdown-item" onclick="return confirm('Are you sure you want to delete this product?')">Delete Permanently</button>
+      </form>
+    </li>
     </ul>
 
     </div>

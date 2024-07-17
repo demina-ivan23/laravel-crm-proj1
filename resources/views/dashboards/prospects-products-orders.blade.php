@@ -293,6 +293,9 @@
                                                     New
                                                     Product</a></li>
                                         @endcan
+                                        <li><a class="dropdown-item" href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'products', 'productsWithTrashed' => true]) }}">Show With Trashed</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'products', 'productsOnlyTrashed' => true]) }}">Show Only Trashed</a></li>
+                                        <li><a class="dropdown-item" href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'products']) }}">Show Without Trashed</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -446,6 +449,9 @@
                                             {{ substr($productsString, 0, strlen($productsString) - 2) . ' ' }}
                                             @if ($order->products->count() > 3)
                                                 and more
+                                            @endif
+                                            @if ($order->products->count() == 0)
+                                                {{$productsString = 'all the products were permanently deleted or an unexpected error occurred'}}
                                             @endif
                                     </th>
                                     </p>

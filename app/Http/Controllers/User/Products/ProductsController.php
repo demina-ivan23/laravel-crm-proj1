@@ -63,18 +63,26 @@ class ProductsController extends Controller
         }
     }
 
+    public function delete(Product $product)
+    {
+       $product->delete();
+       return redirect()->route('dashboards.prospects-products-orders', ['tablink' => 'products', 'tab-button' => 'productsTabButton'])->with('success', 'Product Trashed Successfully');
+    }
+
+    public function restore(string $id)
+    {
+        $product = Product::withTrashed()->findOrFail($id);
+        $product->restore();
+        return redirect()->route('dashboards.prospects-products-orders', ['tablink' => 'products', 'tab-button' => 'productsTabButton'])->with('success', 'Product Restored Successfully');
+
+    }
+
     /**
      * Remove the specified resource from storage.
      */
-    // public function destroy(Product $product)
-    // {
-    //     $product = ProductService::getProductById($id);
-
-    //     if(!$product){
-    //         abort(404);
-    //     }
-
-    //     ProductService::deleteProduct($product);
-    //     return redirect('/products/products');
-    // }
+    public function destroy(Product $product)
+    {
+        $product->forceDelete();
+        return redirect()->route('dashboards.prospects-products-orders', ['tablink' => 'products', 'tab-button' => 'productsTabButton'])->with('success', 'Product Deleted Permanently');
+    }
 }

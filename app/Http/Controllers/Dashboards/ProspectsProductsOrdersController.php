@@ -12,6 +12,7 @@ use App\Models\{
     ProductCategory,
     ProspectState
 };
+use App\Services\ProductService;
 use App\Services\ProspectService;
 
 class ProspectsProductsOrdersController extends Controller
@@ -24,7 +25,7 @@ class ProspectsProductsOrdersController extends Controller
         return view('dashboards.prospects-products-orders', [
             'prospects' => ProspectService::getAllProspects(),
             'states' => ProspectState::all(),
-            'products' => Product::latest()->filter()->paginate(15),
+            'products' => ProductService::getAllProducts(),
             'categories' => ProductCategory::all(),
             'orders' => Order::latest()->filter()->paginate(15),
             'statuses' => OrderStatus::all()

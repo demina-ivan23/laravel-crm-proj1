@@ -13,7 +13,18 @@ class ProductService
 {
     static function getAllProducts()
     {
-        $products = Product::latest('updated_at')->filter()->paginate(10);
+        $data = request()->all();
+        if (array_key_exists('productsWithTrashed', $data)) {
+          if ($data['productsWithTrashed'] == true) {
+            $products = Product::withTrashed()->latest('updated_at')->filter()->paginate(15);
+          }
+        } elseif (array_key_exists('productsOnlyTrashed', $data)) {
+          if ($data['productsOnlyTrashed'] == true) {
+            $products = Product::onlyTrashed()->latest('updated_at')->filter()->paginate(15);
+          }
+        } else {
+          $products = Product::latest('updated_at')->filter()->paginate(15);
+        }
         return $products;
     }
 
