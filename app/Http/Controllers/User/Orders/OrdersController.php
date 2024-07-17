@@ -73,14 +73,25 @@ class OrdersController extends Controller
         }
     }
 
-
+    public function delete(Order $order)
+    {
+        $order->delete();
+        return redirect()->back()->with('success', 'Order Trashed Successfully');
+    }
+    
+    public function restore(string $id)
+    {
+        $order = Order::withTrashed()->findOrFail($id);
+        $order->restore();
+        return redirect()->back()->with('success', 'Order Restored Successfully');
+    }
     /**
      * Remove the specified resource from storage.
      */
 
-    // public function destroy(Order $order)
-    // {
-    //         $order->delete();
-    //     return redirect()->back()->with('success', 'Order trashed successfully');
-    // }
+    public function destroy(Order $order)
+    {
+        $order->forceDelete();
+        return redirect()->back()->with('success', 'Order Deleted Permanently');
+    }
 }

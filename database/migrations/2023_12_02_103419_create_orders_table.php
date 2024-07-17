@@ -15,11 +15,13 @@ return new class extends Migration
             $table->id();
 
             $table->unsignedBigInteger('customer_id');
-            $table->timestamps();
             $table->index('customer_id');
             $table->foreign('customer_id')
-                ->references('id')->on('prospects')
-                ->onDelete('CASCADE');
+            ->references('id')->on('prospects')
+            ->onDelete('CASCADE');
+            $table->timestamps();
+            $table->softDeletes();
+            
         });
     }
 

@@ -81,10 +81,18 @@ class OrderService
   }
   static function getAllOrders()
   {
-    $orders = Order::latest('updated_at')
-      ->filter()
-      ->paginate(10);
-
+    $data = request()->all();
+    if (array_key_exists('ordersWithTrashed', $data)) {
+      if ($data['ordersWithTrashed'] == true) {
+        $orders = Order::withTrashed()->latest('updated_at')->filter()->paginate(15);
+      }
+    } elseif (array_key_exists('ordersOnlyTrashed', $data)) {
+      if ($data['ordersOnlyTrashed'] == true) {
+        $orders = Order::onlyTrashed()->latest('updated_at')->filter()->paginate(15);
+      }
+    } else {
+      $orders = Order::latest('updated_at')->filter()->paginate(15);
+    }
     return $orders;
   }
 }

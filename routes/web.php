@@ -122,7 +122,11 @@ Route::prefix('user/')->middleware('auth')->name('user.')->group(function () {
     
     Route::get('orders/{order}', [ProspectsController::class, 'show'])->middleware('permissions:order-read-web')->name('orders.show');
     Route::resource('orders', OrdersController::class)->only(['edit', 'update'])->middleware('permissions:order-edit-web');
-   
+
+    Route::delete('orders/{order}', [OrdersController::class, 'delete'])->name('orders.delete');
+    Route::put('orders/{order}/restore', [OrdersController::class, 'restore'])->name('orders.restore');
+
+    Route::delete('orders/{order}/force_delete', [OrdersController::class, 'destroy'])->name('orders.destroy');
     //Messages
     Route::prefix('messages/')->name('messages.')->group(function () {
         Route::get('{id}/{messagable}/view_all', [MessageController::class, 'index'])->name('index');

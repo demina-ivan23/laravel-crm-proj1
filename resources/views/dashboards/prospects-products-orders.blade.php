@@ -293,9 +293,15 @@
                                                     New
                                                     Product</a></li>
                                         @endcan
-                                        <li><a class="dropdown-item" href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'products', 'productsWithTrashed' => true]) }}">Show With Trashed</a></li>
-                                        <li><a class="dropdown-item" href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'products', 'productsOnlyTrashed' => true]) }}">Show Only Trashed</a></li>
-                                        <li><a class="dropdown-item" href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'products']) }}">Show Without Trashed</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'products', 'productsWithTrashed' => true]) }}">Show
+                                                With Trashed</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'products', 'productsOnlyTrashed' => true]) }}">Show
+                                                Only Trashed</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'products']) }}">Show
+                                                Without Trashed</a></li>
                                     </ul>
                                 </div>
                             </div>
@@ -401,7 +407,45 @@
                         <div class="d-flex">
                             <h2>Orders <small class="text-muted">Showing All Orders</small></h2>
                             <div class="ml-auto" style="margin-left: auto">
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Filter By Status
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        @foreach ($statuses as $status)
+                                            <form action="#" method="GET">
+                                                <li><button class="dropdown-item" name="filter__order_status"
+                                                        id="filter__order_status" type="submit"
+                                                        value="{{ $status->id }}">{{ $status->title }}</button>
+                                            </form>
+                                        @endforeach
+                                        <form action="#" method="GET">
+                                            <li><button class="dropdown-item" name="filter__order_status"
+                                                    id="filter__order_status" type="submit" value="all">All</button>
+                                        </form>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="ml-auto" style="margin-left: auto">
 
+                                <div class="dropdown">
+                                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                        Actions
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'orders', 'ordersWithTrashed' => true]) }}">Show
+                                                With Trashed</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'orders', 'ordersOnlyTrashed' => true]) }}">Show
+                                                Only Trashed</a></li>
+                                        <li><a class="dropdown-item"
+                                                href="{{ route('dashboards.prospects-products-orders', ['tablink' => 'orders']) }}">Show
+                                                Without Trashed</a></li>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -451,7 +495,7 @@
                                                 and more
                                             @endif
                                             @if ($order->products->count() == 0)
-                                                {{$productsString = 'all the products were permanently deleted or an unexpected error occurred'}}
+                                                {{ $productsString = 'all the products were permanently deleted or an unexpected error occurred' }}
                                             @endif
                                     </th>
                                     </p>
@@ -487,6 +531,33 @@
                                                     <a href="{{ route('user.orders.edit', ['order' => $order]) }}"
                                                         class="dropdown-item justify-center">Edit
                                                         this order</a>
+                                                @endcan
+                                                @if (!$order->deleted_at)
+                                                    @can('delete', $order)
+                                                        <form action="{{ route('user.orders.delete', ['order' => $order]) }}"
+                                                            method="POST" class="dropdown-item justify-center">
+                                                            @csrf
+                                                            @method('DELETE')
+                                                            <button type="submit">Move To Trash</button>
+                                                        </form>
+                                                    @endcan
+                                                @else
+                                                    @can('restore', $order)
+                                                        <form action="{{ route('user.orders.restore', ['order' => $order]) }}"
+                                                            method="POST" class="dropdown-item justify-center">
+                                                            @csrf
+                                                            @method('PUT')
+                                                            <button type="submit">Restore</button>
+                                                        </form>
+                                                    @endcan
+                                                @endif
+                                                @can('forceDelete', $order)
+                                                    <form action="{{ route('user.orders.destroy', ['order' => $order]) }}"
+                                                        method="POST" class="dropdown-item justify-center">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="submit">Delete Permanently</button>
+                                                    </form>
                                                 @endcan
                                             </ul>
                                         </div>

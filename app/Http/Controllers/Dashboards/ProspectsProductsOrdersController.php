@@ -12,6 +12,7 @@ use App\Models\{
     ProductCategory,
     ProspectState
 };
+use App\Services\OrderService;
 use App\Services\ProductService;
 use App\Services\ProspectService;
 
@@ -27,7 +28,7 @@ class ProspectsProductsOrdersController extends Controller
             'states' => ProspectState::all(),
             'products' => ProductService::getAllProducts(),
             'categories' => ProductCategory::all(),
-            'orders' => Order::latest()->filter()->paginate(15),
+            'orders' => OrderService::getAllOrders(),
             'statuses' => OrderStatus::all()
         ]);
     }
