@@ -355,13 +355,13 @@ const app = createApp({
                     }
                 });
                 let newUrl = window.location.pathname;
-                newUrl += `?tablink=${id}&tab-button=${buttonId}&`;
+                newUrl += `?tablink=${id}&`;
                 if (Object.keys(otherParams).length > 0) {
                     for (const [key, value] of Object.entries(otherParams)) {
                         newUrl += `${key}=${value}&`;
                     }
                 }
-                newUrl.slice(0, -1);
+                newUrl = newUrl.slice(0, -1);
                 window.history.replaceState({}, document.title, newUrl);
             }
         },
@@ -369,7 +369,6 @@ const app = createApp({
             const urlParams = new URLSearchParams(window.location.search);
             const selectedTab = urlParams.get('tablink');
             const tabButton = urlParams.get('tab-button');
-            console.log(urlParams, selectedTab, tabButton);
             if (selectedTab && (document.getElementById(selectedTab) ?? false)) {
                 let buttonId = tabButton == null ? selectedTab + 'TabToggle' : tabButton;
                 this.togglePageTabs(selectedTab, buttonId);
