@@ -82,15 +82,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="prospect_state" class="form-label">Prospect state</label>
-                        <div class="dropdown">
-                            <select class="form-control" name="prospect_state" id="prospect_state_select" disabled>
-                                @foreach (App\Models\ProspectState::all() as $prospectState)
-                                    @if ($prospect->latestState->states->contains($prospectState->id) || $prospect->latestState->id === $prospectState->id)
-                                        <option value="{{ $prospectState->id }}">{{ $prospectState->title }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
-                        </div>
+                        <input class="form-control" type="text" name="state_title" id="state_title" value="{{ $prospect->latestState->title }}" disabled>
                     </div>
                     <div class="mb-3">
                         <label for="prospect_state_explanation">Why this state?</label>
@@ -98,6 +90,18 @@
                             placeholder="Your explanation here..."
                             value="{{ $prospect->latestState->pivot->explanation }}" disabled>
                     </div>
+                </div>
+                <div class="d-flex justify-content-center mt-5">
+                       <h4>Messages</h4>
+                </div>
+                <div class="mt-5">
+                    @foreach ($prospect->messages as $message)
+                        <div class="mt-3 p-3">
+                            <h5>
+                                {{$message->text}}
+                            </h5>
+                        </div>
+                    @endforeach
                 </div>
         </div>
     </div>
