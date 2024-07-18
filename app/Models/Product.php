@@ -26,43 +26,32 @@ class Product extends Model
 
   public function scopeFilter($query)
   {
-    if (request('search')) {
-
-      $query
-        ->where('title', 'like', '%' . request('search') . '%')
-        ->orWhere('description', 'like', '%' . request('search') . '%')
-        ->orWhere('price', 'like', '%' . request('search') . '%');
-    }
-    if (request('filter_category')) {
-      if (request('filter_category') === 'all') {
-        $query
-          ->where('title', 'like', '%' . '' . '%');
-      } else {
-        $query
-          ->where('category_id', 'like', request('filter_category'));
-      }
-    }
+    $search = request('products-search');
     $filters = request()->input();
 
-    // Apply category filters
-    if (isset($filters['category_filter'])) {
-      $categoryFilters = explode(',', $filters['category_filter']);
-      $query->whereIn('category_id', $categoryFilters);
-      if(in_array('none', $categoryFilters)){
-        $query->whereIn('category_id', $categoryFilters)->orWhere('category_id', null);
-      }
-    }
+    $query->when($search, function ($query, $search) {
+      $query->where(function ($query) use ($search) {
+        $query->where('title', 'like', '%' . $search . '%')
+          ->orWhere('description', 'like', '%' . $search . '%')
+          ->orWhere('price', 'like', '%' . $search . '%');
+      });
+    });
 
-    if (isset($filters['price_filter'])) {
-      $priceFilters = $filters['price_filter'];
-      if (!is_array($priceFilters)) {
-        $priceFilters = explode(',', $priceFilters);
-      }
+    $query->when(isset($filters['products_category_filters']), function ($query) use ($filters) {
+      $categoryFilters = explode(',', $filters['products_category_filters']);
+      $query->where(function ($query) use ($categoryFilters) {
+        $query->whereIn('category_id', $categoryFilters)
+          ->orWhereNull('category_id');
+      });
+    });
+
+    $query->when(isset($filters['products_price_filter']), function ($query) use ($filters) {
+      $priceFilters = is_array($filters['products_price_filter']) ? $filters['products_price_filter'] : explode(',', $filters['products_price_filter']);
       $query->where(function ($query) use ($priceFilters) {
         foreach ($priceFilters as $priceFilter) {
           switch ($priceFilter) {
             case '<10':
-              $query->orWhere('price', '<', 10);
+              $query->where('price', '<', 10);
               break;
             case '10-100':
               $query->orWhereBetween('price', [10, 100]);
@@ -84,7 +73,8 @@ class Product extends Model
           }
         }
       });
-    }
+    });
+
     return $query;
   }
 }

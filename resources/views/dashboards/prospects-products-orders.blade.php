@@ -46,9 +46,10 @@
         </div>
         @can('view', \App\Models\Prospect::class)
             <div class="hidden tablink" id="prospects">
-                <form method="GET" action="{{route('dashboards.prospects-products-orders', ['tablink' => 'prospects'])}}">
+                <form method="GET" action="{{ route('dashboards.prospects-products-orders', ['tablink' => 'prospects']) }}">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="prospects-search" value="{{request('prospects-search')}}">
+                        <input type="text" class="form-control" name="prospects-search"
+                            value="{{ request('prospects-search') }}">
                         <button class="input-group-text" type="submit">Search</button>
                     </div>
                 </form>
@@ -64,12 +65,16 @@
                                     </button>
                                     <ul class="dropdown-menu">
                                         @foreach ($states as $state)
-                                            <form action="{{route('dashboards.prospects-products-orders', ['tablink' => 'prospects'])}}" method="GET">
+                                            <form
+                                                action="{{ route('dashboards.prospects-products-orders', ['tablink' => 'prospects']) }}"
+                                                method="GET">
                                                 <li><button class="dropdown-item" name="filter_state" id="filter_state"
                                                         type="submit" value="{{ $state->id }}">{{ $state->title }}</button>
                                             </form>
                                         @endforeach
-                                        <form action="{{route('dashboards.prospects-products-orders', ['tablink' => 'prospects'])}}" method="GET">
+                                        <form
+                                            action="{{ route('dashboards.prospects-products-orders', ['tablink' => 'prospects']) }}"
+                                            method="GET">
                                             <li><button class="dropdown-item" name="filter_state" id="filter_state"
                                                     type="submit" value="all">All</button>
                                         </form>
@@ -248,9 +253,9 @@
         @endcannot
         @can('view', \App\Models\Product::class)
             <div class="hidden tablink" id="products">
-                <form method="GET" action="#">
+                <form method="GET" action="{{route('dashboards.prospects-products-orders', ['tablink' => 'products'])}}">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" name="products-search">
+                        <input type="text" class="form-control" name="products-search" value="{{request('products-search')}}">
                         <button class="input-group-text" type="submit">Search</button>
                     </div>
                 </form>
@@ -301,45 +306,52 @@
                                     <h5>Price filters:</h5>
                                 </div>
                                 <div class="col-sm-12">
-                                    <input type="checkbox" name="price_filter" class="filter-checkbox" value="<10">
+                                    <input type="checkbox" name="products_price_filter" class="filter-checkbox"
+                                        value="<10">
                                     Price
                                     is less than $10
                                 </div>
                                 <div class="col-sm-12">
-                                    <input type="checkbox" name="price_filter" class="filter-checkbox" value="10-100">
+                                    <input type="checkbox" name="products_price_filter" class="filter-checkbox"
+                                        value="10-100">
                                     Price
                                     is $10 to $100
                                 </div>
                                 <div class="col-sm-12">
-                                    <input type="checkbox" name="price_filter" class="filter-checkbox" value="100-500">
+                                    <input type="checkbox" name="products_price_filter" class="filter-checkbox"
+                                        value="100-500">
                                     Price is $100 to $500
                                 </div>
                                 <div class="col-sm-12">
-                                    <input type="checkbox" name="price_filter" class="filter-checkbox" value="500-1000">
+                                    <input type="checkbox" name="products_price_filter" class="filter-checkbox"
+                                        value="500-1000">
                                     Price is $500 to $1000
                                 </div>
                                 <div class="col-sm-12">
-                                    <input type="checkbox" name="price_filter" class="filter-checkbox" value="1000-5000">
+                                    <input type="checkbox" name="products_price_filter" class="filter-checkbox"
+                                        value="1000-5000">
                                     Price is $1000 to $5000
                                 </div>
                                 <div class="col-sm-12">
-                                    <input type="checkbox" name="price_filter" class="filter-checkbox" value=">5000">
+                                    <input type="checkbox" name="products_price_filter" class="filter-checkbox"
+                                        value=">5000">
                                     Price
                                     is higher than $5000
                                 </div>
                             </div>
-                            <div class="ml-10 mb-10" id="category-filters">
+                            <div class="ml-10 mb-10" id="products_category_filters">
                                 <div class="col-sm-12">
                                     <h5>Category filters:</h5>
                                 </div>
                                 @foreach ($categories as $category)
                                     <div class="col-sm-12">
-                                        <input type="checkbox" name="category_filter" value="{{ $category->id }}"
+                                        <input type="checkbox" name="products_category_filters" value="{{ $category->id }}"
                                             class="filter-checkbox"> {{ $category->title }}
                                     </div>
                                 @endforeach
                                 <div class="col-sm-12">
-                                    <input type="checkbox" name="category_filter" value="none" class="filter-checkbox"> No
+                                    <input type="checkbox" name="products_category_filters" value="none"
+                                        class="filter-checkbox"> No
                                     category
                                 </div>
                             </div>
@@ -359,10 +371,12 @@
                             </div>
                         </div>
                     @else
-                        <div class="d-flex justify-content-center mt-4">
-                            <h3>
-                                No products found by the filtering criterias
-                            </h3>
+                        <div class="col-sm-10">
+                            <div class="d-flex justify-content-center mt-4">
+                                <h3>
+                                    No products found by the filtering criterias
+                                </h3>
+                            </div>
                         </div>
                     @endif
                 </div>

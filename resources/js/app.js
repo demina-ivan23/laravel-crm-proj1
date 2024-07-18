@@ -39,33 +39,43 @@ const app = createApp({
         },
         applyFilters() {
             let selectedFilters = {};
-            let checkboxes = document.querySelectorAll('.filter-checkbox:checked');
-            checkboxes.forEach(function (checkbox) {
+            let checkboxes = document.querySelectorAll('.filter-checkbox');
+            
+            checkboxes.forEach(function(checkbox) {
                 const filterName = checkbox.getAttribute('name');
                 const filterValue = checkbox.value;
+                
                 if (!selectedFilters.hasOwnProperty(filterName)) {
                     selectedFilters[filterName] = [];
                 }
-                selectedFilters[filterName].push(filterValue);
-            });
-            var currentUrl = window.location.href
-            var separator = currentUrl.indexOf('?') !== -1 ? '&' : '?';
-            var queryParams = [];
-            for (var key in selectedFilters) {
-                queryParams.push(key + '=' + selectedFilters[key].join(','));
-            }
-            var newUrl = currentUrl + separator + queryParams.join('&');
-
-            window.location.href = newUrl;
-
-            sessionStorage.clear();
-            checkboxes.forEach(function (checkbox) {
+                
                 if (checkbox.checked) {
-                    sessionStorage.setItem(checkbox.value, true);
+                    selectedFilters[filterName].push(filterValue);
+                    sessionStorage.setItem(filterValue, 'true'); 
                 } else {
-                    sessionStorage.removeItem(checkbox.value);
+                    sessionStorage.removeItem(filterValue); 
                 }
             });
+            
+            var currentUrl = window.location.href;
+            var url = new URL(currentUrl);
+            var queryParams = url.searchParams;
+            
+            Array.from(queryParams.keys()).forEach(function(key) {
+                if (key.includes('filter')) {
+                    queryParams.delete(key);
+                }
+            });
+        
+            for (var key in selectedFilters) {
+                if (selectedFilters[key].length > 0) {
+                    queryParams.append(key, selectedFilters[key].join(','));
+                }
+            }
+        
+            var newUrl = url.origin + url.pathname + '?' + queryParams.toString() + url.hash;
+        
+            window.location.href = newUrl;
         },
         addListenersToFilterCheckboxes() {
             let checkboxes = document.querySelectorAll('.filter-checkbox');
@@ -365,11 +375,12 @@ const app = createApp({
                 window.history.replaceState({}, document.title, newUrl);
             }
         },
-        rememberSelectedTab() {
+       async rememberSelectedTab() {
             const urlParams = new URLSearchParams(window.location.search);
             const selectedTab = urlParams.get('tablink');
             const tabButton = urlParams.get('tab-button');
             if (selectedTab && (document.getElementById(selectedTab) ?? false)) {
+                console.log('hi');
                 let buttonId = tabButton == null ? selectedTab + 'TabToggle' : tabButton;
                 this.togglePageTabs(selectedTab, buttonId);
             } else {
