@@ -16,7 +16,7 @@
                             </button>
                             <ul class="dropdown-menu">
                                 @can('view', \App\Models\Product::class)
-                                    <li><a class="dropdown-item" href="{{ route('user.products.dashboard') }}">Dashboard</a>
+                                    <li><a class="dropdown-item" href="{{ route('dashboards.prospects-products-orders') }}">Dashboard</a>
                                     </li>
                                 @endcan
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
