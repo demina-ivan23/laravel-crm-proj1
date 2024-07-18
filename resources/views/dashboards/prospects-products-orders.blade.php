@@ -260,25 +260,6 @@
                             <h2>Products <small class="text-muted">Showing All Products</small></h2>
                             <div class="ml-auto" style="margin-left: auto">
 
-                                <div class="dropdown">
-                                    <button class="btn btn-outline-secondary btn-sm dropdown-toggle" type="button"
-                                        data-bs-toggle="dropdown" aria-expanded="false">
-                                        Filter By Category
-                                    </button>
-                                    <ul class="dropdown-menu">
-                                        @foreach ($categories as $category)
-                                            <form action="#" method="GET">
-                                                <li><button class="dropdown-item" name="filter_category" id="filter_category"
-                                                        type="submit"
-                                                        value="{{ $category->id }}">{{ $category->title }}</button>
-                                            </form>
-                                        @endforeach
-                                        <form action="#" method="GET">
-                                            <li><button class="dropdown-item" name="filter_category" id="filter_category"
-                                                    type="submit" value="all">All</button>
-                                        </form>
-                                    </ul>
-                                </div>
                             </div>
                             <div class="ml-auto" style="margin-left: auto">
 

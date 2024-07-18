@@ -2,7 +2,6 @@
 
 @section('content')
     <div class="container">
-        <a href="{{route('user.products.dashboard')}}" class="btn btn-light">Go Back To Products</a>
         <div class="card mt-4">
             <div class="card-body">
                 <div class="d-flex">
