@@ -1,4 +1,4 @@
-1<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
 
 <p align="center">
 <a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
@@ -7,13 +7,8 @@
 <a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
 </p>
 
-## About The Project And Additional Info
-So this project is a demonstration of my simple Laravel CRM building skills. It's, I would say, my first project, that I was doing solely by myself. Well, I wouldn't say that I did everything by myself, because the basic idea and that simple design was taken from Tyson London, but if you compare his CRM project and mine, you will notice a great difference between them. Also I added API bridges to the aplication so that front-enders can extract the back-end info from it and not only.
-
-Next, about the project itself: it is a small database for call-centers, that specialize in "cold sales". So they phone a prospect, if they(prospect) agrees to cooperate they(workers) create a prospect record, and if they created a prospect record, they are redirected to lead transformation form, that means creating more specific records about a person. After they have some prospects and/or leads, they(workers) can perform different actions with them (prospects and/or leads), amongst the actions is "Create an order", and after a successful order creation prospect/lead automatically becomes a customer, and order record is saved. To make orders, you have to have products, which you can create by going to products page and then to actions->make new product or something like that (i don't remember precisely, because i haven't been working on the project for 2 or more months). It is not like an online shop where you have to mention how many products do you have in a warehouse, so these are not precise orders, rather just records of different people buying different products which you offer.
-
-So you can check my website at {{url_to_the_website}} and see everything by yourself, because i feel like my description is not that of the best))).
-
+## About The Project 
+This project is a showcase of my Laravel skills, a PHP language framework. It is not finished completely, but mostly it should work fine. The release of the final version is postponed because i desided to learn frontend first.
 ## About Laravel
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
